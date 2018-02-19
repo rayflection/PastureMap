@@ -29,6 +29,8 @@ class MapVC: UIViewController, MKMapViewDelegate {
     func configUI() {
         configMap()
         //spinner.isHidden = true
+        topLabel.text = ""
+        bottomLabel.text = ""
     }
     func configMap() {
         mapView.setRegion(getRegion(), animated: true)
@@ -70,6 +72,11 @@ class MapVC: UIViewController, MKMapViewDelegate {
         if let tapRec = tapRecognizer {
             mapView.addGestureRecognizer(tapRec)
         }
+        topLabel.text = "Tap the map to create a fence post"
+        bottomLabel.text = ""
+        //
+        // @TODO: change button text to "Cancel", detect Cancel, delete pasture, wipe map.
+        //
     }
     @objc func finishPolygonButtonTapped() {
         NSLog("Poly Origin Tapped - POLYGON COMPLETE!")
@@ -109,7 +116,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
             if let title = annotation.title!, title.isEqual("fence post") {
                 touchPointView.image = UIImage(named:"fencePost")
                 if pasture.polygonVertices.count == 1 {
-                    // add a button to this view which completes the polygon
+                    // add a button to this view which allows user to complete the polygon
                     finishPolygonButton = UIButton(type:.custom)
                     finishPolygonButton?.frame = touchPointView.bounds
                     finishPolygonButton?.addTarget(self, action: #selector(finishPolygonButtonTapped), for: UIControlEvents.touchUpInside)
@@ -177,6 +184,12 @@ class MapVC: UIViewController, MKMapViewDelegate {
     }
     func renderCompletePolygon() {
         renderPolygonWith(title:"Poly", subtitle:"complete")
+        let corners = pasture.polygonVertices.map { $0.coordinate }
+        let area = Pasture.regionArea(locations: corners)
+        topLabel.text = "Area is \(String(format:"%.2f",area)) acres"
+        print("\(topLabel.text ?? "")")
+        
+        bottomLabel.text = "Select and drag a fence post to reposition it."
     }
     func renderPolygonWith(title:String, subtitle:String) {
         if let over = pasture.polygonOverlay {
@@ -189,9 +202,11 @@ class MapVC: UIViewController, MKMapViewDelegate {
         mapView.addOverlays([pasture.polygonOverlay!])
         
         // calculate area under polygon, display somewhere...
-        let area = Pasture.regionArea(locations: corners)
-        topLabel.text = "Area is \(area) acres"
-        print("\(topLabel.text ?? "")")
+        if corners.count > 2 {
+            topLabel.text = "Tap again, or tap the first one to complete the pasture."
+        } else {
+            topLabel.text = "Tap again to make the next one..."
+        }
     }
     func redrawPasture(pasture:Pasture) {
         if ( pasture.polylines.count > 0 ) {
@@ -226,7 +241,6 @@ class MapVC: UIViewController, MKMapViewDelegate {
         //   show some kind of error - leave the fencepost there?  how to handle this?
         return true
     }
-    
     // -------------------------
     // MARK: Utils
     func displayCoordinates(coord:CLLocationCoordinate2D, what:String) {
@@ -245,9 +259,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    
 }
-
 // ===============================================
 // MARK: Extensions
 extension CLLocationCoordinate2D {
