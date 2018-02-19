@@ -15,6 +15,7 @@
 		0FB1D55B203B5F4400373B7B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0FB1D559203B5F4400373B7B /* LaunchScreen.storyboard */; };
 		0FB1D566203B5F4400373B7B /* PastureMapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB1D565203B5F4400373B7B /* PastureMapTests.swift */; };
 		0FB1D571203B5F4400373B7B /* PastureMapUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB1D570203B5F4400373B7B /* PastureMapUITests.swift */; };
+		0FB1D57F203B657F00373B7B /* PastureMap.png in Resources */ = {isa = PBXBuildFile; fileRef = 0FB1D57E203B657E00373B7B /* PastureMap.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		0FB1D56C203B5F4400373B7B /* PastureMapUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PastureMapUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0FB1D570203B5F4400373B7B /* PastureMapUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastureMapUITests.swift; sourceTree = "<group>"; };
 		0FB1D572203B5F4500373B7B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0FB1D57E203B657E00373B7B /* PastureMap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PastureMap.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +108,7 @@
 				0FB1D557203B5F4400373B7B /* Assets.xcassets */,
 				0FB1D559203B5F4400373B7B /* LaunchScreen.storyboard */,
 				0FB1D55C203B5F4400373B7B /* Info.plist */,
+				0FB1D57E203B657E00373B7B /* PastureMap.png */,
 			);
 			path = PastureMap;
 			sourceTree = "<group>";
@@ -238,6 +241,7 @@
 				0FB1D55B203B5F4400373B7B /* LaunchScreen.storyboard in Resources */,
 				0FB1D558203B5F4400373B7B /* Assets.xcassets in Resources */,
 				0FB1D556203B5F4400373B7B /* Main.storyboard in Resources */,
+				0FB1D57F203B657F00373B7B /* PastureMap.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -433,6 +437,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 55TGR9K255;
 				INFOPLIST_FILE = PastureMap/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.CageFreeSoftware.PastureMap;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -448,6 +453,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 55TGR9K255;
 				INFOPLIST_FILE = PastureMap/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.CageFreeSoftware.PastureMap;
 				PRODUCT_NAME = "$(TARGET_NAME)";
