@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0FB1D54F203B5F4400373B7B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB1D54E203B5F4400373B7B /* AppDelegate.swift */; };
-		0FB1D551203B5F4400373B7B /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB1D550203B5F4400373B7B /* FirstViewController.swift */; };
+		0FB1D551203B5F4400373B7B /* MapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB1D550203B5F4400373B7B /* MapVC.swift */; };
 		0FB1D553203B5F4400373B7B /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB1D552203B5F4400373B7B /* SecondViewController.swift */; };
 		0FB1D556203B5F4400373B7B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0FB1D554203B5F4400373B7B /* Main.storyboard */; };
 		0FB1D558203B5F4400373B7B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0FB1D557203B5F4400373B7B /* Assets.xcassets */; };
@@ -16,6 +16,7 @@
 		0FB1D566203B5F4400373B7B /* PastureMapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB1D565203B5F4400373B7B /* PastureMapTests.swift */; };
 		0FB1D571203B5F4400373B7B /* PastureMapUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB1D570203B5F4400373B7B /* PastureMapUITests.swift */; };
 		0FB1D57F203B657F00373B7B /* PastureMap.png in Resources */ = {isa = PBXBuildFile; fileRef = 0FB1D57E203B657E00373B7B /* PastureMap.png */; };
+		0FB1D583203B6CE900373B7B /* PastureModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB1D582203B6CE900373B7B /* PastureModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,7 +39,7 @@
 /* Begin PBXFileReference section */
 		0FB1D54B203B5F4400373B7B /* PastureMap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PastureMap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0FB1D54E203B5F4400373B7B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		0FB1D550203B5F4400373B7B /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
+		0FB1D550203B5F4400373B7B /* MapVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapVC.swift; sourceTree = "<group>"; };
 		0FB1D552203B5F4400373B7B /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
 		0FB1D555203B5F4400373B7B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		0FB1D557203B5F4400373B7B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -51,6 +52,7 @@
 		0FB1D570203B5F4400373B7B /* PastureMapUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastureMapUITests.swift; sourceTree = "<group>"; };
 		0FB1D572203B5F4500373B7B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0FB1D57E203B657E00373B7B /* PastureMap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PastureMap.png; sourceTree = "<group>"; };
+		0FB1D582203B6CE900373B7B /* PastureModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PastureModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,9 +104,10 @@
 			isa = PBXGroup;
 			children = (
 				0FB1D54E203B5F4400373B7B /* AppDelegate.swift */,
-				0FB1D550203B5F4400373B7B /* FirstViewController.swift */,
+				0FB1D550203B5F4400373B7B /* MapVC.swift */,
 				0FB1D552203B5F4400373B7B /* SecondViewController.swift */,
 				0FB1D554203B5F4400373B7B /* Main.storyboard */,
+				0FB1D582203B6CE900373B7B /* PastureModel.swift */,
 				0FB1D557203B5F4400373B7B /* Assets.xcassets */,
 				0FB1D559203B5F4400373B7B /* LaunchScreen.storyboard */,
 				0FB1D55C203B5F4400373B7B /* Info.plist */,
@@ -268,7 +271,8 @@
 			files = (
 				0FB1D553203B5F4400373B7B /* SecondViewController.swift in Sources */,
 				0FB1D54F203B5F4400373B7B /* AppDelegate.swift in Sources */,
-				0FB1D551203B5F4400373B7B /* FirstViewController.swift in Sources */,
+				0FB1D583203B6CE900373B7B /* PastureModel.swift in Sources */,
+				0FB1D551203B5F4400373B7B /* MapVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
