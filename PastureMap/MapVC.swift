@@ -81,9 +81,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
     @objc func finishPolygonButtonTapped() {
         NSLog("Poly Origin Tapped - POLYGON COMPLETE!")
         if inPolygonMode {
-            addToPolygon(coord: pasture.polygonVertices[0].coordinate, isComplete: true)
             renderCompletePolygon()
-            pasture.polygonVertices.removeLast()
             pasture.isComplete = true
             finishPolygonButton?.isEnabled = false
             createPastureButton.isEnabled = true
@@ -94,6 +92,12 @@ class MapVC: UIViewController, MKMapViewDelegate {
     
     // --------------------------------------------
     // MARK: MapView Delegate
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+        print(" Region changed")
+        for pasture in pastureList {
+            displayAreaInsidePolygon(pasture: pasture)
+        }
+    }
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, didChange newState: MKAnnotationViewDragState, fromOldState oldState: MKAnnotationViewDragState) {
         if newState == MKAnnotationViewDragState.ending || newState == MKAnnotationViewDragState.canceling {
             view.dragState = MKAnnotationViewDragState.none
@@ -142,6 +146,8 @@ class MapVC: UIViewController, MKMapViewDelegate {
                 let renderer = MKPolygonRenderer(overlay: overlay)
                 if sub.isEqual("complete") {
                     renderer.fillColor = UIColor.green
+                    renderer.strokeColor = UIColor.black
+                    renderer.lineWidth = 2.0
                 } else if sub.isEqual("incomplete") {
                     renderer.fillColor = UIColor.yellow
                 }
@@ -158,7 +164,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
         polyAnnotation.coordinate = coord
         polyAnnotation.title = "fence post"
         pasture.polygonVertices.append(polyAnnotation)
-        if polygonVerticesAreValid() {
+        if polygonVerticesAreValid(pasture.polygonVertices) {
             if !isComplete {
                 mapView.addAnnotation(polyAnnotation)
             }
@@ -188,31 +194,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
         renderPolygonWith(title:"Poly", subtitle:"complete")     // title doesn't show
         bottomLabel.text = "Select and drag a fence post to reposition it."
     }
-    func displayAreaInsidePolygon(pasture:Pasture) {
-        // cheesy, but I only have about 10 minutes...
-        
-        let count = pasture.polygonVertices.count
-        if count > 2 {
-            var lat = 0.0, lon = 0.0
-            for ann in pasture.polygonVertices {
-                lat += ann.coordinate.latitude
-                lon += ann.coordinate.longitude
-            }
-            lat = lat / Double(count)
-            lon = lon / Double(count)
 
-            let centerPoint = mapView.convert(CLLocationCoordinate2DMake(lat, lon), toPointTo: mapView)
-            
-            let size = pasture.sizeLabel
-            size.center = centerPoint
-            size.textAlignment = .center
-            let corners = pasture.polygonVertices.map { $0.coordinate }
-            let area = Pasture.regionArea(locations: corners)
-            let formattedArea = "Area is \(String(format:"%.2f",Pasture.areaInAcres(squareMeters:area))) acres"
-            size.text = formattedArea
-            mapView.addSubview(size)
-        }
-    }
     func renderPolygonWith(title:String, subtitle:String) {
         if let over = pasture.polygonOverlay {
             mapView.removeOverlays( [over] )
@@ -238,33 +220,40 @@ class MapVC: UIViewController, MKMapViewDelegate {
         if ( pasture.polylines.count > 0 ) {
             mapView.removeOverlays(pasture.polylines)
         }
-        var index=0,index2=0
-        while index < pasture.polygonVertices.count {
-            let p1 = pasture.polygonVertices[index]
-            if index == pasture.polygonVertices.count - 1 {
-                index2 = 0                       // at last point, draw line to first point
-            } else {
-                index2 = index+1                 // otherwise, use next point in the array
-            }
-            let p2 = pasture.polygonVertices[index2]
-            let line = MKPolyline(coordinates: [p1.coordinate,p2.coordinate], count: 2)
-            mapView.addOverlays([line])
-            pasture.polylines.append(line)
-            
-            let length = p2.coordinate.distanceFrom(p1.coordinate)
-            line.title = "\(length) meters"
-            bottomLabel.text = line.title
-            
-            index += 1
-        }
         renderCompletePolygon()
     }
-    func polygonVerticesAreValid() -> Bool {
+    func displayAreaInsidePolygon(pasture:Pasture) {
+        // cheesy, but I only have about 10 minutes...
+        
+        let count = pasture.polygonVertices.count
+        if count > 2 {
+            var lat = 0.0, lon = 0.0
+            for ann in pasture.polygonVertices {
+                lat += ann.coordinate.latitude
+                lon += ann.coordinate.longitude
+            }
+            lat = lat / Double(count)
+            lon = lon / Double(count)
+            
+            let centerPoint = mapView.convert(CLLocationCoordinate2DMake(lat, lon), toPointTo: mapView)
+            
+            let size = pasture.sizeLabel
+            size.center = centerPoint
+            size.textAlignment = .center
+            let corners = pasture.polygonVertices.map { $0.coordinate }
+            let area = Pasture.regionArea(locations: corners)
+            let formattedArea = "Area is \(String(format:"%.2f",Pasture.areaInAcres(squareMeters:area))) acres"
+            size.text = formattedArea
+            mapView.addSubview(size)
+        }
+    }
+    func polygonVerticesAreValid(_ vertices:[MKPointAnnotation]) -> Bool {
         if pasture.polygonVertices.count < 4 {
             return true
         }
         // @TODO: if any lines cross, return false
         //   show some kind of error - leave the fencepost there?  how to handle this?
+        
         return true
     }
     // -------------------------
