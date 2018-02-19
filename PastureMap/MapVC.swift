@@ -84,6 +84,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
             addToPolygon(coord: pasture.polygonVertices[0].coordinate, isComplete: true)
             renderCompletePolygon()
             pasture.polygonVertices.removeLast()
+            
             finishPolygonButton?.isEnabled = false
             createPastureButton.isEnabled = true
             inPolygonMode = false
@@ -183,13 +184,41 @@ class MapVC: UIViewController, MKMapViewDelegate {
         renderPolygonWith(title:"Poly", subtitle:"incomplete")
     }
     func renderCompletePolygon() {
-        renderPolygonWith(title:"Poly", subtitle:"complete")
-        let corners = pasture.polygonVertices.map { $0.coordinate }
-        let area = Pasture.regionArea(locations: corners)
-        topLabel.text = "Area is \(String(format:"%.2f",area)) acres"
-        print("\(topLabel.text ?? "")")
+
         
+        renderPolygonWith(title:"Poly", subtitle:"complete")     // title doesn't show
+    //    topLabel.text = formattedArea
+    //    print("\(topLabel.text ?? "")")
+
         bottomLabel.text = "Select and drag a fence post to reposition it."
+        
+        displayAreaInsidePolygon(pasture: pasture)
+    }
+    func displayAreaInsidePolygon(pasture:Pasture) {
+        // cheesy, but I only have about 10 minutes...
+        
+        let count = pasture.polygonVertices.count
+        if count > 0 {
+            var lat = 0.0, lon = 0.0
+            for ann in pasture.polygonVertices {
+                lat += ann.coordinate.latitude
+                lon += ann.coordinate.longitude
+            }
+            lat = lat / Double(count)
+            lon = lon / Double(count)
+            let centerLL = CLLocationCoordinate2DMake(lat, lon)
+            print ("center is \(centerLL)")
+      //      let touchLatLon = mapView.convert(point, toCoordinateFrom: mapView)
+
+            let centerPoint = mapView.convert(centerLL, toPointTo: mapView)
+            let size = UILabel(frame: CGRect.init(x:centerPoint.x-100, y:centerPoint.y-10, width:200, height:20))
+            size.textAlignment = .center
+            let corners = pasture.polygonVertices.map { $0.coordinate }
+            let area = Pasture.areaInAcres(squareMeters:Pasture.regionArea(locations: corners))
+            let formattedArea = "Area is \(String(format:"%.2f",area)) acres"
+            size.text = formattedArea
+            mapView.addSubview(size)
+        }
     }
     func renderPolygonWith(title:String, subtitle:String) {
         if let over = pasture.polygonOverlay {

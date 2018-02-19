@@ -21,6 +21,7 @@ class Pasture {
         return degrees * Double.pi / 180;
     }
 
+    // https://stackoverflow.com/questions/22038925/mkpolygon-area-calculation?rq=1
     static func regionArea(locations: [CLLocationCoordinate2D]) -> Double {
         
         guard locations.count > 2 else { return 0 }
@@ -35,7 +36,7 @@ class Pasture {
         
         area = -(area * kEarthRadius * kEarthRadius / 2);
         
-        area = areaInAcres(squareMeters:area)
+   //     area = areaInAcres(squareMeters:area)
         
         return max(area, -area) // In order not to worry about is polygon clockwise or counterclockwise defined.
     }
