@@ -84,10 +84,11 @@ class MapVC: UIViewController, MKMapViewDelegate {
             addToPolygon(coord: pasture.polygonVertices[0].coordinate, isComplete: true)
             renderCompletePolygon()
             pasture.polygonVertices.removeLast()
-            
+            pasture.isComplete = true
             finishPolygonButton?.isEnabled = false
             createPastureButton.isEnabled = true
             inPolygonMode = false
+            topLabel.text = ""
         }
     }
     
@@ -184,21 +185,14 @@ class MapVC: UIViewController, MKMapViewDelegate {
         renderPolygonWith(title:"Poly", subtitle:"incomplete")
     }
     func renderCompletePolygon() {
-
-        
         renderPolygonWith(title:"Poly", subtitle:"complete")     // title doesn't show
-    //    topLabel.text = formattedArea
-    //    print("\(topLabel.text ?? "")")
-
         bottomLabel.text = "Select and drag a fence post to reposition it."
-        
-        displayAreaInsidePolygon(pasture: pasture)
     }
     func displayAreaInsidePolygon(pasture:Pasture) {
         // cheesy, but I only have about 10 minutes...
         
         let count = pasture.polygonVertices.count
-        if count > 0 {
+        if count > 2 {
             var lat = 0.0, lon = 0.0
             for ann in pasture.polygonVertices {
                 lat += ann.coordinate.latitude
@@ -206,16 +200,15 @@ class MapVC: UIViewController, MKMapViewDelegate {
             }
             lat = lat / Double(count)
             lon = lon / Double(count)
-            let centerLL = CLLocationCoordinate2DMake(lat, lon)
-            print ("center is \(centerLL)")
-      //      let touchLatLon = mapView.convert(point, toCoordinateFrom: mapView)
 
-            let centerPoint = mapView.convert(centerLL, toPointTo: mapView)
-            let size = UILabel(frame: CGRect.init(x:centerPoint.x-100, y:centerPoint.y-10, width:200, height:20))
+            let centerPoint = mapView.convert(CLLocationCoordinate2DMake(lat, lon), toPointTo: mapView)
+            
+            let size = pasture.sizeLabel
+            size.center = centerPoint
             size.textAlignment = .center
             let corners = pasture.polygonVertices.map { $0.coordinate }
-            let area = Pasture.areaInAcres(squareMeters:Pasture.regionArea(locations: corners))
-            let formattedArea = "Area is \(String(format:"%.2f",area)) acres"
+            let area = Pasture.regionArea(locations: corners)
+            let formattedArea = "Area is \(String(format:"%.2f",Pasture.areaInAcres(squareMeters:area))) acres"
             size.text = formattedArea
             mapView.addSubview(size)
         }
@@ -229,12 +222,16 @@ class MapVC: UIViewController, MKMapViewDelegate {
         pasture.polygonOverlay?.title = title
         pasture.polygonOverlay?.subtitle = subtitle
         mapView.addOverlays([pasture.polygonOverlay!])
-        
-        // calculate area under polygon, display somewhere...
-        if corners.count > 2 {
-            topLabel.text = "Tap again, or tap the first one to complete the pasture."
+        displayAreaInsidePolygon(pasture: pasture)
+
+        if pasture.isComplete {
+            topLabel.text = ""
         } else {
-            topLabel.text = "Tap again to make the next one..."
+            if corners.count > 2 {
+                topLabel.text = "Tap again, or tap the first one to complete the pasture."
+            } else {
+                topLabel.text = "Tap again to make the next one..."
+            }
         }
     }
     func redrawPasture(pasture:Pasture) {
@@ -254,7 +251,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
             mapView.addOverlays([line])
             pasture.polylines.append(line)
             
-            let length = p2.coordinate.distanceFrom(p1.coordinate)  // SHOW THIS SOMEWHERE!!
+            let length = p2.coordinate.distanceFrom(p1.coordinate)
             line.title = "\(length) meters"
             bottomLabel.text = line.title
             

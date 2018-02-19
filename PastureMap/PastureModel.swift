@@ -13,6 +13,8 @@ class Pasture {
     var polygonVertices:[MKPointAnnotation]=[]
     var polygonOverlay:MKPolygon?
     var polylines:[MKPolyline]=[]
+    var sizeLabel = UILabel(frame: CGRect(x:0, y:0, width:200, height:20))
+    var isComplete=false
     
     static let kEarthRadius = 6378137.0
 
@@ -35,8 +37,6 @@ class Pasture {
         }
         
         area = -(area * kEarthRadius * kEarthRadius / 2);
-        
-   //     area = areaInAcres(squareMeters:area)
         
         return max(area, -area) // In order not to worry about is polygon clockwise or counterclockwise defined.
     }
