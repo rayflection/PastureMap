@@ -17,9 +17,9 @@ class MapVC: UIViewController, MKMapViewDelegate {
     
     var tapRecognizer:UITapGestureRecognizer?
     var inPolygonMode=false
-    var pasture = Pasture()
+    var pasture = Pasture()           // yeah, throw one away, curse these obnoxionals
     var finishPolygonButton:UIButton?
-
+    var pastureList:[Pasture]=[]
     
     // -----------------------------------------
     override func viewDidLoad() {
@@ -66,6 +66,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
         inPolygonMode = true
         sender.isEnabled = false
         pasture = Pasture()
+        pastureList.append(pasture)
         if let tapRec = tapRecognizer {
             mapView.addGestureRecognizer(tapRec)
         }
@@ -90,7 +91,12 @@ class MapVC: UIViewController, MKMapViewDelegate {
             if let coo = view.annotation?.coordinate, let name = view.annotation?.title! {
                 displayCoordinates(coord:coo, what:name)
                 if name.isEqual("fence post") {     // need better way to detect, by type or tag or class..
-                    redrawPasture(pasture: pasture) // Need to know WHICH pasture to redraw.
+                    if let fencepost = view.annotation as? MKPointAnnotation {
+                        if let past = whatPastureIsThisPostIn(post:fencepost) {
+                            pasture = past
+                            redrawPasture(pasture: past)
+                        }
+                    }
                 }
             }
         }
@@ -225,6 +231,16 @@ class MapVC: UIViewController, MKMapViewDelegate {
     // MARK: Utils
     func displayCoordinates(coord:CLLocationCoordinate2D, what:String) {
         bottomLabel.text = "\(what) at: \(coord.to_s())"
+    }
+    func whatPastureIsThisPostIn(post:MKPointAnnotation) -> Pasture? {
+        for pasture in pastureList {
+            for vertex in pasture.polygonVertices {
+                if vertex == post {
+                    return pasture
+                }
+            }
+        }
+        return nil
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
