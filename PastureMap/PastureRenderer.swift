@@ -48,7 +48,13 @@ class PastureRenderer {
         }
     }
 }
-
+class LineLengthRenderer {
+    static func display(_ p1:CLLocationCoordinate2D, _ p2:CLLocationCoordinate2D, _ label:UILabel) {
+        let length = p2.distanceFrom(p1)
+        let title = "\(length.formatted()) meters"
+        label.text = title
+    }
+}
 class PastureSummaryRenderer {
     static func updateSummary(_ pastures:[Pasture],_ label:UILabel) {
         var totalArea = 0.0
@@ -56,10 +62,10 @@ class PastureSummaryRenderer {
             totalArea += pasture.area
         }
         totalArea = Pasture.areaInAcres(squareMeters: totalArea)
-        if let foobar = PastureNumberFormatter.formatter.string(from: NSNumber(value:totalArea)) {
-            let message = "# Pastures: \(pastures.count)  Total: \(foobar) acres."
-            label.text = message
-        }
+     //   if let foobar = PastureNumberFormatter.formatter.string(from: NSNumber(value:totalArea)) {
+        let message = "# Pastures: \(pastures.count)  Total: \(totalArea.formatted()) acres."
+        label.text = message
+      //  }
     }
 }
 
@@ -87,5 +93,25 @@ class PolygonRendererFactory {
             return renderer
         }
         return MKPolygonRenderer(overlay:overlay)
+    }
+}
+// ===============================================
+// MARK: Extensions
+extension CLLocationCoordinate2D {
+    func to_s() -> String {
+        return "\(String(format: "%.4f", latitude)),  \(String(format: "%.4f", longitude))"
+    }
+    func distanceFrom(_ coordinate:CLLocationCoordinate2D) -> CLLocationDistance {
+        let loc1 = CLLocation(latitude: self.latitude, longitude: self.longitude)
+        let loc2 = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+        return loc2.distance(from:loc1)
+    }
+}
+extension Double {
+    func formatted() -> String {
+        if let string =  PastureNumberFormatter.formatter.string(from: NSNumber(value:self)) {
+            return string
+        }
+        return "0.0"
     }
 }

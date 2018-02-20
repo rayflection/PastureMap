@@ -61,7 +61,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
     }
 
     // --------------------------------------------
-    // MARK: button event handlers
+    // MARK: - button event handlers
     @IBAction func createPastureButtonTapped(_ sender: UIButton) {
         inPolygonMode = true
         sender.isEnabled = false
@@ -89,12 +89,11 @@ class MapVC: UIViewController, MKMapViewDelegate {
             finishPolygonButton?.isEnabled = false
             createPastureButton.isEnabled = true
             inPolygonMode = false
-            topLabel.text = ""
         }
     }
     
     // --------------------------------------------
-    // MARK: MapView Delegate
+    // MARK: - MapView Delegate
     func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
         let region = MKCoordinateRegionMakeWithDistance(userLocation.coordinate, 5000.0, 5000.0)
         mapView.setRegion(region , animated: true)
@@ -159,7 +158,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
         return MKPolylineRenderer(overlay: overlay) // placeholder until I get the SHAPE
     }
     // ---------------------------------------------
-    // MARK: Polygon handlers
+    // MARK: - Polygon handlers
     func addToPolygon(coord: CLLocationCoordinate2D, isComplete:Bool) {
         let polyAnnotation = MKPointAnnotation()
         polyAnnotation.coordinate = coord
@@ -177,22 +176,20 @@ class MapVC: UIViewController, MKMapViewDelegate {
         if pasture.polygonVertices.count < 2 { return }
         
         // draw a line between the last 2 vertices
-        let p1 = pasture.polygonVertices[pasture.polygonVertices.count-2]
-        let p2 = pasture.polygonVertices[pasture.polygonVertices.count-1]
-        let line = MKPolyline(coordinates: [p1.coordinate,p2.coordinate], count: 2)
+        let p1 = pasture.polygonVertices[pasture.polygonVertices.count-2].coordinate
+        let p2 = pasture.polygonVertices[pasture.polygonVertices.count-1].coordinate
+        let line = MKPolyline(coordinates: [p1,p2], count: 2)
         mapView.addOverlays([line])
         pasture.polylines.append(line)
         
-        let length = p2.coordinate.distanceFrom(p1.coordinate)
-        line.title = "\(length) meters"
-        bottomLabel.text = line.title
+        LineLengthRenderer.display(p1, p2, bottomLabel)
     }
     func renderIncompletePolygon() {
         renderPolygonWith(title:"Poly", subtitle:"incomplete")
     }
     func renderCompletePolygon() {
         renderPolygonWith(title:"Poly", subtitle:"complete")     // title doesn't show
-        bottomLabel.text = "Select and drag a fence post to reposition it."
+        topLabel.text = "Select and drag a fence post to reposition it."
     }
 
     func renderPolygonWith(title:String, subtitle:String) {
@@ -210,7 +207,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
             topLabel.text = ""
         } else {
             if corners.count > 2 {
-                topLabel.text = "Tap again, or tap the first one to complete the pasture."
+                topLabel.text = "Tap again, or tap the yellow post to complete the pasture."
             } else {
                 topLabel.text = "Tap again to make the next one..."
             }
@@ -239,8 +236,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
         return true
     }
     // -------------------------
-    // MARK: Utils
-
+    // MARK: - Utils
     func displayCoordinates(coord:CLLocationCoordinate2D, what:String) {
         bottomLabel.text = "\(what) at: \(coord.to_s())"
     }
@@ -256,17 +252,5 @@ class MapVC: UIViewController, MKMapViewDelegate {
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-    }
-}
-// ===============================================
-// MARK: Extensions
-extension CLLocationCoordinate2D {
-    func to_s() -> String {
-        return "\(String(format: "%.4f", latitude)),  \(String(format: "%.4f", longitude))"
-    }
-    func distanceFrom(_ coordinate:CLLocationCoordinate2D) -> CLLocationDistance {
-        let loc1 = CLLocation(latitude: self.latitude, longitude: self.longitude)
-        let loc2 = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
-        return loc2.distance(from:loc1)
     }
 }
