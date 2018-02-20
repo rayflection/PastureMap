@@ -23,7 +23,6 @@ class MapVC: UIViewController, MKMapViewDelegate {
     var finishPolygonButton:UIButton?
     var pastureList:[Pasture]=[]
     let locationManager = CLLocationManager()
-//    let formatter = NumberFormatter()
 
     // -----------------------------------------
     override func viewDidLoad() {
@@ -80,8 +79,13 @@ class MapVC: UIViewController, MKMapViewDelegate {
     @objc func finishPolygonButtonTapped() {
         NSLog("Poly Origin Tapped - POLYGON COMPLETE!")
         if inPolygonMode {
+            
+            if let firstPost = finishPolygonButton?.superview as? MKAnnotationView {
+                firstPost.image = UIImage(named:"fencePost")
+            }
             renderCompletePolygon()
             pasture.isComplete = true
+
             finishPolygonButton?.isEnabled = false
             createPastureButton.isEnabled = true
             inPolygonMode = false
@@ -132,6 +136,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
             if let title = annotation.title!, title.isEqual("fence post") {
                 touchPointView.image = UIImage(named:"fencePost")
                 if pasture.polygonVertices.count == 1 {
+                    touchPointView.image = UIImage(named:"fencePostYellow")
                     // add a button to this view which allows user to complete the polygon
                     finishPolygonButton = UIButton(type:.custom)
                     finishPolygonButton?.frame = touchPointView.bounds  // make me bigger, more visual
