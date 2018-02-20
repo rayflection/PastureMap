@@ -281,7 +281,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
         for pasture in pastureList {
             totalArea += pasture.area
         }
-
+        totalArea = Pasture.areaInAcres(squareMeters: totalArea)
         if let foobar = formatter.string(from: NSNumber(value:totalArea)) {
             let message = "# Pastures: \(pastureList.count)  Total: \(foobar) acres."
             summaryLabel.text = message
