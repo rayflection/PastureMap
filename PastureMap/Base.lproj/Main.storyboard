@@ -18,36 +18,61 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" showsPointsOfInterest="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rmo-aW-c9g">
-                                <rect key="frame" x="16" y="124" width="343" height="406"/>
+                                <rect key="frame" x="16" y="144" width="343" height="386"/>
                                 <connections>
                                     <outlet property="delegate" destination="9pv-A4-QxB" id="mSy-vX-ffW"/>
                                 </connections>
                             </mapView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rVD-SQ-jyj">
-                                <rect key="frame" x="166.5" y="592" width="42" height="21"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="UsI-aW-JUN">
+                                <rect key="frame" x="12" y="74" width="351" height="30"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="woq-gc-Pfp">
+                                        <rect key="frame" x="0.0" y="0.0" width="87" height="30"/>
+                                        <state key="normal" title="New Pasture"/>
+                                        <state key="disabled">
+                                            <color key="titleColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="createPastureButtonTapped:" destination="9pv-A4-QxB" eventType="touchUpInside" id="XRc-cC-dqv"/>
+                                        </connections>
+                                    </button>
+                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jyq-6F-1z5" userLabel="Cancel">
+                                        <rect key="frame" x="97" y="0.0" width="0.0" height="30"/>
+                                        <state key="normal" title="Cancel"/>
+                                        <state key="disabled">
+                                            <color key="titleColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                    </button>
+                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="poH-of-BbD" userLabel="Done">
+                                        <rect key="frame" x="97" y="0.0" width="0.0" height="30"/>
+                                        <state key="normal" title="Done"/>
+                                        <state key="disabled">
+                                            <color key="titleColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FTy-8q-zO1" userLabel="Options">
+                                        <rect key="frame" x="263" y="0.0" width="88" height="30"/>
+                                        <state key="normal" title="Map Options"/>
+                                        <connections>
+                                            <action selector="optionsMenuTapped:" destination="9pv-A4-QxB" eventType="touchUpInside" id="KBJ-UC-KvS"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="middleTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d13-65-X3j">
+                                <rect key="frame" x="16" y="115" width="343" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="woq-gc-Pfp">
-                                <rect key="frame" x="16" y="74" width="87" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="Jzo-fB-KL6"/>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="tVp-h7-3nQ"/>
-                                </constraints>
-                                <state key="normal" title="New Pasture"/>
-                                <connections>
-                                    <action selector="createPastureButtonTapped:" destination="9pv-A4-QxB" eventType="touchUpInside" id="XRc-cC-dqv"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d13-65-X3j">
-                                <rect key="frame" x="317" y="69" width="42" height="47"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rVD-SQ-jyj">
+                                <rect key="frame" x="166.5" y="592.5" width="42" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jXj-CT-Xzm">
-                                <rect key="frame" x="16" y="538" width="343" height="21"/>
+                                <rect key="frame" x="16" y="538" width="343" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -55,21 +80,22 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="woq-gc-Pfp" firstAttribute="top" secondItem="PQr-Ze-W5v" secondAttribute="top" constant="10" id="0k7-VS-aub"/>
                             <constraint firstItem="PQr-Ze-W5v" firstAttribute="bottom" secondItem="Rmo-aW-c9g" secondAttribute="bottom" constant="88" id="5EK-G0-qt9"/>
-                            <constraint firstItem="Rmo-aW-c9g" firstAttribute="top" secondItem="PQr-Ze-W5v" secondAttribute="top" constant="60" id="89W-Qj-d6i"/>
+                            <constraint firstItem="Rmo-aW-c9g" firstAttribute="top" secondItem="PQr-Ze-W5v" secondAttribute="top" constant="80" id="89W-Qj-d6i"/>
+                            <constraint firstItem="UsI-aW-JUN" firstAttribute="leading" secondItem="PQr-Ze-W5v" secondAttribute="leading" constant="12" id="AF0-2G-pYG"/>
                             <constraint firstItem="PQr-Ze-W5v" firstAttribute="trailing" secondItem="d13-65-X3j" secondAttribute="trailing" constant="16" id="AtE-cx-Mc7"/>
+                            <constraint firstItem="UsI-aW-JUN" firstAttribute="top" secondItem="PQr-Ze-W5v" secondAttribute="top" constant="10" id="Gro-m4-ETx"/>
                             <constraint firstItem="rVD-SQ-jyj" firstAttribute="centerX" secondItem="tsR-hK-woN" secondAttribute="centerX" id="JON-13-ehd"/>
-                            <constraint firstItem="d13-65-X3j" firstAttribute="top" secondItem="PQr-Ze-W5v" secondAttribute="top" constant="5" id="Kww-WW-iGV"/>
                             <constraint firstItem="PQr-Ze-W5v" firstAttribute="trailing" secondItem="Rmo-aW-c9g" secondAttribute="trailing" constant="16" id="QQa-fF-wkO"/>
                             <constraint firstItem="PQr-Ze-W5v" firstAttribute="bottom" secondItem="rVD-SQ-jyj" secondAttribute="bottom" constant="5" id="alb-nN-D2i"/>
-                            <constraint firstItem="d13-65-X3j" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="woq-gc-Pfp" secondAttribute="trailing" id="cNb-4E-ZEc"/>
                             <constraint firstItem="Rmo-aW-c9g" firstAttribute="leading" secondItem="PQr-Ze-W5v" secondAttribute="leading" constant="16" id="dEp-Dd-6su"/>
+                            <constraint firstItem="UsI-aW-JUN" firstAttribute="centerX" secondItem="tsR-hK-woN" secondAttribute="centerX" id="e5K-g5-vnG"/>
+                            <constraint firstItem="PQr-Ze-W5v" firstAttribute="trailing" secondItem="UsI-aW-JUN" secondAttribute="trailing" constant="12" id="gbk-VK-EwS"/>
                             <constraint firstItem="Rmo-aW-c9g" firstAttribute="top" secondItem="d13-65-X3j" secondAttribute="bottom" constant="8" id="hYd-9Y-1kV"/>
                             <constraint firstItem="jXj-CT-Xzm" firstAttribute="trailing" secondItem="Rmo-aW-c9g" secondAttribute="trailing" id="iIp-cA-GAm"/>
+                            <constraint firstItem="d13-65-X3j" firstAttribute="leading" secondItem="PQr-Ze-W5v" secondAttribute="leading" constant="16" id="peu-Be-8fN"/>
                             <constraint firstItem="jXj-CT-Xzm" firstAttribute="top" secondItem="Rmo-aW-c9g" secondAttribute="bottom" constant="8" id="wHj-zD-7jT"/>
                             <constraint firstItem="jXj-CT-Xzm" firstAttribute="leading" secondItem="Rmo-aW-c9g" secondAttribute="leading" id="yQI-aK-o2n"/>
-                            <constraint firstItem="woq-gc-Pfp" firstAttribute="leading" secondItem="PQr-Ze-W5v" secondAttribute="leading" constant="16" id="zt1-pJ-9k8"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="PQr-Ze-W5v"/>
                     </view>
@@ -80,6 +106,7 @@
                         <outlet property="mapView" destination="Rmo-aW-c9g" id="VBK-EN-LL9"/>
                         <outlet property="summaryLabel" destination="jXj-CT-Xzm" id="rKk-3f-kVs"/>
                         <outlet property="topLabel" destination="d13-65-X3j" id="GhN-Wj-3jg"/>
+                        <outlet property="view" destination="tsR-hK-woN" id="A5a-7c-UrC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W5J-7L-Pyd" sceneMemberID="firstResponder"/>

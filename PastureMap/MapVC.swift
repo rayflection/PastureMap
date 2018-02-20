@@ -23,7 +23,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
     var finishPolygonButton:UIButton?
     var pastureList:[Pasture]=[]
     let locationManager = CLLocationManager()
-
+    
     // -----------------------------------------
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -91,7 +91,9 @@ class MapVC: UIViewController, MKMapViewDelegate {
             inPolygonMode = false
         }
     }
-    
+    @IBAction func optionsMenuTapped(_ sender: UIButton) {
+        self.present(OptionsHandler().getOptionsMenuActionSheet(sender,mapView), animated:true, completion:nil)
+    }
     // --------------------------------------------
     // MARK: - MapView Delegate
     func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
@@ -125,7 +127,6 @@ class MapVC: UIViewController, MKMapViewDelegate {
         }
     }
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        NSLog(" View for annoation")
         if annotation is MKUserLocation {
             return nil
         }
