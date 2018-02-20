@@ -1,5 +1,5 @@
 # PastureMap
-PastureMap coding exercise
+PastureMap coding exercise by Mike Yost
 
 Base features:
 1. User can create a polygon pasture
