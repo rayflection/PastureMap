@@ -12,14 +12,13 @@
         <!--Pasture Manager-->
         <scene sceneID="hNz-n2-bh7">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="W5J-7L-Pyd" sceneMemberID="firstResponder"/>
                 <viewController id="9pv-A4-QxB" customClass="MapVC" customModule="PastureMap" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="tsR-hK-woN">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" showsPointsOfInterest="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rmo-aW-c9g">
-                                <rect key="frame" x="16" y="124" width="343" height="450"/>
+                                <rect key="frame" x="16" y="124" width="343" height="406"/>
                                 <connections>
                                     <outlet property="delegate" destination="9pv-A4-QxB" id="mSy-vX-ffW"/>
                                 </connections>
@@ -47,13 +46,19 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jXj-CT-Xzm">
+                                <rect key="frame" x="16" y="538" width="343" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="woq-gc-Pfp" firstAttribute="top" secondItem="PQr-Ze-W5v" secondAttribute="top" constant="10" id="0k7-VS-aub"/>
+                            <constraint firstItem="PQr-Ze-W5v" firstAttribute="bottom" secondItem="Rmo-aW-c9g" secondAttribute="bottom" constant="88" id="5EK-G0-qt9"/>
                             <constraint firstItem="Rmo-aW-c9g" firstAttribute="top" secondItem="PQr-Ze-W5v" secondAttribute="top" constant="60" id="89W-Qj-d6i"/>
                             <constraint firstItem="PQr-Ze-W5v" firstAttribute="trailing" secondItem="d13-65-X3j" secondAttribute="trailing" constant="16" id="AtE-cx-Mc7"/>
-                            <constraint firstItem="rVD-SQ-jyj" firstAttribute="top" secondItem="Rmo-aW-c9g" secondAttribute="bottom" constant="18" id="ENt-TK-RRY"/>
                             <constraint firstItem="rVD-SQ-jyj" firstAttribute="centerX" secondItem="tsR-hK-woN" secondAttribute="centerX" id="JON-13-ehd"/>
                             <constraint firstItem="d13-65-X3j" firstAttribute="top" secondItem="PQr-Ze-W5v" secondAttribute="top" constant="5" id="Kww-WW-iGV"/>
                             <constraint firstItem="PQr-Ze-W5v" firstAttribute="trailing" secondItem="Rmo-aW-c9g" secondAttribute="trailing" constant="16" id="QQa-fF-wkO"/>
@@ -61,6 +66,9 @@
                             <constraint firstItem="d13-65-X3j" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="woq-gc-Pfp" secondAttribute="trailing" id="cNb-4E-ZEc"/>
                             <constraint firstItem="Rmo-aW-c9g" firstAttribute="leading" secondItem="PQr-Ze-W5v" secondAttribute="leading" constant="16" id="dEp-Dd-6su"/>
                             <constraint firstItem="Rmo-aW-c9g" firstAttribute="top" secondItem="d13-65-X3j" secondAttribute="bottom" constant="8" id="hYd-9Y-1kV"/>
+                            <constraint firstItem="jXj-CT-Xzm" firstAttribute="trailing" secondItem="Rmo-aW-c9g" secondAttribute="trailing" id="iIp-cA-GAm"/>
+                            <constraint firstItem="jXj-CT-Xzm" firstAttribute="top" secondItem="Rmo-aW-c9g" secondAttribute="bottom" constant="8" id="wHj-zD-7jT"/>
+                            <constraint firstItem="jXj-CT-Xzm" firstAttribute="leading" secondItem="Rmo-aW-c9g" secondAttribute="leading" id="yQI-aK-o2n"/>
                             <constraint firstItem="woq-gc-Pfp" firstAttribute="leading" secondItem="PQr-Ze-W5v" secondAttribute="leading" constant="16" id="zt1-pJ-9k8"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="PQr-Ze-W5v"/>
@@ -70,9 +78,11 @@
                         <outlet property="bottomLabel" destination="rVD-SQ-jyj" id="KgH-HW-PUU"/>
                         <outlet property="createPastureButton" destination="woq-gc-Pfp" id="lk3-pT-wQD"/>
                         <outlet property="mapView" destination="Rmo-aW-c9g" id="VBK-EN-LL9"/>
+                        <outlet property="summaryLabel" destination="jXj-CT-Xzm" id="rKk-3f-kVs"/>
                         <outlet property="topLabel" destination="d13-65-X3j" id="GhN-Wj-3jg"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="W5J-7L-Pyd" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1573.5999999999999" y="-321.58920539730138"/>
         </scene>

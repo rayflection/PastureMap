@@ -15,6 +15,7 @@ class Pasture {
     var polylines:[MKPolyline]=[]
     var sizeLabel = UILabel(frame: CGRect(x:0, y:0, width:200, height:20))
     var isComplete=false
+    var area=0.0
     
     static let kEarthRadius = 6378137.0
 

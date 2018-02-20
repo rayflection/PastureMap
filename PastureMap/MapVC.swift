@@ -15,6 +15,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var topLabel: UILabel!
     @IBOutlet weak var bottomLabel: UILabel!
     @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var summaryLabel: UILabel!
     
     var tapRecognizer:UITapGestureRecognizer?
     var inPolygonMode=false
@@ -22,7 +23,8 @@ class MapVC: UIViewController, MKMapViewDelegate {
     var finishPolygonButton:UIButton?
     var pastureList:[Pasture]=[]
     let locationManager = CLLocationManager()
-    
+    let formatter = NumberFormatter()
+
     // -----------------------------------------
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,6 +35,11 @@ class MapVC: UIViewController, MKMapViewDelegate {
         //spinner.isHidden = true
         topLabel.text = ""
         bottomLabel.text = ""
+        summaryLabel.text = ""
+        formatter.usesGroupingSeparator = true
+        formatter.numberStyle = .decimal
+        formatter.maximumFractionDigits = 2
+        
     }
     func configMap() {
         mapView.showsUserLocation = true
@@ -248,9 +255,14 @@ class MapVC: UIViewController, MKMapViewDelegate {
             size.textAlignment = .center
             let corners = pasture.polygonVertices.map { $0.coordinate }
             let area = Pasture.regionArea(locations: corners)
-            let formattedArea = "Area is \(String(format:"%.2f",Pasture.areaInAcres(squareMeters:area))) acres"
-            size.text = formattedArea
-            mapView.addSubview(size)
+            pasture.area = area
+            let number = NSNumber(value:  Pasture.areaInAcres(squareMeters:area)  )
+            if let formattedNumber = formatter.string(from:number) {
+                let formattedArea = "Area is \(formattedNumber) acres"
+                size.text = formattedArea
+                mapView.addSubview(size)
+            }
+            updateSummary()
         }
     }
     func polygonVerticesAreValid(_ vertices:[MKPointAnnotation]) -> Bool {
@@ -264,6 +276,18 @@ class MapVC: UIViewController, MKMapViewDelegate {
     }
     // -------------------------
     // MARK: Utils
+    func updateSummary() {
+        var totalArea = 0.0
+        for pasture in pastureList {
+            totalArea += pasture.area
+        }
+
+        if let foobar = formatter.string(from: NSNumber(value:totalArea)) {
+            let message = "# Pastures: \(pastureList.count)  Total: \(foobar) acres."
+            summaryLabel.text = message
+        }
+   //     let message = "# Pastures: \(pastureList.count)  Total: \(String(format:"%.2f",totalArea)) acres."
+    }
     func displayCoordinates(coord:CLLocationCoordinate2D, what:String) {
         bottomLabel.text = "\(what) at: \(coord.to_s())"
     }
