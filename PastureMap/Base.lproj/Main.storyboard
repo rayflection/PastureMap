@@ -51,7 +51,6 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="woq-gc-Pfp" firstAttribute="top" secondItem="PQr-Ze-W5v" secondAttribute="top" constant="10" id="0k7-VS-aub"/>
-                            <constraint firstAttribute="trailing" secondItem="woq-gc-Pfp" secondAttribute="trailing" constant="272" id="1YT-ZQ-0Hq"/>
                             <constraint firstItem="Rmo-aW-c9g" firstAttribute="top" secondItem="PQr-Ze-W5v" secondAttribute="top" constant="60" id="89W-Qj-d6i"/>
                             <constraint firstItem="PQr-Ze-W5v" firstAttribute="trailing" secondItem="d13-65-X3j" secondAttribute="trailing" constant="16" id="AtE-cx-Mc7"/>
                             <constraint firstItem="rVD-SQ-jyj" firstAttribute="top" secondItem="Rmo-aW-c9g" secondAttribute="bottom" constant="18" id="ENt-TK-RRY"/>
@@ -60,7 +59,6 @@
                             <constraint firstItem="PQr-Ze-W5v" firstAttribute="trailing" secondItem="Rmo-aW-c9g" secondAttribute="trailing" constant="16" id="QQa-fF-wkO"/>
                             <constraint firstItem="PQr-Ze-W5v" firstAttribute="bottom" secondItem="rVD-SQ-jyj" secondAttribute="bottom" constant="5" id="alb-nN-D2i"/>
                             <constraint firstItem="d13-65-X3j" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="woq-gc-Pfp" secondAttribute="trailing" id="cNb-4E-ZEc"/>
-                            <constraint firstItem="woq-gc-Pfp" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="PQr-Ze-W5v" secondAttribute="leading" id="d5m-15-CcC"/>
                             <constraint firstItem="Rmo-aW-c9g" firstAttribute="leading" secondItem="PQr-Ze-W5v" secondAttribute="leading" constant="16" id="dEp-Dd-6su"/>
                             <constraint firstItem="Rmo-aW-c9g" firstAttribute="top" secondItem="d13-65-X3j" secondAttribute="bottom" constant="8" id="hYd-9Y-1kV"/>
                             <constraint firstItem="woq-gc-Pfp" firstAttribute="leading" secondItem="PQr-Ze-W5v" secondAttribute="leading" constant="16" id="zt1-pJ-9k8"/>

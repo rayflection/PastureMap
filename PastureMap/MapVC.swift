@@ -8,6 +8,7 @@
 
 import UIKit
 import MapKit
+import CoreLocation
 
 class MapVC: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var createPastureButton: UIButton!
@@ -20,6 +21,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
     var pasture = Pasture()           // yeah, throw one away, curse these obnoxionals
     var finishPolygonButton:UIButton?
     var pastureList:[Pasture]=[]
+    let locationManager = CLLocationManager()
     
     // -----------------------------------------
     override func viewDidLoad() {
@@ -33,8 +35,9 @@ class MapVC: UIViewController, MKMapViewDelegate {
         bottomLabel.text = ""
     }
     func configMap() {
-        mapView.setRegion(getRegion(), animated: true)
+        mapView.showsUserLocation = true
         tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(singleTap))
+        fetchCurrentLoc()
     }
     @objc func singleTap(sender:UITapGestureRecognizer) {
         if sender.state == .ended {
@@ -50,18 +53,10 @@ class MapVC: UIViewController, MKMapViewDelegate {
     }
 
     // --------------------------
-    // @TODO - get current loc from CLLocationManager, asynchronously
-    func getRegion() -> MKCoordinateRegion {
-        let defaultXdelta = 5000.0
-        let defaultYdelta = 5000.0
-        return MKCoordinateRegionMakeWithDistance(getDefaultLoc(), defaultXdelta, defaultYdelta)
+    func fetchCurrentLoc() {
+        locationManager.requestWhenInUseAuthorization()
     }
-    func getDefaultLoc() -> CLLocationCoordinate2D {
-        let defaultLAT = 39.4
-        let defaultLON = -77.8
-        return CLLocationCoordinate2DMake(defaultLAT, defaultLON)
-    }
-    
+
     // --------------------------------------------
     // MARK: button event handlers
     @IBAction func createPastureButtonTapped(_ sender: UIButton) {
@@ -92,8 +87,16 @@ class MapVC: UIViewController, MKMapViewDelegate {
     
     // --------------------------------------------
     // MARK: MapView Delegate
+    func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
+        let region = MKCoordinateRegionMakeWithDistance(userLocation.coordinate, 5000.0, 5000.0)
+        mapView.setRegion(region , animated: true)
+        displayCoordinates(coord: mapView.userLocation.coordinate, what: "User loc" )
+        perform(#selector(disableLocationManager), with: nil, afterDelay: 5.0)  // time for a couple of updates.
+    }
+    @objc func disableLocationManager() {
+        locationManager.stopUpdatingLocation()
+    }
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-        print(" Region changed")
         for pasture in pastureList {
             displayAreaInsidePolygon(pasture: pasture)
         }
@@ -103,7 +106,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
             view.dragState = MKAnnotationViewDragState.none
             if let coo = view.annotation?.coordinate, let name = view.annotation?.title! {
                 displayCoordinates(coord:coo, what:name)
-                if name.isEqual("fence post") {     // need better way to detect, by type or tag or class..
+                if name.isEqual("fence post") {     // @TODO - need better way to detect, by type or tag or class..
                     if let fencepost = view.annotation as? MKPointAnnotation {
                         if let past = whatPastureIsThisPostIn(post:fencepost) {
                             pasture = past
@@ -116,6 +119,9 @@ class MapVC: UIViewController, MKMapViewDelegate {
     }
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         NSLog(" View for annoation")
+        if annotation is MKUserLocation {
+            return nil
+        }
         if annotation is MKPointAnnotation {
             // Distinguish a polygon touchPoint from any other annotations we might add later
             let touchPointView = MKAnnotationView(annotation:annotation, reuseIdentifier: "touchPoint")
