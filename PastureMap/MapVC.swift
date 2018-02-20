@@ -23,7 +23,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
     var finishPolygonButton:UIButton?
     var pastureList:[Pasture]=[]
     let locationManager = CLLocationManager()
-    let formatter = NumberFormatter()
+//    let formatter = NumberFormatter()
 
     // -----------------------------------------
     override func viewDidLoad() {
@@ -36,11 +36,8 @@ class MapVC: UIViewController, MKMapViewDelegate {
         topLabel.text = ""
         bottomLabel.text = ""
         summaryLabel.text = ""
-        formatter.usesGroupingSeparator = true
-        formatter.numberStyle = .decimal
-        formatter.maximumFractionDigits = 2
-        
     }
+
     func configMap() {
         mapView.showsUserLocation = true
         tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(singleTap))
@@ -137,7 +134,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
                 if pasture.polygonVertices.count == 1 {
                     // add a button to this view which allows user to complete the polygon
                     finishPolygonButton = UIButton(type:.custom)
-                    finishPolygonButton?.frame = touchPointView.bounds
+                    finishPolygonButton?.frame = touchPointView.bounds  // make me bigger, more visual
                     finishPolygonButton?.addTarget(self, action: #selector(finishPolygonButtonTapped), for: UIControlEvents.touchUpInside)
                     touchPointView.addSubview(finishPolygonButton!)
                 }
@@ -150,23 +147,9 @@ class MapVC: UIViewController, MKMapViewDelegate {
     }
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if overlay is MKPolyline {
-            let renderer = MKPolylineRenderer(overlay: overlay)
-            renderer.lineWidth = 2.0
-            renderer.strokeColor = UIColor.red
-            return renderer
+            return PolylineRendererFactory.rendererFor(overlay:overlay)
         } else if overlay is MKPolygon {
-            if let sub = overlay.subtitle! {
-                let renderer = MKPolygonRenderer(overlay: overlay)
-                if sub.isEqual("complete") {
-                    renderer.fillColor = UIColor.green
-                    renderer.strokeColor = UIColor.black
-                    renderer.lineWidth = 2.0
-                } else if sub.isEqual("incomplete") {
-                    renderer.fillColor = UIColor.yellow
-                }
-                renderer.alpha = 0.4
-                return renderer
-            }
+            return PolygonRendererFactory.rendererFor(overlay: overlay)
         }
         return MKPolylineRenderer(overlay: overlay) // placeholder until I get the SHAPE
     }
@@ -182,11 +165,10 @@ class MapVC: UIViewController, MKMapViewDelegate {
                 mapView.addAnnotation(polyAnnotation)
             }
         }
-        renderFencePosts()
-        
+        renderMostRecentTwoFencePosts(pasture:pasture)
         finishPolygonButton?.isEnabled = pasture.polygonVertices.count > 2
     }
-    func renderFencePosts() {
+    func renderMostRecentTwoFencePosts(pasture:Pasture) {
         if pasture.polygonVertices.count < 2 { return }
         
         // draw a line between the last 2 vertices
@@ -196,7 +178,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
         mapView.addOverlays([line])
         pasture.polylines.append(line)
         
-        let length = p2.coordinate.distanceFrom(p1.coordinate)  // dupe code, see redraw...
+        let length = p2.coordinate.distanceFrom(p1.coordinate)
         line.title = "\(length) meters"
         bottomLabel.text = line.title
     }
@@ -236,33 +218,10 @@ class MapVC: UIViewController, MKMapViewDelegate {
         renderCompletePolygon()
     }
     func displayAreaInsidePolygon(pasture:Pasture) {
-        // cheesy, but I only have about 10 minutes...
-        
-        let count = pasture.polygonVertices.count
-        if count > 2 {
-            var lat = 0.0, lon = 0.0
-            for ann in pasture.polygonVertices {
-                lat += ann.coordinate.latitude
-                lon += ann.coordinate.longitude
-            }
-            lat = lat / Double(count)
-            lon = lon / Double(count)
-            
-            let centerPoint = mapView.convert(CLLocationCoordinate2DMake(lat, lon), toPointTo: mapView)
-            
-            let size = pasture.sizeLabel
-            size.center = centerPoint
-            size.textAlignment = .center
-            let corners = pasture.polygonVertices.map { $0.coordinate }
-            let area = Pasture.regionArea(locations: corners)
-            pasture.area = area
-            let number = NSNumber(value:  Pasture.areaInAcres(squareMeters:area)  )
-            if let formattedNumber = formatter.string(from:number) {
-                let formattedArea = "Area is \(formattedNumber) acres"
-                size.text = formattedArea
-                mapView.addSubview(size)
-            }
-            updateSummary()
+
+        PastureRenderer.displayAcreageLabel(pasture: pasture, mapView: mapView)
+        if pasture.polygonVertices.count > 2 {
+            PastureSummaryRenderer.updateSummary(pastureList,summaryLabel)
         }
     }
     func polygonVerticesAreValid(_ vertices:[MKPointAnnotation]) -> Bool {
@@ -276,18 +235,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
     }
     // -------------------------
     // MARK: Utils
-    func updateSummary() {
-        var totalArea = 0.0
-        for pasture in pastureList {
-            totalArea += pasture.area
-        }
-        totalArea = Pasture.areaInAcres(squareMeters: totalArea)
-        if let foobar = formatter.string(from: NSNumber(value:totalArea)) {
-            let message = "# Pastures: \(pastureList.count)  Total: \(foobar) acres."
-            summaryLabel.text = message
-        }
-   //     let message = "# Pastures: \(pastureList.count)  Total: \(String(format:"%.2f",totalArea)) acres."
-    }
+
     func displayCoordinates(coord:CLLocationCoordinate2D, what:String) {
         bottomLabel.text = "\(what) at: \(coord.to_s())"
     }

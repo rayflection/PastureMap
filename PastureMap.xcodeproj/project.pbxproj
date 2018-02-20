@@ -17,6 +17,7 @@
 		0FB1D571203B5F4400373B7B /* PastureMapUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB1D570203B5F4400373B7B /* PastureMapUITests.swift */; };
 		0FB1D57F203B657F00373B7B /* PastureMap.png in Resources */ = {isa = PBXBuildFile; fileRef = 0FB1D57E203B657E00373B7B /* PastureMap.png */; };
 		0FB1D583203B6CE900373B7B /* PastureModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB1D582203B6CE900373B7B /* PastureModel.swift */; };
+		0FB1D585203C84CB00373B7B /* PastureRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB1D584203C84CA00373B7B /* PastureRenderer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		0FB1D572203B5F4500373B7B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0FB1D57E203B657E00373B7B /* PastureMap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PastureMap.png; sourceTree = "<group>"; };
 		0FB1D582203B6CE900373B7B /* PastureModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PastureModel.swift; sourceTree = "<group>"; };
+		0FB1D584203C84CA00373B7B /* PastureRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastureRenderer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +114,7 @@
 				0FB1D559203B5F4400373B7B /* LaunchScreen.storyboard */,
 				0FB1D55C203B5F4400373B7B /* Info.plist */,
 				0FB1D57E203B657E00373B7B /* PastureMap.png */,
+				0FB1D584203C84CA00373B7B /* PastureRenderer.swift */,
 			);
 			path = PastureMap;
 			sourceTree = "<group>";
@@ -270,6 +273,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0FB1D553203B5F4400373B7B /* SecondViewController.swift in Sources */,
+				0FB1D585203C84CB00373B7B /* PastureRenderer.swift in Sources */,
 				0FB1D54F203B5F4400373B7B /* AppDelegate.swift in Sources */,
 				0FB1D583203B6CE900373B7B /* PastureModel.swift in Sources */,
 				0FB1D551203B5F4400373B7B /* MapVC.swift in Sources */,
