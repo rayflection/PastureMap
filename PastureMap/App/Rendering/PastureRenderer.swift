@@ -37,9 +37,9 @@ class PastureRenderer {
             size.center = centerPoint
             size.textAlignment = .center
             let corners = pasture.polygonVertices.map { $0.coordinate }
-            let area = Pasture.regionArea(locations: corners)
+            let area = AreaCalculator.regionArea(locations: corners)
             pasture.area = area
-            let number = NSNumber(value:  Pasture.areaInAcres(squareMeters:area)  )
+            let number = NSNumber(value:  AreaCalculator.areaInAcres(squareMeters:area)  )
             if let formattedNumber = PastureNumberFormatter.formatter.string(from:number) {
                 let formattedArea = "Area is \(formattedNumber) acres"
                 size.text = formattedArea
@@ -61,11 +61,9 @@ class PastureSummaryRenderer {
         for pasture in pastures {
             totalArea += pasture.area
         }
-        totalArea = Pasture.areaInAcres(squareMeters: totalArea)
-     //   if let foobar = PastureNumberFormatter.formatter.string(from: NSNumber(value:totalArea)) {
+        totalArea = AreaCalculator.areaInAcres(squareMeters: totalArea)
         let message = "# Pastures: \(pastures.count)  Total: \(totalArea.formatted()) acres."
         label.text = message
-      //  }
     }
 }
 

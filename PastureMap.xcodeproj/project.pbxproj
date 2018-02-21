@@ -19,6 +19,8 @@
 		0FB1D583203B6CE900373B7B /* PastureModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB1D582203B6CE900373B7B /* PastureModel.swift */; };
 		0FB1D585203C84CB00373B7B /* PastureRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB1D584203C84CA00373B7B /* PastureRenderer.swift */; };
 		0FB1D587203CA75000373B7B /* OptionsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB1D586203CA75000373B7B /* OptionsHandler.swift */; };
+		0FB1D589203D070300373B7B /* AreaCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB1D588203D070300373B7B /* AreaCalculator.swift */; };
+		0FB1D58A203D073800373B7B /* AreaCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB1D588203D070300373B7B /* AreaCalculator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +59,7 @@
 		0FB1D582203B6CE900373B7B /* PastureModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PastureModel.swift; sourceTree = "<group>"; };
 		0FB1D584203C84CA00373B7B /* PastureRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastureRenderer.swift; sourceTree = "<group>"; };
 		0FB1D586203CA75000373B7B /* OptionsHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsHandler.swift; sourceTree = "<group>"; };
+		0FB1D588203D070300373B7B /* AreaCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AreaCalculator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,16 +111,9 @@
 			isa = PBXGroup;
 			children = (
 				0FB1D54E203B5F4400373B7B /* AppDelegate.swift */,
-				0FB1D550203B5F4400373B7B /* MapVC.swift */,
-				0FB1D552203B5F4400373B7B /* SecondViewController.swift */,
-				0FB1D554203B5F4400373B7B /* Main.storyboard */,
-				0FB1D582203B6CE900373B7B /* PastureModel.swift */,
 				0FB1D557203B5F4400373B7B /* Assets.xcassets */,
-				0FB1D559203B5F4400373B7B /* LaunchScreen.storyboard */,
 				0FB1D55C203B5F4400373B7B /* Info.plist */,
-				0FB1D57E203B657E00373B7B /* PastureMap.png */,
-				0FB1D584203C84CA00373B7B /* PastureRenderer.swift */,
-				0FB1D586203CA75000373B7B /* OptionsHandler.swift */,
+				0FB1D58B203D097400373B7B /* App */,
 			);
 			path = PastureMap;
 			sourceTree = "<group>";
@@ -138,6 +134,70 @@
 				0FB1D572203B5F4500373B7B /* Info.plist */,
 			);
 			path = PastureMapUITests;
+			sourceTree = "<group>";
+		};
+		0FB1D58B203D097400373B7B /* App */ = {
+			isa = PBXGroup;
+			children = (
+				0FB1D591203D0A9C00373B7B /* Model */,
+				0FB1D58C203D099500373B7B /* ViewControllers */,
+				0FB1D58E203D09D500373B7B /* Rendering */,
+				0FB1D58D203D09AF00373B7B /* Storyboards */,
+				0FB1D590203D0A6D00373B7B /* Utils */,
+				0FB1D58F203D0A0F00373B7B /* Assetts */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		0FB1D58C203D099500373B7B /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				0FB1D550203B5F4400373B7B /* MapVC.swift */,
+				0FB1D552203B5F4400373B7B /* SecondViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		0FB1D58D203D09AF00373B7B /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				0FB1D554203B5F4400373B7B /* Main.storyboard */,
+				0FB1D559203B5F4400373B7B /* LaunchScreen.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		0FB1D58E203D09D500373B7B /* Rendering */ = {
+			isa = PBXGroup;
+			children = (
+				0FB1D582203B6CE900373B7B /* PastureModel.swift */,
+				0FB1D584203C84CA00373B7B /* PastureRenderer.swift */,
+				0FB1D586203CA75000373B7B /* OptionsHandler.swift */,
+			);
+			path = Rendering;
+			sourceTree = "<group>";
+		};
+		0FB1D58F203D0A0F00373B7B /* Assetts */ = {
+			isa = PBXGroup;
+			children = (
+				0FB1D57E203B657E00373B7B /* PastureMap.png */,
+			);
+			path = Assetts;
+			sourceTree = "<group>";
+		};
+		0FB1D590203D0A6D00373B7B /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				0FB1D588203D070300373B7B /* AreaCalculator.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		0FB1D591203D0A9C00373B7B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -280,6 +340,7 @@
 				0FB1D585203C84CB00373B7B /* PastureRenderer.swift in Sources */,
 				0FB1D54F203B5F4400373B7B /* AppDelegate.swift in Sources */,
 				0FB1D583203B6CE900373B7B /* PastureModel.swift in Sources */,
+				0FB1D589203D070300373B7B /* AreaCalculator.swift in Sources */,
 				0FB1D551203B5F4400373B7B /* MapVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -288,6 +349,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0FB1D58A203D073800373B7B /* AreaCalculator.swift in Sources */,
 				0FB1D566203B5F4400373B7B /* PastureMapTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
