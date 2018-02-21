@@ -9,7 +9,7 @@
 import Foundation
 import MapKit
 
-class Pasture {
+class PastureVM {
     var polygonVertices:[MKPointAnnotation]=[]
     var polygonOverlay:MKPolygon?
     var polylines:[MKPolyline]=[]
@@ -25,5 +25,4 @@ class Pasture {
         isComplete = false
         area = 0.0
     }
-
 }

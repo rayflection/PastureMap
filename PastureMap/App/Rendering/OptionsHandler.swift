@@ -44,7 +44,7 @@ class OptionsHandler {
             ac.addAction(UIAlertAction(title: "Use Standard Map", style: .default, handler: { (action) in
                 mapView.mapType = .standard }))
         }
-        
+
         if UI_USER_INTERFACE_IDIOM() == .pad {
             ac.popoverPresentationController?.sourceView = button
         } else {

@@ -20,7 +20,7 @@ class PastureNumberFormatter {
 }
 class PastureRenderer {
 
-    static func displayAcreageLabel(pasture:Pasture, mapView:MKMapView) {
+    static func displayAcreageLabel(pasture:PastureVM, mapView:MKMapView) {
         let count = pasture.polygonVertices.count
         if count > 2 {
             var lat = 0.0, lon = 0.0
@@ -56,7 +56,7 @@ class LineLengthRenderer {
     }
 }
 class PastureSummaryRenderer {
-    static func updateSummary(_ pastures:[Pasture],_ label:UILabel) {
+    static func updateSummary(_ pastures:[PastureVM],_ label:UILabel) {
         var totalArea = 0.0
         for pasture in pastures {
             totalArea += pasture.area

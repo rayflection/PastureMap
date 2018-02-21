@@ -105,7 +105,13 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="PQr-Ze-W5v"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Pasture Manager" id="ybK-5M-97j"/>
+                    <navigationItem key="navigationItem" title="Pasture Manager" id="ybK-5M-97j">
+                        <barButtonItem key="rightBarButtonItem" title="Load Data" id="gDX-eX-WZR" userLabel="LoadTest">
+                            <connections>
+                                <action selector="LoadDataTapped:" destination="9pv-A4-QxB" id="1tm-J2-FqG"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="bottomLabel" destination="rVD-SQ-jyj" id="KgH-HW-PUU"/>
                         <outlet property="cancelButton" destination="jyq-6F-1z5" id="sjc-H6-Bt0"/>
