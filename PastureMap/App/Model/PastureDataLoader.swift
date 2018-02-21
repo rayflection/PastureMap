@@ -24,10 +24,19 @@ class PastureDataLoader {
         var models : [PastureDataModel] = []
 
         models.append(PastureDataModel(squareArountPoint(center)))
-        models.append(PastureDataModel(squareArountPoint(center.offsetBy(0.02, 0.02))))
-        models.append(PastureDataModel(squareArountPoint(center.offsetBy(-0.025, 0.025))))
-        models.append(PastureDataModel(squareArountPoint(center.offsetBy(-0.01, -0.02))))
+        models.append(PastureDataModel(squareArountPoint(center.offsetBy( 0.020,  0.020))))
+        models.append(PastureDataModel(squareArountPoint(center.offsetBy(-0.025,  0.025))))
+        models.append(PastureDataModel(squareArountPoint(center.offsetBy(-0.010, -0.020))))
 
+        let arrayOfTuplesOfDoubles = [
+            (39.37, -77.70),
+    //        (39.37, -77.75),
+            (39.38, -77.75),
+            (39.38, -77.70)
+        ]
+        let pastureFromRawData = PastureDataModel(arrayOfTuplesOfDoubles)
+        models.append(pastureFromRawData)
+        
         return models
     }
     
@@ -58,10 +67,14 @@ extension CLLocationCoordinate2D {
         return CLLocationCoordinate2D(latitude: self.latitude + x, longitude: self.longitude + y)
     }
 }
-import CoreLocation
 class PastureDataModel {
-    init (_ vertex:[CLLocationCoordinate2D]) {
-        vertices = vertex
-    }
     var vertices : [CLLocationCoordinate2D] = []
+    init (_ verts:[CLLocationCoordinate2D]) {
+        vertices = verts
+    }
+    init (_ verts:[(Double,Double)] ) {
+        for (lat,lon) in verts {
+            vertices.append(CLLocationCoordinate2D(latitude:lat, longitude:lon))
+        }
+    }
 }
