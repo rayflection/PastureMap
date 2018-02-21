@@ -16,5 +16,5 @@ Still to do:
 1. Move the size lable around when the fence posts move. DONE.
 2. Store the pastures locally to survive session, show list.
 3. Get user's location from CLLocationManager, not hardcoded. DONE.
-4. Allow user to Cancel from creating a pasture, delete last post
+4. Allow user to Cancel from creating a pasture, delete last post. DONE.
 5. Check for lines crossing, warn user about invalid post positioning.

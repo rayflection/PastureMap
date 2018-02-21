@@ -1,5 +1,5 @@
 //
-//  FirstViewController.swift
+//  MapVC.swift
 //  PastureMap
 //
 //  Created by Mike Yost on 2/19/18.
@@ -12,15 +12,20 @@ import CoreLocation
 
 class MapVC: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var createPastureButton: UIButton!
+    @IBOutlet weak var cancelButton: UIButton!
+    @IBOutlet weak var finishButton: UIButton!  // button above map, user taps to complete poly.
+    
     @IBOutlet weak var topLabel: UILabel!
     @IBOutlet weak var bottomLabel: UILabel!
-    @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var summaryLabel: UILabel!
+    
+    @IBOutlet weak var mapView: MKMapView!
+
     
     var tapRecognizer:UITapGestureRecognizer?
     var inPolygonMode=false
-    var pasture = Pasture()           // yeah, throw one away, curse these obnoxionals
-    var finishPolygonButton:UIButton?
+    var currentPasture = Pasture()
+    var finishPolygonButton:UIButton?       // button inside original fence post, user taps to complete poly.
     var pastureList:[Pasture]=[]
     let locationManager = CLLocationManager()
     
@@ -32,9 +37,8 @@ class MapVC: UIViewController, MKMapViewDelegate {
     func configUI() {
         configMap()
         //spinner.isHidden = true
-        topLabel.text = ""
-        bottomLabel.text = ""
-        summaryLabel.text = ""
+        clearLabels()
+        resetButtonsToDefaultState()
     }
 
     func configMap() {
@@ -64,17 +68,29 @@ class MapVC: UIViewController, MKMapViewDelegate {
     // MARK: - button event handlers
     @IBAction func createPastureButtonTapped(_ sender: UIButton) {
         inPolygonMode = true
-        sender.isEnabled = false
-        pasture = Pasture()
-        pastureList.append(pasture)
+        createPastureButton.isEnabled = false
+        finishButton.isHidden = false
+        cancelButton.isHidden = false
+        finishButton.isEnabled = false      // don't enable until we have at least 3 corners
+        currentPasture = Pasture()
+        pastureList.append(currentPasture)
         if let tapRec = tapRecognizer {
             mapView.addGestureRecognizer(tapRec)
         }
         topLabel.text = "Tap the map to create a fence post"
         bottomLabel.text = ""
-        //
-        // @TODO: change button text to "Cancel", detect Cancel, delete pasture, wipe map.
-        //
+    }
+    @IBAction func cancelButtonTapped(_ sender: UIButton) {
+        clearPolylines(currentPasture)
+        clearOverlays(currentPasture)
+        clearFencePosts(currentPasture)
+        pastureList.removeLast()
+        currentPasture.clear()
+        resetButtonsToDefaultState()
+        showSelectAndDragMessage()
+    }
+    @IBAction func finishButtonTapped(_ sender: UIButton) {
+        finishPolygonButtonTapped()
     }
     @objc func finishPolygonButtonTapped() {
         NSLog("Poly Origin Tapped - POLYGON COMPLETE!")
@@ -83,13 +99,24 @@ class MapVC: UIViewController, MKMapViewDelegate {
             if let firstPost = finishPolygonButton?.superview as? MKAnnotationView {
                 firstPost.image = UIImage(named:"fencePost")
             }
+            if let finish = finishPolygonButton {
+                finish.removeFromSuperview()
+            }
+            currentPasture.isComplete = true
             renderCompletePolygon()
-            pasture.isComplete = true
-
-            finishPolygonButton?.isEnabled = false
-            createPastureButton.isEnabled = true
-            inPolygonMode = false
+            resetButtonsToDefaultState()
         }
+    }
+    func resetButtonsToDefaultState() {
+        finishButton.isHidden = true
+        cancelButton.isHidden = true
+        createPastureButton.isEnabled = true
+        inPolygonMode = false
+    }
+    func clearLabels() {
+        topLabel.text = ""
+        bottomLabel.text = ""
+        summaryLabel.text = ""
     }
     @IBAction func optionsMenuTapped(_ sender: UIButton) {
         self.present(OptionsHandler().getOptionsMenuActionSheet(sender,mapView), animated:true, completion:nil)
@@ -118,7 +145,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
                 if name.isEqual("fence post") {     // @TODO - need better way to detect, by type or tag or class..
                     if let fencepost = view.annotation as? MKPointAnnotation {
                         if let past = whatPastureIsThisPostIn(post:fencepost) {
-                            pasture = past
+                            currentPasture = past
                             redrawPasture(pasture: past)
                         }
                     }
@@ -135,7 +162,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
             let touchPointView = MKAnnotationView(annotation:annotation, reuseIdentifier: "touchPoint")
             if let title = annotation.title!, title.isEqual("fence post") {
                 touchPointView.image = UIImage(named:"fencePost")
-                if pasture.polygonVertices.count == 1 {
+                if currentPasture.polygonVertices.count == 1 {
                     touchPointView.image = UIImage(named:"fencePostYellow")
                     // add a button to this view which allows user to complete the polygon
                     finishPolygonButton = UIButton(type:.custom)
@@ -164,14 +191,17 @@ class MapVC: UIViewController, MKMapViewDelegate {
         let polyAnnotation = MKPointAnnotation()
         polyAnnotation.coordinate = coord
         polyAnnotation.title = "fence post"
-        pasture.polygonVertices.append(polyAnnotation)
-        if polygonVerticesAreValid(pasture.polygonVertices) {
+        currentPasture.polygonVertices.append(polyAnnotation)
+        if polygonVerticesAreValid(currentPasture.polygonVertices) {
             if !isComplete {
                 mapView.addAnnotation(polyAnnotation)
             }
         }
-        renderMostRecentTwoFencePosts(pasture:pasture)
-        finishPolygonButton?.isEnabled = pasture.polygonVertices.count > 2
+        renderMostRecentTwoFencePosts(pasture:currentPasture)
+        if let finish = finishPolygonButton {
+            finish.isEnabled = currentPasture.polygonVertices.count > 2
+        }
+        finishButton.isEnabled = currentPasture.polygonVertices.count > 2
     }
     func renderMostRecentTwoFencePosts(pasture:Pasture) {
         if pasture.polygonVertices.count < 2 { return }
@@ -190,21 +220,25 @@ class MapVC: UIViewController, MKMapViewDelegate {
     }
     func renderCompletePolygon() {
         renderPolygonWith(title:"Poly", subtitle:"complete")     // title doesn't show
-        topLabel.text = "Select and drag a fence post to reposition it."
+        showSelectAndDragMessage()
     }
-
-    func renderPolygonWith(title:String, subtitle:String) {
-        if let over = pasture.polygonOverlay {
-            mapView.removeOverlays( [over] )
+    func showSelectAndDragMessage() {
+        if pastureList.count > 0 {
+            topLabel.text = "Select and drag a fence post to reposition it."
+        } else {
+            topLabel.text = ""
         }
-        let corners = pasture.polygonVertices.map { $0.coordinate }
-        pasture.polygonOverlay = MKPolygon(coordinates: corners, count: corners.count)
-        pasture.polygonOverlay?.title = title
-        pasture.polygonOverlay?.subtitle = subtitle
-        mapView.addOverlays([pasture.polygonOverlay!])
-        displayAreaInsidePolygon(pasture: pasture)
+    }
+    func renderPolygonWith(title:String, subtitle:String) {
+        clearOverlays(currentPasture)
+        let corners = currentPasture.polygonVertices.map { $0.coordinate }
+        currentPasture.polygonOverlay = MKPolygon(coordinates: corners, count: corners.count)
+        currentPasture.polygonOverlay?.title = title
+        currentPasture.polygonOverlay?.subtitle = subtitle
+        mapView.addOverlays([currentPasture.polygonOverlay!])
+        displayAreaInsidePolygon(pasture: currentPasture)
 
-        if pasture.isComplete {
+        if currentPasture.isComplete {
             topLabel.text = ""
         } else {
             if corners.count > 2 {
@@ -215,10 +249,21 @@ class MapVC: UIViewController, MKMapViewDelegate {
         }
     }
     func redrawPasture(pasture:Pasture) {
+        clearPolylines(pasture)
+        renderCompletePolygon()
+    }
+    func clearOverlays(_ pasture:Pasture) {
+        if let over = currentPasture.polygonOverlay {
+            mapView.removeOverlays( [over] )
+        }
+    }
+    func clearPolylines(_ pasture:Pasture) {
         if ( pasture.polylines.count > 0 ) {
             mapView.removeOverlays(pasture.polylines)
         }
-        renderCompletePolygon()
+    }
+    func clearFencePosts(_ pasture:Pasture) {
+        mapView.removeAnnotations(pasture.polygonVertices)
     }
     func displayAreaInsidePolygon(pasture:Pasture) {
 
@@ -228,7 +273,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
         }
     }
     func polygonVerticesAreValid(_ vertices:[MKPointAnnotation]) -> Bool {
-        if pasture.polygonVertices.count < 4 {
+        if currentPasture.polygonVertices.count < 4 {
             return true
         }
         // @TODO: if any lines cross, return false

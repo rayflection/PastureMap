@@ -42,13 +42,19 @@
                                         <state key="disabled">
                                             <color key="titleColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
+                                        <connections>
+                                            <action selector="cancelButtonTapped:" destination="9pv-A4-QxB" eventType="touchUpInside" id="mcd-kR-NI1"/>
+                                        </connections>
                                     </button>
-                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="poH-of-BbD" userLabel="Done">
+                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="poH-of-BbD" userLabel="Finish">
                                         <rect key="frame" x="97" y="0.0" width="0.0" height="30"/>
-                                        <state key="normal" title="Done"/>
+                                        <state key="normal" title="Finish"/>
                                         <state key="disabled">
                                             <color key="titleColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
+                                        <connections>
+                                            <action selector="finishButtonTapped:" destination="9pv-A4-QxB" eventType="touchUpInside" id="VfD-nf-Ka8"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FTy-8q-zO1" userLabel="Options">
                                         <rect key="frame" x="263" y="0.0" width="88" height="30"/>
@@ -102,7 +108,9 @@
                     <navigationItem key="navigationItem" title="Pasture Manager" id="ybK-5M-97j"/>
                     <connections>
                         <outlet property="bottomLabel" destination="rVD-SQ-jyj" id="KgH-HW-PUU"/>
+                        <outlet property="cancelButton" destination="jyq-6F-1z5" id="sjc-H6-Bt0"/>
                         <outlet property="createPastureButton" destination="woq-gc-Pfp" id="lk3-pT-wQD"/>
+                        <outlet property="finishButton" destination="poH-of-BbD" id="K9h-1F-9cI"/>
                         <outlet property="mapView" destination="Rmo-aW-c9g" id="VBK-EN-LL9"/>
                         <outlet property="summaryLabel" destination="jXj-CT-Xzm" id="rKk-3f-kVs"/>
                         <outlet property="topLabel" destination="d13-65-X3j" id="GhN-Wj-3jg"/>

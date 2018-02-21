@@ -17,6 +17,16 @@ class Pasture {
     var isComplete=false
     var area=0.0
     
+    
+    func clear() {
+        polygonVertices.removeAll()
+        polygonOverlay = nil
+        polylines.removeAll()
+        sizeLabel.text = ""
+        isComplete = false
+        area = 0.0
+    }
+    
     static let kEarthRadius = 6378137.0
 
     // CLLocationCoordinate2D uses degrees but we need radians
