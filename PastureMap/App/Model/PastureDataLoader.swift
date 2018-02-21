@@ -12,22 +12,34 @@ import MapKit
 class PastureDataLoader {
     
     func go(_ mapVC: MapVC ) {
-        let pastures = getSomeData()
+        let userLoc = mapVC.mapView.userLocation.coordinate
+        
+        let pastures = getSomeData(userLoc)
         for pastureDM in pastures {
             create(pastureDM, mapVC)
         }
     }
     
-    func getSomeData() -> [PastureDataModel] {
+    func getSomeData(_ center:CLLocationCoordinate2D) -> [PastureDataModel] {
         var models : [PastureDataModel] = []
-        let pdm = PastureDataModel()
-        pdm.vertices.append(CLLocationCoordinate2D(latitude: 39.41, longitude: -77.81))
-        pdm.vertices.append(CLLocationCoordinate2D(latitude: 39.41, longitude: -77.82))
-        pdm.vertices.append(CLLocationCoordinate2D(latitude: 39.42, longitude: -77.82))
-        pdm.vertices.append(CLLocationCoordinate2D(latitude: 39.42, longitude: -77.81))
 
-        models.append(pdm)
+        models.append(PastureDataModel(squareArountPoint(center)))
+        models.append(PastureDataModel(squareArountPoint(center.offsetBy(0.02, 0.02))))
+        models.append(PastureDataModel(squareArountPoint(center.offsetBy(-0.025, 0.025))))
+        models.append(PastureDataModel(squareArountPoint(center.offsetBy(-0.01, -0.02))))
+
         return models
+    }
+    
+    func squareArountPoint(_ point:CLLocationCoordinate2D) -> [CLLocationCoordinate2D] {
+        let deltaX = 0.0075
+        let deltaY = 0.0075
+        let one = CLLocationCoordinate2D(latitude: point.latitude + deltaX, longitude: point.longitude + deltaY )
+        let two = CLLocationCoordinate2D(latitude: point.latitude + deltaX, longitude: point.longitude - deltaY )
+        let tre = CLLocationCoordinate2D(latitude: point.latitude - deltaX, longitude: point.longitude - deltaY )
+        let fur = CLLocationCoordinate2D(latitude: point.latitude - deltaX, longitude: point.longitude + deltaY )
+        
+        return [one, two, tre, fur]
     }
     
     func create(_ data:PastureDataModel, _ mapVC:MapVC) {
@@ -41,8 +53,15 @@ class PastureDataLoader {
         mapVC.finishButtonTapped(fakeButton)
     }
 }
-
+extension CLLocationCoordinate2D {
+    func offsetBy(_ x:CLLocationDegrees, _ y:CLLocationDegrees) -> CLLocationCoordinate2D{
+        return CLLocationCoordinate2D(latitude: self.latitude + x, longitude: self.longitude + y)
+    }
+}
 import CoreLocation
 class PastureDataModel {
+    init (_ vertex:[CLLocationCoordinate2D]) {
+        vertices = vertex
+    }
     var vertices : [CLLocationCoordinate2D] = []
 }
