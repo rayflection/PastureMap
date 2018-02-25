@@ -68,7 +68,8 @@ class DBManager {
     }
     // =================================================================
     // MARK: Pasture CRUD - called from app code
-    func createPasture(_ corners: [CLLocationCoordinate2D]) -> PastureDataModel {
+    func createPasture(_ viewModel: PastureViewModel) {
+        let corners = viewModel.polygonVertices.map { $0.coordinate }
         let pdm = PastureDataModel(corners)
         // write pdm to the database
         do {
@@ -76,7 +77,7 @@ class DBManager {
             pdm.pasture_id = row
             print("inserted id: \(row)")
         } catch {                                 // @TODO - better catch, more specific
-            print("insertion pasture failed: \(error)") // @TODO: WHAT TO RETURN HERE?
+            print("insertion pasture failed: \(error)") //Just show error, don't return anything.
         }
         
         // write the corners to the database
@@ -96,7 +97,9 @@ class DBManager {
                 print("Insert corner failed: \(error).")
             }
         }
-        return pdm
+        viewModel.id = pdm.pasture_id
+        viewModel.isComplete = true
+
     }
     //
     // WRITE ME!  - also use the 2nd panel to fetch the whole database so I can see it.

@@ -106,9 +106,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
             if let finish = finishPolygonButton {
                 finish.removeFromSuperview()
             }
-            currentPasture.isComplete = true
-            let dbPasture = DBManager.shared().createPasture(currentPasture.polygonVertices.map { $0.coordinate })
-            currentPasture.id = dbPasture.pasture_id
+            DBManager.shared().createPasture(currentPasture)
             
             renderCompletePolygon(currentPasture)
             resetButtonsToDefaultState()
