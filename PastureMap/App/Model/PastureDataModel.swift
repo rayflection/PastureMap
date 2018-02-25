@@ -11,7 +11,7 @@ import CoreLocation
 
 class PastureDataModel {
     var vertices : [CLLocationCoordinate2D] = []
-    var pasture_id:Int?
+    var pasture_id:Int64?
     
     init () {
         vertices = []

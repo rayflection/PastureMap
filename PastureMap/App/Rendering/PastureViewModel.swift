@@ -10,7 +10,7 @@ import Foundation
 import MapKit
 
 class PastureViewModel {
-    var id:Int?
+    var id:Int64?
     var polygonVertices:[MKPointAnnotation]=[]
     var polygonOverlay:MKPolygon?
     var polylines:[MKPolyline]=[]

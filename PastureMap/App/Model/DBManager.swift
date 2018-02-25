@@ -20,7 +20,7 @@ class DBManager {
     private let pastureTable = Table("pasture")
     private let cornerTable  = Table("corner")
     let pastureFK  = Expression<Int64>("pasture_id")
-    let rank       = Expression<Int64>("rank")
+    let order      = Expression<Int64>("order")
     let latitude   = Expression<Double>("latitude")
     let longitude  = Expression<Double>("longitude")
     let id         = Expression<Int64>("id")
@@ -54,13 +54,11 @@ class DBManager {
         }
         
         // create a fence_post table (corners, or vertices, or coordinates)
-
-        
         do {
             try db!.run(cornerTable.create(ifNotExists:true) { t in
                 t.column(id,         primaryKey: .autoincrement)
                 t.column(pastureFK)
-                t.column(rank)
+                t.column(order)
                 t.column(longitude)
                 t.column(latitude)
             })
@@ -75,13 +73,34 @@ class DBManager {
         // write pdm to the database
         do {
             let row = try db!.run(pastureTable.insert(name <- "pasture_1")) // @TODO _ Increment NAME!!
-            pdm.pasture_id = Int(row)
+            pdm.pasture_id = row
             print("inserted id: \(row)")
-        } catch {
-            print("insertion failed: \(error)")
+        } catch {                                 // @TODO - better catch, more specific
+            print("insertion pasture failed: \(error)") // @TODO: WHAT TO RETURN HERE?
+        }
+        
+        // write the corners to the database
+        if let pk = pdm.pasture_id {
+            do {
+                var rank:Int64 = 0
+                for coord in corners {
+                    try db!.run(cornerTable.insert(
+                        pastureFK <- pk,
+                        order     <- rank,
+                        longitude <- coord.latitude,
+                        latitude  <- coord.longitude
+                    ))
+                    rank = rank + 1
+                }   // for
+            } catch {                 // @TODO - better catch, more specific
+                print("Insert corner failed: \(error).")
+            }
         }
         return pdm
     }
+    //
+    // WRITE ME!  - also use the 2nd panel to fetch the whole database so I can see it.
+    //
     func getPastures() -> [PastureDataModel] {
         return [PastureDataModel([CLLocationCoordinate2D(latitude: 1.0, longitude: 1.0)])] // just to compile
     }
@@ -93,11 +112,6 @@ class DBManager {
     }
     func updatePasture(_ pasture:PastureDataModel) {
         pasture.save() // just to compile.
-    }
-    // ------------------------------------------
-    // MARK: Pasture CRUD - actual db writes
-    func createDBPasture(_ model: PastureDataModel) {
-        
     }
 }
 
