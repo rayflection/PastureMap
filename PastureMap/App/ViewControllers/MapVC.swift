@@ -24,9 +24,9 @@ class MapVC: UIViewController, MKMapViewDelegate {
     
     var tapRecognizer:UITapGestureRecognizer?
     var inPolygonMode=false
-    var currentPasture = PastureVM()
+    var currentPasture = PastureViewModel()
     var finishPolygonButton:UIButton?       // button inside original fence post, user taps to complete poly.
-    var pastureList:[PastureVM]=[]
+    var pastureList:[PastureViewModel]=[]
     let locationManager = CLLocationManager()
     
     @IBAction func LoadDataTapped(_ sender: UIBarButtonItem) {
@@ -76,7 +76,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
         finishButton.isHidden = false
         cancelButton.isHidden = false
         finishButton.isEnabled = false      // don't enable until we have at least 3 corners
-        currentPasture = PastureVM()
+        currentPasture = PastureViewModel()
         pastureList.append(currentPasture)
         if let tapRec = tapRecognizer {
             mapView.addGestureRecognizer(tapRec)
@@ -107,6 +107,9 @@ class MapVC: UIViewController, MKMapViewDelegate {
                 finish.removeFromSuperview()
             }
             currentPasture.isComplete = true
+            let dbPasture = DBManager.shared().createPasture(currentPasture.polygonVertices.map { $0.coordinate })
+            currentPasture.id = dbPasture.pasture_id
+            
             renderCompletePolygon(currentPasture)
             resetButtonsToDefaultState()
         }
@@ -195,7 +198,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
     }
     // ---------------------------------------------
     // MARK: - Polygon handlers
-    func addToPolygon(pasture: PastureVM, coord: CLLocationCoordinate2D, isComplete:Bool) {
+    func addToPolygon(pasture: PastureViewModel, coord: CLLocationCoordinate2D, isComplete:Bool) {
         let polyAnnotation = MKPointAnnotation()
         polyAnnotation.coordinate = coord
         polyAnnotation.title = "fence post"
@@ -213,7 +216,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
         
         renderIncompletePolygon(pasture)
     }
-    func renderMostRecentTwoFencePosts(pasture:PastureVM) {
+    func renderMostRecentTwoFencePosts(pasture:PastureViewModel) {
         if pasture.polygonVertices.count < 2 { return }
         
         // draw a line between the last 2 vertices
@@ -225,10 +228,10 @@ class MapVC: UIViewController, MKMapViewDelegate {
         
         LineLengthRenderer.display(p1, p2, bottomLabel)
     }
-    func renderIncompletePolygon(_ pasture:PastureVM) {
+    func renderIncompletePolygon(_ pasture:PastureViewModel) {
         renderWith(pasture, "Poly", "incomplete")
     }
-    func renderCompletePolygon(_ pasture:PastureVM) {
+    func renderCompletePolygon(_ pasture:PastureViewModel) {
         renderWith(pasture, "Poly", "complete")     // title doesn't show, find another way
         showSelectAndDragMessage()
     }
@@ -239,7 +242,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
             topLabel.text = ""
         }
     }
-    func renderWith(_ pasture:PastureVM,_ title:String,_ subtitle:String) {
+    func renderWith(_ pasture:PastureViewModel,_ title:String,_ subtitle:String) {
         clearOverlays(pasture)
         let corners = pasture.polygonVertices.map { $0.coordinate }
         pasture.polygonOverlay = MKPolygon(coordinates: corners, count: corners.count)
@@ -258,24 +261,24 @@ class MapVC: UIViewController, MKMapViewDelegate {
             }
         }
     }
-    func redrawPasture(pasture:PastureVM) {
+    func redrawPasture(pasture:PastureViewModel) {
         clearPolylines(pasture)
         renderCompletePolygon(pasture)
     }
-    func clearOverlays(_ pasture:PastureVM) {
+    func clearOverlays(_ pasture:PastureViewModel) {
         if let over = pasture.polygonOverlay {
             mapView.removeOverlays( [over] )
         }
     }
-    func clearPolylines(_ pasture:PastureVM) {
+    func clearPolylines(_ pasture:PastureViewModel) {
         if ( pasture.polylines.count > 0 ) {
             mapView.removeOverlays(pasture.polylines)
         }
     }
-    func clearFencePosts(_ pasture:PastureVM) {
+    func clearFencePosts(_ pasture:PastureViewModel) {
         mapView.removeAnnotations(pasture.polygonVertices)
     }
-    func displayAreaInsidePolygon(pasture:PastureVM) {
+    func displayAreaInsidePolygon(pasture:PastureViewModel) {
 
         PastureRenderer.displayAcreageLabel(pasture: pasture, mapView: mapView)
         if pasture.polygonVertices.count > 2 {
@@ -296,7 +299,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
     func displayCoordinates(coord:CLLocationCoordinate2D, what:String) {
         bottomLabel.text = "\(what) at: \(coord.to_s())"
     }
-    func whatPastureIsThisPostIn(post:MKPointAnnotation) -> PastureVM? {
+    func whatPastureIsThisPostIn(post:MKPointAnnotation) -> PastureViewModel? {
         for pasture in pastureList {
             for vertex in pasture.polygonVertices {
                 if vertex == post {

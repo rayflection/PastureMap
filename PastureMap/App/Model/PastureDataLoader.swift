@@ -18,6 +18,9 @@ class PastureDataLoader {
         for pastureDM in pastures {
             create(pastureDM, mapVC)
         }
+        
+       // let foo = DBManager.shared().createPasture()  // invoke to initialize it
+        //print("foo \(foo)")
     }
     
     func getSomeData(_ center:CLLocationCoordinate2D) -> [PastureDataModel] {
@@ -52,6 +55,7 @@ class PastureDataLoader {
     }
     
     func create(_ data:PastureDataModel, _ mapVC:MapVC) {
+
         let fakeButton = UIButton()
         mapVC.createPastureButtonTapped( fakeButton )
         
@@ -67,14 +71,4 @@ extension CLLocationCoordinate2D {
         return CLLocationCoordinate2D(latitude: self.latitude + x, longitude: self.longitude + y)
     }
 }
-class PastureDataModel {
-    var vertices : [CLLocationCoordinate2D] = []
-    init (_ verts:[CLLocationCoordinate2D]) {
-        vertices = verts
-    }
-    init (_ verts:[(Double,Double)] ) {
-        for (lat,lon) in verts {
-            vertices.append(CLLocationCoordinate2D(latitude:lat, longitude:lon))
-        }
-    }
-}
+

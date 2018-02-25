@@ -16,7 +16,7 @@
 		0FB1D566203B5F4400373B7B /* PastureMapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB1D565203B5F4400373B7B /* PastureMapTests.swift */; };
 		0FB1D571203B5F4400373B7B /* PastureMapUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB1D570203B5F4400373B7B /* PastureMapUITests.swift */; };
 		0FB1D57F203B657F00373B7B /* PastureMap.png in Resources */ = {isa = PBXBuildFile; fileRef = 0FB1D57E203B657E00373B7B /* PastureMap.png */; };
-		0FB1D583203B6CE900373B7B /* PastureVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB1D582203B6CE900373B7B /* PastureVM.swift */; };
+		0FB1D583203B6CE900373B7B /* PastureViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB1D582203B6CE900373B7B /* PastureViewModel.swift */; };
 		0FB1D585203C84CB00373B7B /* PastureRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB1D584203C84CA00373B7B /* PastureRenderer.swift */; };
 		0FB1D587203CA75000373B7B /* OptionsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB1D586203CA75000373B7B /* OptionsHandler.swift */; };
 		0FB1D589203D070300373B7B /* AreaCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB1D588203D070300373B7B /* AreaCalculator.swift */; };
@@ -24,6 +24,14 @@
 		0FB1D593203D10AE00373B7B /* PastureDataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB1D592203D10AE00373B7B /* PastureDataLoader.swift */; };
 		0FB1D594203D10AE00373B7B /* PastureDataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB1D592203D10AE00373B7B /* PastureDataLoader.swift */; };
 		0FB1D595203D173100373B7B /* MapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB1D550203B5F4400373B7B /* MapVC.swift */; };
+		0FBAAECA20425C2100765555 /* DBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FBAAEC920425C2100765555 /* DBManager.swift */; };
+		0FBAAECB2042638A00765555 /* DBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FBAAEC920425C2100765555 /* DBManager.swift */; };
+		0FBAAECC2042667600765555 /* PastureViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB1D582203B6CE900373B7B /* PastureViewModel.swift */; };
+		0FBAAECD2042669800765555 /* OptionsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB1D586203CA75000373B7B /* OptionsHandler.swift */; };
+		0FBAAECE204266B200765555 /* PastureRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB1D584203C84CA00373B7B /* PastureRenderer.swift */; };
+		0FBAAED020426BDB00765555 /* PastureDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FBAAECF20426BDB00765555 /* PastureDataModel.swift */; };
+		0FBAAED120426BDB00765555 /* PastureDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FBAAECF20426BDB00765555 /* PastureDataModel.swift */; };
+		1EC8774A172FB89B63356861 /* Pods_PastureMap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4695FACF31B1A580676864C9 /* Pods_PastureMap.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,11 +67,16 @@
 		0FB1D570203B5F4400373B7B /* PastureMapUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastureMapUITests.swift; sourceTree = "<group>"; };
 		0FB1D572203B5F4500373B7B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0FB1D57E203B657E00373B7B /* PastureMap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PastureMap.png; sourceTree = "<group>"; };
-		0FB1D582203B6CE900373B7B /* PastureVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PastureVM.swift; sourceTree = "<group>"; };
+		0FB1D582203B6CE900373B7B /* PastureViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PastureViewModel.swift; sourceTree = "<group>"; };
 		0FB1D584203C84CA00373B7B /* PastureRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastureRenderer.swift; sourceTree = "<group>"; };
 		0FB1D586203CA75000373B7B /* OptionsHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsHandler.swift; sourceTree = "<group>"; };
 		0FB1D588203D070300373B7B /* AreaCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AreaCalculator.swift; sourceTree = "<group>"; };
 		0FB1D592203D10AE00373B7B /* PastureDataLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastureDataLoader.swift; sourceTree = "<group>"; };
+		0FBAAEC920425C2100765555 /* DBManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBManager.swift; sourceTree = "<group>"; };
+		0FBAAECF20426BDB00765555 /* PastureDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastureDataModel.swift; sourceTree = "<group>"; };
+		4695FACF31B1A580676864C9 /* Pods_PastureMap.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PastureMap.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		89795E3E95A8E92BF3FEF77A /* Pods-PastureMap.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PastureMap.release.xcconfig"; path = "Pods/Target Support Files/Pods-PastureMap/Pods-PastureMap.release.xcconfig"; sourceTree = "<group>"; };
+		A6D02BD4FC0AB0EEBFFF3664 /* Pods-PastureMap.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PastureMap.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PastureMap/Pods-PastureMap.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +84,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1EC8774A172FB89B63356861 /* Pods_PastureMap.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,6 +112,8 @@
 				0FB1D564203B5F4400373B7B /* PastureMapTests */,
 				0FB1D56F203B5F4400373B7B /* PastureMapUITests */,
 				0FB1D54C203B5F4400373B7B /* Products */,
+				1DDD955CD90A44645F423499 /* Pods */,
+				EEF7B960A0D916F6768AB73C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -174,7 +190,7 @@
 		0FB1D58E203D09D500373B7B /* Rendering */ = {
 			isa = PBXGroup;
 			children = (
-				0FB1D582203B6CE900373B7B /* PastureVM.swift */,
+				0FB1D582203B6CE900373B7B /* PastureViewModel.swift */,
 				0FB1D584203C84CA00373B7B /* PastureRenderer.swift */,
 				0FB1D586203CA75000373B7B /* OptionsHandler.swift */,
 			);
@@ -201,8 +217,27 @@
 			isa = PBXGroup;
 			children = (
 				0FB1D592203D10AE00373B7B /* PastureDataLoader.swift */,
+				0FBAAEC920425C2100765555 /* DBManager.swift */,
+				0FBAAECF20426BDB00765555 /* PastureDataModel.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		1DDD955CD90A44645F423499 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				A6D02BD4FC0AB0EEBFFF3664 /* Pods-PastureMap.debug.xcconfig */,
+				89795E3E95A8E92BF3FEF77A /* Pods-PastureMap.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		EEF7B960A0D916F6768AB73C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4695FACF31B1A580676864C9 /* Pods_PastureMap.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -212,9 +247,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0FB1D575203B5F4500373B7B /* Build configuration list for PBXNativeTarget "PastureMap" */;
 			buildPhases = (
+				1492BFDAA03BC9747C3D2F18 /* [CP] Check Pods Manifest.lock */,
 				0FB1D547203B5F4400373B7B /* Sources */,
 				0FB1D548203B5F4400373B7B /* Frameworks */,
 				0FB1D549203B5F4400373B7B /* Resources */,
+				612CEE977CAE1F0004E5E631 /* [CP] Embed Pods Frameworks */,
+				F416AE6C9BC21B858864DF65 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -335,6 +373,54 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		1492BFDAA03BC9747C3D2F18 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		612CEE977CAE1F0004E5E631 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PastureMap/Pods-PastureMap-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F416AE6C9BC21B858864DF65 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PastureMap/Pods-PastureMap-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		0FB1D547203B5F4400373B7B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -342,9 +428,11 @@
 			files = (
 				0FB1D553203B5F4400373B7B /* SecondViewController.swift in Sources */,
 				0FB1D587203CA75000373B7B /* OptionsHandler.swift in Sources */,
+				0FBAAED020426BDB00765555 /* PastureDataModel.swift in Sources */,
 				0FB1D585203C84CB00373B7B /* PastureRenderer.swift in Sources */,
 				0FB1D54F203B5F4400373B7B /* AppDelegate.swift in Sources */,
-				0FB1D583203B6CE900373B7B /* PastureVM.swift in Sources */,
+				0FBAAECA20425C2100765555 /* DBManager.swift in Sources */,
+				0FB1D583203B6CE900373B7B /* PastureViewModel.swift in Sources */,
 				0FB1D589203D070300373B7B /* AreaCalculator.swift in Sources */,
 				0FB1D551203B5F4400373B7B /* MapVC.swift in Sources */,
 				0FB1D593203D10AE00373B7B /* PastureDataLoader.swift in Sources */,
@@ -355,10 +443,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0FBAAED120426BDB00765555 /* PastureDataModel.swift in Sources */,
+				0FBAAECB2042638A00765555 /* DBManager.swift in Sources */,
 				0FB1D58A203D073800373B7B /* AreaCalculator.swift in Sources */,
 				0FB1D595203D173100373B7B /* MapVC.swift in Sources */,
+				0FBAAECE204266B200765555 /* PastureRenderer.swift in Sources */,
+				0FBAAECD2042669800765555 /* OptionsHandler.swift in Sources */,
 				0FB1D566203B5F4400373B7B /* PastureMapTests.swift in Sources */,
 				0FB1D594203D10AE00373B7B /* PastureDataLoader.swift in Sources */,
+				0FBAAECC2042667600765555 /* PastureViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -514,6 +607,7 @@
 		};
 		0FB1D576203B5F4500373B7B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A6D02BD4FC0AB0EEBFFF3664 /* Pods-PastureMap.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -530,6 +624,7 @@
 		};
 		0FB1D577203B5F4500373B7B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 89795E3E95A8E92BF3FEF77A /* Pods-PastureMap.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;

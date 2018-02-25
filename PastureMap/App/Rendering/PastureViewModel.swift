@@ -1,6 +1,6 @@
 //
-//  PastureModel.swift
-//  Map1
+//  PastureViewModel.swift
+//  Map
 //
 //  Created by Mike Yost on 2/18/18.
 //  Copyright © 2018 CageFreeSoftware. All rights reserved.
@@ -9,7 +9,8 @@
 import Foundation
 import MapKit
 
-class PastureVM {
+class PastureViewModel {
+    var id:Int?
     var polygonVertices:[MKPointAnnotation]=[]
     var polygonOverlay:MKPolygon?
     var polylines:[MKPolyline]=[]
