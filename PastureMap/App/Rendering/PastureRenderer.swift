@@ -17,6 +17,13 @@ class PastureNumberFormatter {
         temp.maximumFractionDigits = 2
         return temp
     }()
+    static let formatter6 = { () -> NumberFormatter in
+        let temp = NumberFormatter()
+        temp.usesGroupingSeparator = true
+        temp.numberStyle = .decimal
+        temp.maximumFractionDigits = 6
+        return temp
+    }()
 }
 class PastureRenderer {
 
@@ -120,4 +127,9 @@ extension Double {
         }
         return "0.0"
     }
+    func formatted6() -> String {
+        if let string =  PastureNumberFormatter.formatter6.string(from: NSNumber(value:self)) {
+            return string
+        }
+        return "0.0"    }
 }

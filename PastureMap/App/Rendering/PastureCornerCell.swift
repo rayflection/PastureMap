@@ -15,7 +15,7 @@ class PastureCornerCell: UITableViewCell {
     @IBOutlet weak var longitudeLabel: UILabel!
     
     func render(_ coord:CLLocationCoordinate2D) {
-        latitudeLabel.text = coord.latitude.formatted()
-        longitudeLabel.text = coord.longitude.formatted()
+        latitudeLabel.text = coord.latitude.formatted6()
+        longitudeLabel.text = coord.longitude.formatted6()
     }
 }
