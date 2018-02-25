@@ -20,6 +20,14 @@ class PastureNumberFormatter {
 }
 class PastureRenderer {
 
+    static func formattedAcres(pasture:PastureDataModel) -> String {
+        let number = NSNumber(value:  AreaCalculator.acres(locations: pasture.vertices)  )
+        if let formattedNumber = PastureNumberFormatter.formatter.string(from:number) {
+            return formattedNumber
+        } else {
+            return String(describing: number)
+        }
+    }
     static func displayAcreageLabel(pasture:PastureViewModel, mapView:MKMapView) {
         let count = pasture.polygonVertices.count
         if count > 2 {

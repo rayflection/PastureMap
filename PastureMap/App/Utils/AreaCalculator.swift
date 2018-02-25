@@ -39,4 +39,8 @@ class AreaCalculator {
         return squareMeters / 4046.86
     }
     
+    static func acres(locations: [CLLocationCoordinate2D]) -> Double {
+        let squareMeters = AreaCalculator.regionArea(locations: locations)
+        return areaInAcres(squareMeters: squareMeters)
+    }
 }

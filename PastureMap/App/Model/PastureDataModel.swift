@@ -16,6 +16,14 @@ class PastureDataModel {
     init () {
         vertices = []
     }
+    init(_ id:Int64) {
+        vertices = []
+        pasture_id = id
+    }
+    init (_ id:Int64, _ verts:[CLLocationCoordinate2D]) {
+        pasture_id = id
+        vertices = verts
+    }
     init (_ verts:[CLLocationCoordinate2D]) {
         vertices = verts
     }

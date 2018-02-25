@@ -26,4 +26,5 @@ class PastureViewModel {
         isComplete = false
         area = 0.0
     }
+
 }

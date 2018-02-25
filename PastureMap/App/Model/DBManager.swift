@@ -20,7 +20,7 @@ class DBManager {
     private let pastureTable = Table("pasture")
     private let cornerTable  = Table("corner")
     let pastureFK  = Expression<Int64>("pasture_id")
-    let order      = Expression<Int64>("order")
+    let rank       = Expression<Int64>("rank")
     let latitude   = Expression<Double>("latitude")
     let longitude  = Expression<Double>("longitude")
     let id         = Expression<Int64>("id")
@@ -58,7 +58,7 @@ class DBManager {
             try db!.run(cornerTable.create(ifNotExists:true) { t in
                 t.column(id,         primaryKey: .autoincrement)
                 t.column(pastureFK)
-                t.column(order)
+                t.column(rank)
                 t.column(longitude)
                 t.column(latitude)
             })
@@ -87,7 +87,7 @@ class DBManager {
                 for coord in corners {
                     try db!.run(cornerTable.insert(
                         pastureFK <- pk,
-                        order     <- rank,
+                        self.rank <- rank,
                         longitude <- coord.latitude,
                         latitude  <- coord.longitude
                     ))
@@ -105,8 +105,35 @@ class DBManager {
     // WRITE ME!  - also use the 2nd panel to fetch the whole database so I can see it.
     //
     func getPastures() -> [PastureDataModel] {
-        return [PastureDataModel([CLLocationCoordinate2D(latitude: 1.0, longitude: 1.0)])] // just to compile
+        var pastureDBModels:[PastureDataModel]=[]
+        if db != nil {
+            do {
+           //     let joinTable = pastureTable.join(cornerTable, on: pastureFK == pastureTable[id])
+                let all = Array(try db!.prepare(pastureTable))
+                // unpack into PastureDataModel instances
+                //var previousID:Int64 = -1
+                for pasture in all {
+                    let pastureID = pasture[id]
+                    let aPastureModel = PastureDataModel(pastureID)
+                    pastureDBModels.append(aPastureModel)
+                
+                    for coords in try db!.prepare(cornerTable.select(rank,latitude,longitude)
+                        .filter(pastureFK == pastureID)
+                        .order(self.rank.asc)) {
+                        let latitude  = coords[self.latitude]
+                        let longitude = coords[self.longitude]
+                            let loc2d = CLLocationCoordinate2D(latitude:latitude, longitude: longitude)
+                            aPastureModel.vertices.append(loc2d)
+                    }
+                }       // each row in pasture table
+            } catch {
+                print ("Fetch all pastures error")
+            }
+        }
+        return pastureDBModels
     }
+    
+    // ------------------------------------------
     func getPasture(_ pastureID:Int) -> PastureDataModel {
         return PastureDataModel()           // just to compile
     }
