@@ -21,7 +21,7 @@ class ListVC: UITableViewController {
         refresh()
     }
     func refresh() {
-        pastures = DBManager.shared().getPastures()
+        pastures = DBManager.shared().getAllPastures()
         tableView.reloadData()
     }
     

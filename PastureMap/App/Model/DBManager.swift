@@ -44,10 +44,10 @@ class DBManager {
 
         // create a pasture table
         do {
-            try db!.run(pastureTable.create(ifNotExists: true) { t in    // CREATE TABLE "pasture" (
-                t.column(id,     primaryKey: .autoincrement) // "id" INTEGER PRIMARY KEY NOT NULL,
-                t.column(name)                 //     "name" TEXT
-                // t.column(createdAt, DateTime)
+            try db!.run(pastureTable.create(ifNotExists: true) { t in
+                t.column(id,     primaryKey: .autoincrement)
+                t.column(name)
+                // t.column(createdAt, DateTime)    // @TODO
             })
         } catch ( _ ) {
             print ("Create pasture table error")
@@ -59,8 +59,8 @@ class DBManager {
                 t.column(id,         primaryKey: .autoincrement)
                 t.column(pastureFK)
                 t.column(rank)
-                t.column(longitude)
                 t.column(latitude)
+                t.column(longitude)
             })
         } catch ( _ ) {
             print("Create corner table error")
@@ -88,8 +88,8 @@ class DBManager {
                     try db!.run(cornerTable.insert(
                         pastureFK <- pk,
                         self.rank <- rank,
-                        longitude <- coord.latitude,
-                        latitude  <- coord.longitude
+                        latitude  <- coord.latitude,
+                        longitude <- coord.longitude
                     ))
                     rank = rank + 1
                 }   // for
@@ -101,17 +101,13 @@ class DBManager {
         viewModel.isComplete = true
 
     }
-    //
-    // WRITE ME!  - also use the 2nd panel to fetch the whole database so I can see it.
-    //
-    func getPastures() -> [PastureDataModel] {
+    // -------------------------------
+    func getAllPastures() -> [PastureDataModel] {
         var pastureDBModels:[PastureDataModel]=[]
         if db != nil {
             do {
-           //     let joinTable = pastureTable.join(cornerTable, on: pastureFK == pastureTable[id])
                 let all = Array(try db!.prepare(pastureTable))
                 // unpack into PastureDataModel instances
-                //var previousID:Int64 = -1
                 for pasture in all {
                     let pastureID = pasture[id]
                     let aPastureModel = PastureDataModel(pastureID)
@@ -134,14 +130,37 @@ class DBManager {
     }
     
     // ------------------------------------------
+    // Who would call this? What's the Use case?
     func getPasture(_ pastureID:Int) -> PastureDataModel {
+        //     let joinTable = pastureTable.join(cornerTable, on: pastureFK == pastureTable[id])
         return PastureDataModel()           // just to compile
     }
+    // -------------------------------------------
+    // This would get called when I let the user delete a pasture, NIY.
     func deletePasture(_ pastureID:Int) {
         // delete this sucker
     }
-    func updatePasture(_ pasture:PastureDataModel) {
-        pasture.save() // just to compile.
+    // ----------------------------------------------
+    // @TODO- WRITE ME NEXT!
+    // This gets called every time user moves a fence post, to update the corners.
+    // Or if they change the name of the pasture (NIY)
+    //func updatePasture(_ pasture:PastureViewModel) {
+    func updatePasture(_ pasture_id:Int64,_ theRank:Int64,_ coord:CLLocationCoordinate2D) {
+        
+        print("Update called.")
+        let fencePost = cornerTable.filter(pastureFK == pasture_id && rank==theRank)
+      //  try db.run(alice.update(email <- "alice@me.com"))
+        // UPDATE "users" SET "email" = 'alice@me.com' WHERE ("id" = 1)
+        do {
+            let numberOfRows = try db?.run(fencePost.update(latitude <- coord.latitude, longitude <- coord.longitude ))
+            if numberOfRows == 1 {
+                print("updated fencePost success")
+            } else {
+                print("Number updated is \(String(describing: numberOfRows))")
+            }
+        } catch {
+            print("update failed: \(error)")
+        }
     }
 }
 

@@ -152,6 +152,9 @@ class MapVC: UIViewController, MKMapViewDelegate {
                         if let past = whatPastureIsThisPostIn(post:fencepost) {
                             currentPasture = past
                             redrawPasture(pasture: past)
+                            if let rank = rankOfAnnotation(post: fencepost, inPasture: past), let pastID = past.id {
+                                DBManager.shared().updatePasture(pastID, rank, coo)
+                            }
                         }
                     }
                 }
@@ -303,6 +306,14 @@ class MapVC: UIViewController, MKMapViewDelegate {
                 if vertex == post {
                     return pasture
                 }
+            }
+        }
+        return nil
+    }
+    func rankOfAnnotation(post:MKPointAnnotation,inPasture:PastureViewModel) -> Int64? {
+        for index in 0..<inPasture.polygonVertices.count {
+            if inPasture.polygonVertices[index] == post {
+                return Int64(index)
             }
         }
         return nil
