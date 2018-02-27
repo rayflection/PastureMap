@@ -110,6 +110,15 @@ class MapVC: UIViewController, MKMapViewDelegate {
             
             renderCompletePolygon(currentPasture)
             resetButtonsToDefaultState()
+            
+//            let deleteButton = MKPointAnnotation()
+//            deleteButton.title = "deleteButton"
+//            // ugly hack until I can subclass MKPinAnnotation
+//            deleteButton.subtitle = String(describing: currentPasture.id)
+//            let endOfSizeLabelLoc = CGPoint(x:currentPasture.sizeLabel.frame.maxX, y:currentPasture.sizeLabel.frame.maxY/2.0)
+//            let pinLatLon = mapView.convert(endOfSizeLabelLoc, toCoordinateFrom: mapView)
+//            deleteButton.coordinate = pinLatLon
+//            mapView.addAnnotation(deleteButton)
         }
     }
     func resetButtonsToDefaultState() {
@@ -117,6 +126,9 @@ class MapVC: UIViewController, MKMapViewDelegate {
         cancelButton.isHidden = true
         createPastureButton.isEnabled = true
         inPolygonMode = false
+        if let tapRec = tapRecognizer {
+            mapView.removeGestureRecognizer(tapRec)
+        }
     }
     func clearLabels() {
         topLabel.text = ""
@@ -180,12 +192,34 @@ class MapVC: UIViewController, MKMapViewDelegate {
                             finishPolygonButton?.addTarget(self, action: #selector(finishPolygonButtonTapped), for: UIControlEvents.touchUpInside)
                             touchPointView.addSubview(finishPolygonButton!)
                         }
+                        touchPointView.isDraggable = true
+                        return touchPointView
                     }
                 }
-            }
-            touchPointView.isDraggable = true
-            return touchPointView
-            
+            } // fence post
+            //else
+            //
+            // get the black circles back
+            // add annotation to the map with the code below (take it out of here?)
+            // put the pasture_ID into the button somewhere, somehow,
+            //  handle delete.
+            //
+//            if let title = annotation.title!, title.isEqual("deleteButton") {
+//                if annotation is MKPointAnnotation {
+//                    let deleteButton = UIButton(type:.custom)
+//                    deleteButton.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
+//                    deleteButton.setTitleColor(UIColor.red, for: UIControlState.normal)
+//                    deleteButton.setTitle("X", for: UIControlState.normal)
+//                    deleteButton.addTarget(self, action:#selector(deleteButtonTapped), for:UIControlEvents.touchUpInside)
+//
+//                   // deleteButton.tag = annotation.subtitle  -- WHERE DO I GET THE PastureID from?
+//                    print("Annotation subtitle is \(String(describing: annotation.subtitle))")
+//                    let pinView = MKPinAnnotationView()
+//         //           pinView.addSubview(deleteButton)
+//                    pinView.annotation = annotation
+//                    return pinView
+//                }
+//            }
         }
         return nil
     }
@@ -196,6 +230,21 @@ class MapVC: UIViewController, MKMapViewDelegate {
             return PolygonRendererFactory.rendererFor(overlay: overlay)
         }
         return MKPolylineRenderer(overlay: overlay) // placeholder until I get the SHAPE
+    }
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        print("Did select annotation view")
+//        if let sub = view.annotation?.subtitle {
+//            print(" annotation.subtitle is: \(sub)")
+//            DBManager.shared().deletePasture(Int64(sub!)!)
+//        }
+    }
+    @objc func deleteButtonTapped(sender:UIButton) {
+        print ("Delete button tapped")
+//        if let sv = sender.superView as? MKPinAnnotationView {
+//            if let subtitle = sv.annotation.subtitle {
+//                print(" super.subtitle is: \(sv.subtitle)")
+//            }
+//        }
     }
     // ---------------------------------------------
     // MARK: - Polygon handlers
@@ -252,7 +301,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
         mapView.addOverlays([pasture.polygonOverlay!])
         displayAreaInsidePolygon(pasture: pasture)
 
-        if pasture.isComplete {
+        if pasture.isComplete() {
             topLabel.text = ""
         } else {
             if corners.count > 2 {
@@ -322,3 +371,4 @@ class MapVC: UIViewController, MKMapViewDelegate {
         super.didReceiveMemoryWarning()
     }
 }
+

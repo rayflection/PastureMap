@@ -23,7 +23,7 @@ class DBManager {
     let rank       = Expression<Int64>("rank")
     let latitude   = Expression<Double>("latitude")
     let longitude  = Expression<Double>("longitude")
-    let id         = Expression<Int64>("id")
+    let pasturePK  = Expression<Int64>("pasturePK")
     let name       = Expression<String>("name")
     
     init() {
@@ -45,7 +45,7 @@ class DBManager {
         // create a pasture table
         do {
             try db!.run(pastureTable.create(ifNotExists: true) { t in
-                t.column(id,     primaryKey: .autoincrement)
+                t.column(pasturePK,     primaryKey: .autoincrement)
                 t.column(name)
                 // t.column(createdAt, DateTime)    // @TODO
             })
@@ -56,7 +56,7 @@ class DBManager {
         // create a fence_post table (corners, or vertices, or coordinates)
         do {
             try db!.run(cornerTable.create(ifNotExists:true) { t in
-                t.column(id,         primaryKey: .autoincrement)
+                t.column(pasturePK,         primaryKey: .autoincrement)
                 t.column(pastureFK)
                 t.column(rank)
                 t.column(latitude)
@@ -97,9 +97,10 @@ class DBManager {
                 print("Insert corner failed: \(error).")
             }
         }
-        viewModel.id = pdm.pasture_id
-        viewModel.isComplete = true
-
+     //   viewModel.id = pdm.pasture_id
+        if let pastID = pdm.pasture_id {
+            viewModel.setIsComplete(pastureID: pastID)
+        }
     }
     // -------------------------------
     func getAllPastures() -> [PastureDataModel] {
@@ -109,7 +110,7 @@ class DBManager {
                 let all = Array(try db!.prepare(pastureTable))
                 // unpack into PastureDataModel instances
                 for pasture in all {
-                    let pastureID = pasture[id]
+                    let pastureID = pasture[pasturePK]
                     let aPastureModel = PastureDataModel(pastureID)
                     pastureDBModels.append(aPastureModel)
                 
@@ -137,14 +138,19 @@ class DBManager {
     }
     // -------------------------------------------
     // This would get called when I let the user delete a pasture, NIY.
-    func deletePasture(_ pastureID:Int) {
-        // delete this sucker
+    func deletePasture(_ pastureID:Int64 ) {
+        let pasture = pastureTable.filter(pasturePK == pastureID)
+        let corner  = cornerTable.filter(pastureFK == pastureID)
+        do {
+            try db?.run(pasture.delete())
+            try db?.run(corner.delete())
+        } catch {
+            print ("delete error: \(error)")
+        }
     }
     // ----------------------------------------------
-    // @TODO- WRITE ME NEXT!
     // This gets called every time user moves a fence post, to update the corners.
     // Or if they change the name of the pasture (NIY)
-    //func updatePasture(_ pasture:PastureViewModel) {
     func updatePasture(_ pasture_id:Int64,_ theRank:Int64,_ coord:CLLocationCoordinate2D) {
         
         print("Update called.")
