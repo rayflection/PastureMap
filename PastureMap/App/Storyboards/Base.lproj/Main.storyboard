@@ -7,6 +7,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -141,18 +142,26 @@
                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lHO-RR-z5a">
-                                    <rect key="frame" x="164" y="7" width="47" height="30"/>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lHO-RR-z5a">
+                                    <rect key="frame" x="70.5" y="7" width="47" height="30"/>
                                     <state key="normal" title="Reload"/>
                                     <connections>
                                         <action selector="loadButtonTapped:" destination="GHK-H7-ZbJ" eventType="touchUpInside" id="lbA-9f-W3c"/>
                                     </connections>
                                 </button>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="66 Pastures" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GHx-RN-7iM">
+                                    <rect key="frame" x="235.5" y="12" width="92" height="21"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstItem="lHO-RR-z5a" firstAttribute="centerX" secondItem="yVw-91-wHh" secondAttribute="centerX" id="5y1-iJ-eTS"/>
+                                <constraint firstItem="lHO-RR-z5a" firstAttribute="centerX" secondItem="yVw-91-wHh" secondAttribute="centerX" multiplier="0.5" id="5y1-iJ-eTS"/>
                                 <constraint firstItem="lHO-RR-z5a" firstAttribute="centerY" secondItem="yVw-91-wHh" secondAttribute="centerY" id="TB1-y8-APA"/>
+                                <constraint firstItem="GHx-RN-7iM" firstAttribute="centerY" secondItem="yVw-91-wHh" secondAttribute="centerY" id="VzA-x0-15e"/>
+                                <constraint firstItem="GHx-RN-7iM" firstAttribute="centerX" secondItem="yVw-91-wHh" secondAttribute="centerX" multiplier="1.5" id="dEc-by-dCm"/>
                             </constraints>
                         </view>
                         <prototypes>
@@ -234,6 +243,9 @@
                         </connections>
                     </tableView>
                     <tabBarItem key="tabBarItem" title="List" id="cDw-Yd-Ws0"/>
+                    <connections>
+                        <outlet property="totalLabel" destination="GHx-RN-7iM" id="QVe-9f-cOe"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sVC-Bp-GI8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

@@ -11,20 +11,36 @@ import UIKit
 class ListVC: UITableViewController {
 
     var pastures:[PastureDataModel]=[]
+    @IBOutlet weak var totalLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.refreshControl = setUpRefreshControl()
         refresh()
     }
-
+    func setUpRefreshControl() -> UIRefreshControl{
+        let rc = UIRefreshControl()
+        rc.addTarget(self, action: #selector(refresh), for: UIControlEvents.allEvents)
+        return rc
+    }
     @IBAction func loadButtonTapped(_ sender: Any) {
         refresh()
     }
-    func refresh() {
+    @objc func refresh() {
         pastures = DBManager.shared().getAllPastures()
         tableView.reloadData()
+        self.refreshControl?.endRefreshing()
+        updateTotalLabel(pastures.count)
     }
-    
+    func updateTotalLabel(_ count:Int) {
+        var string=""
+        if count == 1 {
+            string = "1 Pasture"
+        } else {
+            string = "\(count) Pastures"
+        }
+        totalLabel.text = string
+    }
     // MARK: Data souce
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return pastures[section].vertices.count + 1

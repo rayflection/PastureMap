@@ -10,6 +10,10 @@ import UIKit
 import MapKit
 import CoreLocation
 
+//
+// @TODO - sync the database with the map, i.e. read DB first, display all on map.
+//       - Are you sure? alert before delete.
+//
 class MapVC: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var createPastureButton: UIButton!
     @IBOutlet weak var cancelButton: UIButton!
@@ -111,15 +115,19 @@ class MapVC: UIViewController, MKMapViewDelegate {
             renderCompletePolygon(currentPasture)
             resetButtonsToDefaultState()
             
-//            let deleteButton = MKPointAnnotation()
-//            deleteButton.title = "deleteButton"
-//            // ugly hack until I can subclass MKPinAnnotation
-//            deleteButton.subtitle = String(describing: currentPasture.id)
-//            let endOfSizeLabelLoc = CGPoint(x:currentPasture.sizeLabel.frame.maxX, y:currentPasture.sizeLabel.frame.maxY/2.0)
-//            let pinLatLon = mapView.convert(endOfSizeLabelLoc, toCoordinateFrom: mapView)
-//            deleteButton.coordinate = pinLatLon
-//            mapView.addAnnotation(deleteButton)
+            let deleteButtonAnn = AnnotationWithPasture()
+            deleteButtonAnn.pasture = currentPasture
+            deleteButtonAnn.title = "deleteButton"
+            deleteButtonAnn.coordinate = calcDeleteButtonAnnotationLocation(pasture: currentPasture)
+            currentPasture.deleteAnnotation = deleteButtonAnn
+            mapView.addAnnotation(deleteButtonAnn)
         }
+    }
+    func calcDeleteButtonAnnotationLocation(pasture:PastureViewModel) -> CLLocationCoordinate2D{
+        let endOfSizeLabelLoc = CGPoint(x:pasture.sizeLabel.frame.maxX,
+                                        y:(pasture.sizeLabel.frame.maxY +
+                                           pasture.sizeLabel.frame.minY)/2.0)
+        return mapView.convert(endOfSizeLabelLoc, toCoordinateFrom: mapView)
     }
     func resetButtonsToDefaultState() {
         finishButton.isHidden = true
@@ -192,34 +200,34 @@ class MapVC: UIViewController, MKMapViewDelegate {
                             finishPolygonButton?.addTarget(self, action: #selector(finishPolygonButtonTapped), for: UIControlEvents.touchUpInside)
                             touchPointView.addSubview(finishPolygonButton!)
                         }
-                        touchPointView.isDraggable = true
-                        return touchPointView
                     }
                 }
+                touchPointView.isDraggable = true
+                return touchPointView
             } // fence post
-            //else
             //
-            // get the black circles back
-            // add annotation to the map with the code below (take it out of here?)
-            // put the pasture_ID into the button somewhere, somehow,
-            //  handle delete.
-            //
-//            if let title = annotation.title!, title.isEqual("deleteButton") {
-//                if annotation is MKPointAnnotation {
-//                    let deleteButton = UIButton(type:.custom)
-//                    deleteButton.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
-//                    deleteButton.setTitleColor(UIColor.red, for: UIControlState.normal)
-//                    deleteButton.setTitle("X", for: UIControlState.normal)
-//                    deleteButton.addTarget(self, action:#selector(deleteButtonTapped), for:UIControlEvents.touchUpInside)
-//
-//                   // deleteButton.tag = annotation.subtitle  -- WHERE DO I GET THE PastureID from?
-//                    print("Annotation subtitle is \(String(describing: annotation.subtitle))")
-//                    let pinView = MKPinAnnotationView()
-//         //           pinView.addSubview(deleteButton)
-//                    pinView.annotation = annotation
-//                    return pinView
-//                }
-//            }
+            if let title = annotation.title!, title.isEqual("deleteButton") {
+                if annotation is AnnotationWithPasture {
+                    let ann =  annotation as! AnnotationWithPasture
+                    if let annPasture = ann.pasture {
+                        let deleteButton = ButtonWithPasture(type:.custom)
+                        deleteButton.frame = CGRect(x: 0, y: 0, width: 30, height: 20)
+                        deleteButton.setTitleColor(UIColor.red, for: UIControlState.normal)
+                        deleteButton.setTitle("(X)", for: UIControlState.normal)
+                        deleteButton.addTarget(self,
+                                               action:#selector(deleteButtonTapped),
+                                               for:UIControlEvents.touchUpInside)
+                        deleteButton.pasture = annPasture
+                        
+                        let annView = MKAnnotationView()
+                        annView.frame = CGRect(x:0,y:0,width:30,height:20)
+                        annView.backgroundColor = UIColor.clear
+                        annView.addSubview(deleteButton)
+                        annView.annotation = annotation
+                        return annView
+                    }
+                }
+            }
         }
         return nil
     }
@@ -231,20 +239,37 @@ class MapVC: UIViewController, MKMapViewDelegate {
         }
         return MKPolylineRenderer(overlay: overlay) // placeholder until I get the SHAPE
     }
-    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        print("Did select annotation view")
-//        if let sub = view.annotation?.subtitle {
-//            print(" annotation.subtitle is: \(sub)")
-//            DBManager.shared().deletePasture(Int64(sub!)!)
-//        }
-    }
+
     @objc func deleteButtonTapped(sender:UIButton) {
         print ("Delete button tapped")
-//        if let sv = sender.superView as? MKPinAnnotationView {
-//            if let subtitle = sv.annotation.subtitle {
-//                print(" super.subtitle is: \(sv.subtitle)")
-//            }
-//        }
+        if let sender = sender as? ButtonWithPasture {
+            if let pasture = sender.pasture {
+                //
+                // @TODO - insert an ARE YOU SURE? Alert
+                //
+                deletePasture(pasture)
+            }
+        }
+    }
+    func deletePasture(_ pasture: PastureViewModel) {
+        if let pk = pasture.id {
+            DBManager.shared().deletePasture(pk)
+            erasePasture(pasture)
+        }
+    }
+    func erasePasture(_ pasture:PastureViewModel) {
+        // erase this pasture from map, and remove from lists, etc.
+        clearOverlays(pasture)
+        clearPolylines(pasture)
+        clearFencePosts(pasture)
+        if let da = pasture.deleteAnnotation {
+            mapView.removeAnnotation(da)
+        }
+        pasture.sizeLabel.removeFromSuperview()
+        if let killIndex = pastureList.removeIndex(pasture) {
+            pastureList.remove(at: killIndex)
+        }
+        PastureSummaryRenderer.updateSummary(pastureList,summaryLabel)
     }
     // ---------------------------------------------
     // MARK: - Polygon handlers
@@ -333,8 +358,12 @@ class MapVC: UIViewController, MKMapViewDelegate {
         PastureRenderer.displayAcreageLabel(pasture: pasture, mapView: mapView)
         if pasture.polygonVertices.count > 2 {
             PastureSummaryRenderer.updateSummary(pastureList,summaryLabel)
+            if let ann = pasture.deleteAnnotation {
+                ann.coordinate = calcDeleteButtonAnnotationLocation(pasture: pasture)
+            }
         }
     }
+
     func polygonVerticesAreValid(_ vertices:[MKPointAnnotation]) -> Bool {
         if vertices.count < 4 {
             return true
@@ -372,3 +401,24 @@ class MapVC: UIViewController, MKMapViewDelegate {
     }
 }
 
+class AnnotationWithPasture: MKPointAnnotation {
+    var pasture:PastureViewModel?
+}
+class ButtonWithPasture: UIButton {
+    var pasture:PastureViewModel?
+}
+extension Array {
+    func removeIndex(_ pasture:PastureViewModel)  -> Int? {// really, this is just find.
+        for (index,item) in self.enumerated() {
+            if item is PastureViewModel {
+                let foo = item as! PastureViewModel
+                if let itemID = foo.id, let pastID = pasture.id {
+                    if itemID == pastID {
+                        return index
+                    }
+                }
+            }
+        }
+        return nil
+    }
+}

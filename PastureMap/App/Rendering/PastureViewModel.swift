@@ -17,7 +17,7 @@ class PastureViewModel {
     var sizeLabel = UILabel(frame: CGRect(x:0, y:0, width:200, height:20))
     private var pastureIsComplete=false
     var area=0.0
-    let deleteButton = UIButton(frame: CGRect(x:180.0, y:0.0, width:20.0, height:20.0))
+    var deleteAnnotation:MKPointAnnotation?
     
     func setIsComplete(pastureID:Int64) {
         id = pastureID
@@ -31,6 +31,7 @@ class PastureViewModel {
         polygonOverlay = nil
         polylines.removeAll()
         sizeLabel.text = ""
+        deleteAnnotation = nil
         pastureIsComplete = false
         area = 0.0
     }
