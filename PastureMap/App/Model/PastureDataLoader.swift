@@ -10,18 +10,7 @@ import Foundation
 import MapKit
 
 class PastureDataLoader {
-    
-    func go(_ mapVC: MapVC ) {
-        let userLoc = mapVC.mapView.userLocation.coordinate
-        
-        let pastures = getSomeData(userLoc)
-        for pastureDM in pastures {
-            create(pastureDM, mapVC)
-        }
-        
-       // let foo = DBManager.shared().createPasture()  // invoke to initialize it
-        //print("foo \(foo)")
-    }
+
     func loadDataFromDB(_ mapVC: MapVC ) {
         let pastures = DBManager.shared().getAllPastures()
         for pastureDM in pastures {
@@ -29,13 +18,22 @@ class PastureDataLoader {
         }
     }
     func injectPasture(_ data:PastureDataModel, _ mapVC:MapVC) {
-        //
-        // call an endpoint in MapVC to assign use this PDM, and add it to it's list
-        // call another endpoint in MapVC to render everything, but not save to DB.
-        // refactor MapVC.
-        //
+        if !mapVC.installExistingPastureIfNotAlreadyThere(data) {
+            for point in data.vertices {
+                mapVC.addToPolygon(pasture: mapVC.currentPasture, coord:point, isComplete:false)
+            }
+            mapVC.finishButtonTapped(data)
+        }
     }
-    
+    // ----------------------------
+    func loadTestData(_ mapVC: MapVC) {
+        let userLoc = mapVC.mapView.userLocation.coordinate
+        
+        let pastures = getSomeData(userLoc)
+        for pastureDM in pastures {
+            create(pastureDM, mapVC)
+        }
+    }
     func getSomeData(_ center:CLLocationCoordinate2D) -> [PastureDataModel] {
         var models : [PastureDataModel] = []
 

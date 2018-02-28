@@ -11,8 +11,7 @@ import MapKit
 import CoreLocation
 
 //
-// @TODO - sync the database with the map, i.e. read DB first, display all on map.
-//       - Are you sure? alert before delete.
+// @TODO - prevent polygon overlap, preferrably in real time
 //
 class MapVC: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var createPastureButton: UIButton!
@@ -22,10 +21,10 @@ class MapVC: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var topLabel: UILabel!
     @IBOutlet weak var bottomLabel: UILabel!
     @IBOutlet weak var summaryLabel: UILabel!
+    @IBOutlet weak var dummyiPadAnchor: UIView!
     
     @IBOutlet weak var mapView: MKMapView!
 
-    
     var tapRecognizer:UITapGestureRecognizer?
     var inPolygonMode=false
     var currentPasture = PastureViewModel()
@@ -33,11 +32,6 @@ class MapVC: UIViewController, MKMapViewDelegate {
     var pastureList:[PastureViewModel]=[]
     let locationManager = CLLocationManager()
     
-    @IBAction func LoadDataTapped(_ sender: UIBarButtonItem) {
-        print("Got Load")
-        let pdl = PastureDataLoader()
-        pdl.go(self)
-    }
     // -----------------------------------------
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,21 +67,37 @@ class MapVC: UIViewController, MKMapViewDelegate {
     }
 
     // --------------------------------------------
-    // MARK: - button event handlers
+    // MARK: - button and event handlers
     @IBAction func createPastureButtonTapped(_ sender: UIButton) {
+
+        currentPasture = PastureViewModel()
+        pastureList.append(currentPasture)
+        finishUpCreation()
+    }
+    func installExistingPastureIfNotAlreadyThere(_ data:PastureDataModel) -> Bool {
+        var alreadyInstalled = false
+        for p in pastureList {
+            if p.id == data.pasture_id {
+                alreadyInstalled = true
+                break
+            }
+        }
+        if !alreadyInstalled {
+            currentPasture = PastureViewModel()
+            currentPasture.id = data.pasture_id
+            pastureList.append(currentPasture)
+        }
+        
+        finishUpCreation()
+        
+        return alreadyInstalled
+    }
+    func finishUpCreation() {
         inPolygonMode = true
         createPastureButton.isEnabled = false
         finishButton.isHidden = false
         cancelButton.isHidden = false
         finishButton.isEnabled = false      // don't enable until we have at least 3 corners
-        //
-        // @TODO - need a way to supply an existing PastureModel from DB,
-        //      and just create the graphics for that, without instantiating a new PVM,
-        //      and DO NOT create it when done.
-        //   Need 2 new entry points for the PastureDataLoader.
-        //
-        currentPasture = PastureViewModel()
-        pastureList.append(currentPasture)
         if let tapRec = tapRecognizer {
             mapView.addGestureRecognizer(tapRec)
         }
@@ -101,10 +111,10 @@ class MapVC: UIViewController, MKMapViewDelegate {
         resetButtonsToDefaultState()
         showSelectAndDragMessage()
     }
-    @IBAction func finishButtonTapped(_ sender: UIButton) {
-        finishPolygonButtonTapped()
+    @IBAction func finishButtonTapped(_ sender: Any) {
+        finishPolygonButtonTapped(sender)
     }
-    @objc func finishPolygonButtonTapped() {
+    @objc func finishPolygonButtonTapped(_ sender:Any) {
         NSLog("Poly Origin Tapped - POLYGON COMPLETE!")
         if inPolygonMode {
             
@@ -114,7 +124,11 @@ class MapVC: UIViewController, MKMapViewDelegate {
             if let finish = finishPolygonButton {
                 finish.removeFromSuperview()
             }
-            DBManager.shared().createPasture(currentPasture)
+            if sender is PastureDataModel {
+                // generating programmatically
+            } else {
+                DBManager.shared().createPasture(currentPasture)
+            }
             
             renderCompletePolygon(currentPasture)
             resetButtonsToDefaultState()
@@ -149,6 +163,17 @@ class MapVC: UIViewController, MKMapViewDelegate {
     }
     @IBAction func optionsMenuTapped(_ sender: UIButton) {
         self.present(OptionsHandler().getOptionsMenuActionSheet(sender,mapView), animated:true, completion:nil)
+    }
+    @IBAction func dataMenuTapped(_ sender: UIBarButtonItem) {
+        self.present(OptionsHandler().getDataMenuActionSheet(dummyiPadAnchor,self), animated:true, completion: nil)
+    }
+    func loadPastureDataFromDatabase() {
+        let pdl = PastureDataLoader()
+        pdl.loadDataFromDB(self)
+    }
+    func loadRandomTestData() {
+        let pdl = PastureDataLoader()
+        pdl.loadTestData(self)
     }
     // --------------------------------------------
     // MARK: - MapView Delegate
@@ -242,6 +267,9 @@ class MapVC: UIViewController, MKMapViewDelegate {
             return PolygonRendererFactory.rendererFor(overlay: overlay)
         }
         return MKPolylineRenderer(overlay: overlay) // placeholder until I need more SHAPEs
+    }
+    func mapViewDidFinishRenderingMap(_ mapView: MKMapView, fullyRendered: Bool) {
+        loadPastureDataFromDatabase()
     }
 
     @objc func deleteButtonTapped(sender:UIButton) {

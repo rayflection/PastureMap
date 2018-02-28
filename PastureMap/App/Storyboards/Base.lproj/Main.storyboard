@@ -26,6 +26,14 @@
                                     <outlet property="delegate" destination="9pv-A4-QxB" id="mSy-vX-ffW"/>
                                 </connections>
                             </mapView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fdD-3M-WQp" userLabel="DummyAnchorForiPadDataOptionsAlert">
+                                <rect key="frame" x="357" y="64" width="2" height="2"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="2" id="0Sk-7a-DyA"/>
+                                    <constraint firstAttribute="height" constant="2" id="7mc-OJ-Ug4"/>
+                                </constraints>
+                            </view>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="UsI-aW-JUN">
                                 <rect key="frame" x="12" y="74" width="351" height="30"/>
                                 <subviews>
@@ -89,6 +97,7 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="fdD-3M-WQp" firstAttribute="top" secondItem="tsR-hK-woN" secondAttribute="topMargin" id="0pm-aX-dvZ"/>
                             <constraint firstItem="PQr-Ze-W5v" firstAttribute="bottom" secondItem="Rmo-aW-c9g" secondAttribute="bottom" constant="88" id="5EK-G0-qt9"/>
                             <constraint firstItem="Rmo-aW-c9g" firstAttribute="top" secondItem="PQr-Ze-W5v" secondAttribute="top" constant="80" id="89W-Qj-d6i"/>
                             <constraint firstItem="UsI-aW-JUN" firstAttribute="leading" secondItem="PQr-Ze-W5v" secondAttribute="leading" constant="12" id="AF0-2G-pYG"/>
@@ -103,15 +112,16 @@
                             <constraint firstItem="Rmo-aW-c9g" firstAttribute="top" secondItem="d13-65-X3j" secondAttribute="bottom" constant="8" id="hYd-9Y-1kV"/>
                             <constraint firstItem="jXj-CT-Xzm" firstAttribute="trailing" secondItem="Rmo-aW-c9g" secondAttribute="trailing" id="iIp-cA-GAm"/>
                             <constraint firstItem="d13-65-X3j" firstAttribute="leading" secondItem="PQr-Ze-W5v" secondAttribute="leading" constant="16" id="peu-Be-8fN"/>
+                            <constraint firstItem="fdD-3M-WQp" firstAttribute="trailing" secondItem="tsR-hK-woN" secondAttribute="trailingMargin" id="sTK-fw-K0L"/>
                             <constraint firstItem="jXj-CT-Xzm" firstAttribute="top" secondItem="Rmo-aW-c9g" secondAttribute="bottom" constant="8" id="wHj-zD-7jT"/>
                             <constraint firstItem="jXj-CT-Xzm" firstAttribute="leading" secondItem="Rmo-aW-c9g" secondAttribute="leading" id="yQI-aK-o2n"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="PQr-Ze-W5v"/>
                     </view>
                     <navigationItem key="navigationItem" title="Pasture Manager" id="ybK-5M-97j">
-                        <barButtonItem key="rightBarButtonItem" title="Load Data" id="gDX-eX-WZR" userLabel="LoadTest">
+                        <barButtonItem key="rightBarButtonItem" title="Data Options" id="gDX-eX-WZR">
                             <connections>
-                                <action selector="LoadDataTapped:" destination="9pv-A4-QxB" id="1tm-J2-FqG"/>
+                                <action selector="dataMenuTapped:" destination="9pv-A4-QxB" id="RZK-Tm-Qgf"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -119,6 +129,7 @@
                         <outlet property="bottomLabel" destination="rVD-SQ-jyj" id="KgH-HW-PUU"/>
                         <outlet property="cancelButton" destination="jyq-6F-1z5" id="sjc-H6-Bt0"/>
                         <outlet property="createPastureButton" destination="woq-gc-Pfp" id="lk3-pT-wQD"/>
+                        <outlet property="dummyiPadAnchor" destination="fdD-3M-WQp" id="gCE-JL-bep"/>
                         <outlet property="finishButton" destination="poH-of-BbD" id="K9h-1F-9cI"/>
                         <outlet property="mapView" destination="Rmo-aW-c9g" id="VBK-EN-LL9"/>
                         <outlet property="summaryLabel" destination="jXj-CT-Xzm" id="rKk-3f-kVs"/>

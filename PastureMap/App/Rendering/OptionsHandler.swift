@@ -12,6 +12,30 @@ import MapKit
 
 class OptionsHandler {
 
+    func getDataMenuActionSheet(_ source:UIView,_ mapVC:MapVC) -> UIAlertController {
+        let ac = UIAlertController(title: "Data Options", message: "", preferredStyle: .actionSheet)
+        ac.addAction(UIAlertAction(title: "Display Saved Pastures", style: .default, handler: { (action) in
+            mapVC.loadPastureDataFromDatabase()
+        }))
+        ac.addAction(UIAlertAction(title: "Display Random Test Pastures", style: .default, handler: { (action) in
+            mapVC.loadRandomTestData()
+        }))
+        //
+        // @TODO - delete all pastures!!!!, are you sure? are you REALLY Sure?
+        //   - wipe database (low level init), and erase map (any low level I can do?)
+        //
+        
+        // Cancel button
+        if UI_USER_INTERFACE_IDIOM() == .pad {
+            ac.popoverPresentationController?.sourceView = source
+            ac.popoverPresentationController?.permittedArrowDirections = [.up, .right]
+        } else {
+            ac.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) in
+            print("Chose Cancel")
+            }))
+        }
+        return ac
+    }
 
     func getOptionsMenuActionSheet(_ button:UIButton,_ mapView:MKMapView) -> UIAlertController {
         let ac = UIAlertController(title: "Map Options", message: "", preferredStyle: .actionSheet)
@@ -45,6 +69,7 @@ class OptionsHandler {
                 mapView.mapType = .standard }))
         }
 
+        // Cancel button
         if UI_USER_INTERFACE_IDIOM() == .pad {
             ac.popoverPresentationController?.sourceView = button
         } else {
