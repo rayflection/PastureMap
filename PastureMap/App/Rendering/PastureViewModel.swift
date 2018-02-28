@@ -36,3 +36,25 @@ class PastureViewModel {
         area = 0.0
     }
 }
+// MARK: - helper functions for pasture delete
+class AnnotationWithPasture: MKPointAnnotation {
+    var pasture:PastureViewModel?
+}
+class ButtonWithPasture: UIButton {
+    var pasture:PastureViewModel?
+}
+extension Array {
+    func removeIndex(_ pasture:PastureViewModel)  -> Int? {// really, this is just find.
+        for (index,item) in self.enumerated() {
+            if item is PastureViewModel {
+                let foo = item as! PastureViewModel
+                if let itemID = foo.id, let pastID = pasture.id {
+                    if itemID == pastID {
+                        return index
+                    }
+                }
+            }
+        }
+        return nil
+    }
+}

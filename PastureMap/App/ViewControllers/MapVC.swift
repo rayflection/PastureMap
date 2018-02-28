@@ -89,9 +89,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
         bottomLabel.text = ""
     }
     @IBAction func cancelButtonTapped(_ sender: UIButton) {
-        clearPolylines(currentPasture)
-        clearOverlays(currentPasture)
-        clearFencePosts(currentPasture)
+        clearPolygonGraphics(currentPasture)
         pastureList.removeLast()
         currentPasture.clear()
         resetButtonsToDefaultState()
@@ -237,7 +235,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
         } else if overlay is MKPolygon {
             return PolygonRendererFactory.rendererFor(overlay: overlay)
         }
-        return MKPolylineRenderer(overlay: overlay) // placeholder until I get the SHAPE
+        return MKPolylineRenderer(overlay: overlay) // placeholder until I need more SHAPEs
     }
 
     @objc func deleteButtonTapped(sender:UIButton) {
@@ -248,15 +246,11 @@ class MapVC: UIViewController, MKMapViewDelegate {
                     "Do you really want to delete this pasture?", preferredStyle: .actionSheet)
                 ac.addAction(UIAlertAction(title:"Yes, Delete it!", style: .destructive,
                                            handler: {(action) in
-                                            self.deletePasture(pasture)
-                                            }
-                ))
+                                            self.deletePasture(pasture) }))
                 if UI_USER_INTERFACE_IDIOM() == .pad {
                     ac.popoverPresentationController?.sourceView = sender
                 } else {
-                    ac.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) in
-                        print("Chose Cancel")
-                    }))
+                    ac.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) in }))
                 }
                 self.present(ac, animated:true, completion:nil)
             }
@@ -269,10 +263,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
         }
     }
     func erasePasture(_ pasture:PastureViewModel) {
-        // erase this pasture from map, and remove from lists, etc.
-        clearOverlays(pasture)
-        clearPolylines(pasture)
-        clearFencePosts(pasture)
+        clearPolygonGraphics(pasture)
         if let da = pasture.deleteAnnotation {
             mapView.removeAnnotation(da)
         }
@@ -364,8 +355,12 @@ class MapVC: UIViewController, MKMapViewDelegate {
     func clearFencePosts(_ pasture:PastureViewModel) {
         mapView.removeAnnotations(pasture.polygonVertices)
     }
+    func clearPolygonGraphics(_ pasture:PastureViewModel) {
+        clearOverlays(pasture)
+        clearPolylines(pasture)
+        clearFencePosts(pasture)
+    }
     func displayAreaInsidePolygon(pasture:PastureViewModel) {
-
         PastureRenderer.displayAcreageLabel(pasture: pasture, mapView: mapView)
         if pasture.polygonVertices.count > 2 {
             PastureSummaryRenderer.updateSummary(pastureList,summaryLabel)
@@ -411,25 +406,4 @@ class MapVC: UIViewController, MKMapViewDelegate {
         super.didReceiveMemoryWarning()
     }
 }
-// @TODO - Put these somewhere else - too much code in this file!
-class AnnotationWithPasture: MKPointAnnotation {
-    var pasture:PastureViewModel?
-}
-class ButtonWithPasture: UIButton {
-    var pasture:PastureViewModel?
-}
-extension Array {
-    func removeIndex(_ pasture:PastureViewModel)  -> Int? {// really, this is just find.
-        for (index,item) in self.enumerated() {
-            if item is PastureViewModel {
-                let foo = item as! PastureViewModel
-                if let itemID = foo.id, let pastID = pasture.id {
-                    if itemID == pastID {
-                        return index
-                    }
-                }
-            }
-        }
-        return nil
-    }
-}
+
