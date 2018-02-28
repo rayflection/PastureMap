@@ -244,10 +244,21 @@ class MapVC: UIViewController, MKMapViewDelegate {
         print ("Delete button tapped")
         if let sender = sender as? ButtonWithPasture {
             if let pasture = sender.pasture {
-                //
-                // @TODO - insert an ARE YOU SURE? Alert
-                //
-                deletePasture(pasture)
+                let ac = UIAlertController (title:"Are you Sure?", message:
+                    "Do you really want to delete this pasture?", preferredStyle: .actionSheet)
+                ac.addAction(UIAlertAction(title:"Yes, Delete it!", style: .destructive,
+                                           handler: {(action) in
+                                            self.deletePasture(pasture)
+                                            }
+                ))
+                if UI_USER_INTERFACE_IDIOM() == .pad {
+                    ac.popoverPresentationController?.sourceView = sender
+                } else {
+                    ac.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) in
+                        print("Chose Cancel")
+                    }))
+                }
+                self.present(ac, animated:true, completion:nil)
             }
         }
     }
@@ -400,7 +411,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
         super.didReceiveMemoryWarning()
     }
 }
-
+// @TODO - Put these somewhere else - too much code in this file!
 class AnnotationWithPasture: MKPointAnnotation {
     var pasture:PastureViewModel?
 }
