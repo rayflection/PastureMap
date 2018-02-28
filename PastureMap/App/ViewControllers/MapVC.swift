@@ -80,6 +80,12 @@ class MapVC: UIViewController, MKMapViewDelegate {
         finishButton.isHidden = false
         cancelButton.isHidden = false
         finishButton.isEnabled = false      // don't enable until we have at least 3 corners
+        //
+        // @TODO - need a way to supply an existing PastureModel from DB,
+        //      and just create the graphics for that, without instantiating a new PVM,
+        //      and DO NOT create it when done.
+        //   Need 2 new entry points for the PastureDataLoader.
+        //
         currentPasture = PastureViewModel()
         pastureList.append(currentPasture)
         if let tapRec = tapRecognizer {

@@ -22,6 +22,19 @@ class PastureDataLoader {
        // let foo = DBManager.shared().createPasture()  // invoke to initialize it
         //print("foo \(foo)")
     }
+    func loadDataFromDB(_ mapVC: MapVC ) {
+        let pastures = DBManager.shared().getAllPastures()
+        for pastureDM in pastures {
+            injectPasture(pastureDM, mapVC)
+        }
+    }
+    func injectPasture(_ data:PastureDataModel, _ mapVC:MapVC) {
+        //
+        // call an endpoint in MapVC to assign use this PDM, and add it to it's list
+        // call another endpoint in MapVC to render everything, but not save to DB.
+        // refactor MapVC.
+        //
+    }
     
     func getSomeData(_ center:CLLocationCoordinate2D) -> [PastureDataModel] {
         var models : [PastureDataModel] = []
