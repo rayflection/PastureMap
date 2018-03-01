@@ -12,6 +12,8 @@ import CoreLocation
 
 //
 // @TODO - prevent polygon overlap, preferrably in real time
+// @TODO - give pastures real names
+// @TODO - detect if any lines cross / polygons overlap
 //
 class MapVC: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var createPastureButton: UIButton!
@@ -28,7 +30,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
     var tapRecognizer:UITapGestureRecognizer?
     var inPolygonMode=false
     var currentPasture = PastureViewModel()
-    var finishPolygonButton:UIButton?       // button inside original fence post, user taps to complete poly.
+    var finishPolygonButton:UIButton?  // button inside original fence post, user taps to complete poly.
     var pastureList:[PastureViewModel]=[]
     let locationManager = CLLocationManager()
     
@@ -194,9 +196,11 @@ class MapVC: UIViewController, MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, didChange newState: MKAnnotationViewDragState, fromOldState oldState: MKAnnotationViewDragState) {
         if newState == MKAnnotationViewDragState.ending || newState == MKAnnotationViewDragState.canceling {
             view.dragState = MKAnnotationViewDragState.none
-            if let coo = view.annotation?.coordinate, let name = view.annotation?.title! {
-                displayCoordinates(coord:coo, what:name)
-                if name.isEqual("fence post") {     // @TODO - need better way to detect, by type or tag or class..
+            if let coo = view.annotation?.coordinate {
+                if let name = view.annotation?.title! {
+                    displayCoordinates(coord:coo, what:name)
+                }
+                if view.annotation is FencePostAnnotation {
                     if let fencepost = view.annotation as? MKPointAnnotation {
                         if let past = whatPastureIsThisPostIn(post:fencepost) {
                             currentPasture = past
@@ -215,17 +219,15 @@ class MapVC: UIViewController, MKMapViewDelegate {
             return nil
         }
         if annotation is MKPointAnnotation {
-            // Distinguish a polygon touchPoint from any other annotations we might add later
             let touchPointView = MKAnnotationView(annotation:annotation, reuseIdentifier: "touchPoint")
-            if let title = annotation.title!, title.isEqual("fence post") {
+            if annotation is FencePostAnnotation {
                 touchPointView.image = UIImage(named:"fencePost")
                 if let postAnnotation = annotation as? MKPointAnnotation {
                     if let pasture = whatPastureIsThisPostIn(post:postAnnotation) {
                         if pasture.polygonVertices.count == 1 {
                             touchPointView.image = UIImage(named:"fencePostYellow")
-                            // add a button to this view which allows user to complete the polygon
                             finishPolygonButton = UIButton(type:.custom)
-                            finishPolygonButton?.frame = touchPointView.bounds  // make me bigger, more visual
+                            finishPolygonButton?.frame = touchPointView.bounds
                             finishPolygonButton?.addTarget(self, action: #selector(finishPolygonButtonTapped), for: UIControlEvents.touchUpInside)
                             touchPointView.addSubview(finishPolygonButton!)
                         }
@@ -302,7 +304,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
             mapView.removeAnnotation(da)
         }
         pasture.sizeLabel.removeFromSuperview()
-        if let killIndex = pastureList.removeIndex(pasture) {
+        if let killIndex = pastureList.findIndexOf(pasture) {
             pastureList.remove(at: killIndex)
         }
         PastureSummaryRenderer.updateSummary(pastureList,summaryLabel)
@@ -310,7 +312,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
     // ---------------------------------------------
     // MARK: - Polygon handlers
     func addToPolygon(pasture: PastureViewModel, coord: CLLocationCoordinate2D, isComplete:Bool) {
-        let polyAnnotation = MKPointAnnotation()
+        let polyAnnotation = FencePostAnnotation()
         polyAnnotation.coordinate = coord
         polyAnnotation.title = "fence post"
         pasture.polygonVertices.append(polyAnnotation)

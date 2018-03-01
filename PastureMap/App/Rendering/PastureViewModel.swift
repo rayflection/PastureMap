@@ -40,11 +40,14 @@ class PastureViewModel {
 class AnnotationWithPasture: MKPointAnnotation {
     var pasture:PastureViewModel?
 }
+class FencePostAnnotation: MKPointAnnotation {
+    
+}
 class ButtonWithPasture: UIButton {
     var pasture:PastureViewModel?
 }
 extension Array {
-    func removeIndex(_ pasture:PastureViewModel)  -> Int? {// really, this is just find.
+    func findIndexOf(_ pasture:PastureViewModel)  -> Int? {
         for (index,item) in self.enumerated() {
             if item is PastureViewModel {
                 let foo = item as! PastureViewModel
