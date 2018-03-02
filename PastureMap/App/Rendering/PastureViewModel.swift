@@ -11,6 +11,7 @@ import MapKit
 
 class PastureViewModel {
     var id:Int64?
+    var pastureName=""
     var polygonVertices:[MKPointAnnotation]=[]
     var polygonOverlay:MKPolygon?
     var polylines:[MKPolyline]=[]

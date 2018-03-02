@@ -127,9 +127,18 @@ class MapVC: UIViewController, MKMapViewDelegate {
                 finish.removeFromSuperview()
             }
             if sender is PastureDataModel {
-                // generating programmatically
+                // generated programmatically
+                if let past = sender as? PastureDataModel {
+                    currentPasture.pastureName = past.name
+                }
             } else {
                 DBManager.shared().createPasture(currentPasture)
+                if sender is UIButton {
+                    // figure out the case where we create random data programmatically,
+                    // don't prompt for a better name.
+                    promptUserForBetterPastureName(currentPasture)
+                }
+
             }
             
             renderCompletePolygon(currentPasture)
@@ -163,6 +172,30 @@ class MapVC: UIViewController, MKMapViewDelegate {
         bottomLabel.text = ""
         summaryLabel.text = ""
     }
+    func promptUserForBetterPastureName(_ pasture:PastureViewModel) {
+        let ac = UIAlertController (title:"Pasture Name", message:"", preferredStyle: .alert)
+        ac.addTextField { (textField) in
+            textField.placeholder = pasture.pastureName
+        }
+        ac.addAction(UIAlertAction(title:"OK", style: .destructive,
+                                   handler: {(action) in
+                                    if let textField = ac.textFields?.first {
+                                        if textField.text != pasture.pastureName {
+                                            if let pid=pasture.id, let newName=textField.text {
+                                                DBManager.shared().updatePastureName(pid, newName)
+                                            }
+                                        }
+                                    }
+        }))
+        if UI_USER_INTERFACE_IDIOM() == .pad {
+            ac.popoverPresentationController?.sourceView = pasture.sizeLabel
+        } else {
+            ac.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) in }))
+        }
+        self.present(ac, animated:true, completion:nil)
+    }
+    // ------------------------------------
+    // MARK: Menu handlers
     @IBAction func optionsMenuTapped(_ sender: UIButton) {
         self.present(OptionsHandler().getOptionsMenuActionSheet(sender,mapView), animated:true, completion:nil)
     }
@@ -206,7 +239,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
                             currentPasture = past
                             redrawPasture(pasture: past)
                             if let rank = rankOfAnnotation(post: fencepost, inPasture: past), let pastID = past.id {
-                                DBManager.shared().updatePasture(pastID, rank, coo)
+                                DBManager.shared().updatePastureCoordinate(pastID, rank, coo)
                             }
                         }
                     }
@@ -278,8 +311,8 @@ class MapVC: UIViewController, MKMapViewDelegate {
         print ("Delete button tapped")
         if let sender = sender as? ButtonWithPasture {
             if let pasture = sender.pasture {
-                let ac = UIAlertController (title:"Are you Sure?", message:
-                    "Do you really want to delete this pasture?", preferredStyle: .actionSheet)
+                let ac = UIAlertController (title:"Delete \(pasture.pastureName)?", message:
+                    "Really delete this pasture: \(pasture.pastureName)?", preferredStyle: .actionSheet)
                 ac.addAction(UIAlertAction(title:"Yes, Delete it!", style: .destructive,
                                            handler: {(action) in
                                             self.deletePasture(pasture) }))

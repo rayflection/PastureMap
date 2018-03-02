@@ -40,8 +40,6 @@ class DBManager {
         createDBTables()
     }
     func createDBTables() {
-
-
         // create a pasture table
         do {
             try db!.run(pastureTable.create(ifNotExists: true) { t in
@@ -73,8 +71,10 @@ class DBManager {
         let pdm = PastureDataModel(corners)
         // write pdm to the database
         do {
-            let row = try db!.run(pastureTable.insert(name <- "pasture_1")) // @TODO _ Increment NAME!!
+            let row = try db!.run(pastureTable.insert(name <- "new_pasture"))
             pdm.pasture_id = row
+            pdm.name = "pasture_\(row)"
+            updatePastureName(row, pdm.name)
             print("inserted id: \(row)")
         } catch {                                 // @TODO - better catch, more specific
             print("insertion pasture failed: \(error)") //Just show error, don't return anything.
@@ -97,8 +97,9 @@ class DBManager {
                 print("Insert corner failed: \(error).")
             }
         }
-     //   viewModel.id = pdm.pasture_id
         if let pastID = pdm.pasture_id {
+            viewModel.id = pdm.pasture_id
+            viewModel.pastureName = pdm.name
             viewModel.setIsComplete(pastureID: pastID)
         }
     }
@@ -112,6 +113,7 @@ class DBManager {
                 for pasture in all {
                     let pastureID = pasture[pasturePK]
                     let aPastureModel = PastureDataModel(pastureID)
+                    aPastureModel.name = pasture[name]
                     pastureDBModels.append(aPastureModel)
                 
                     for coords in try db!.prepare(cornerTable.select(rank,latitude,longitude)
@@ -151,7 +153,7 @@ class DBManager {
     // ----------------------------------------------
     // This gets called every time user moves a fence post, to update the corners.
     // Or if they change the name of the pasture (NIY)
-    func updatePasture(_ pasture_id:Int64,_ theRank:Int64,_ coord:CLLocationCoordinate2D) {
+    func updatePastureCoordinate(_ pasture_id:Int64,_ theRank:Int64,_ coord:CLLocationCoordinate2D) {
         
         print("Update called.")
         let fencePost = cornerTable.filter(pastureFK == pasture_id && rank==theRank)
@@ -166,6 +168,13 @@ class DBManager {
             }
         } catch {
             print("update failed: \(error)")
+        }
+    }
+    func updatePastureName(_ pastureID:Int64, _ name:String) {
+        do {
+            try db?.run(pastureTable.filter(pasturePK == pastureID).update(self.name <- name))
+        } catch {
+            print("Update Name failed: \(error)")
         }
     }
 }

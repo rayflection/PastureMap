@@ -189,6 +189,12 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Ca-YU-fWk">
+                                            <rect key="frame" x="45" y="11" width="45" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Area" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kgg-HM-L2K">
                                             <rect key="frame" x="323.5" y="11" width="35.5" height="22"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -198,18 +204,21 @@
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="Kgg-HM-L2K" firstAttribute="trailing" secondItem="Dwb-x1-PxX" secondAttribute="trailingMargin" id="EJv-KW-Bgu"/>
+                                        <constraint firstItem="4Ca-YU-fWk" firstAttribute="leading" secondItem="q4B-TJ-dIS" secondAttribute="trailing" constant="7.5" id="FKd-vT-Hcc"/>
                                         <constraint firstItem="q4B-TJ-dIS" firstAttribute="bottom" secondItem="Dwb-x1-PxX" secondAttribute="bottomMargin" id="FzG-QX-EWy"/>
+                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="4Ca-YU-fWk" secondAttribute="trailing" constant="20" symbolic="YES" id="UXg-kY-5LZ"/>
                                         <constraint firstItem="q4B-TJ-dIS" firstAttribute="leading" secondItem="Dwb-x1-PxX" secondAttribute="leadingMargin" id="Wd8-DR-pjS"/>
                                         <constraint firstItem="q4B-TJ-dIS" firstAttribute="top" secondItem="Dwb-x1-PxX" secondAttribute="topMargin" id="Z6R-Xt-FZ2"/>
-                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="q4B-TJ-dIS" secondAttribute="trailingMargin" id="fqM-V8-Wkn"/>
+                                        <constraint firstItem="4Ca-YU-fWk" firstAttribute="centerY" secondItem="Dwb-x1-PxX" secondAttribute="centerY" id="kHT-Or-DTA"/>
                                         <constraint firstItem="Kgg-HM-L2K" firstAttribute="bottom" secondItem="Dwb-x1-PxX" secondAttribute="bottomMargin" id="nK7-n4-7pv"/>
-                                        <constraint firstItem="Kgg-HM-L2K" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Dwb-x1-PxX" secondAttribute="leadingMargin" id="nSP-lp-Xpd"/>
+                                        <constraint firstItem="Kgg-HM-L2K" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Dwb-x1-PxX" secondAttribute="leadingMargin" id="trK-cF-sFe"/>
                                         <constraint firstItem="Kgg-HM-L2K" firstAttribute="top" secondItem="Dwb-x1-PxX" secondAttribute="topMargin" id="wRa-RL-wFH"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="area" destination="Kgg-HM-L2K" id="ZjI-xF-AKC"/>
                                     <outlet property="pastureID" destination="q4B-TJ-dIS" id="Bkm-RC-J1B"/>
+                                    <outlet property="pastureName" destination="4Ca-YU-fWk" id="T4v-kJ-8EQ"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="PastureCornerCell" id="moS-C4-l2H" customClass="PastureCornerCell" customModule="PastureMap" customModuleProvider="target">

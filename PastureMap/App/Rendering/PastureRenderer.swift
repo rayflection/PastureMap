@@ -56,7 +56,7 @@ class PastureRenderer {
             pasture.area = area
             let number = NSNumber(value:  AreaCalculator.areaInAcres(squareMeters:area)  )
             if let formattedNumber = PastureNumberFormatter.formatter.string(from:number) {
-                let formattedArea = "Area is \(formattedNumber) acres"
+                let formattedArea = "\(pasture.pastureName) : \(formattedNumber) acres"
                 size.text = formattedArea
                 mapView.addSubview(size)
             }

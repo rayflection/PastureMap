@@ -73,8 +73,8 @@ class PastureDataLoader {
         for point in data.vertices {
             mapVC.addToPolygon(pasture: mapVC.currentPasture, coord:point, isComplete:false)
         }
-        
-        mapVC.finishButtonTapped(fakeButton)
+        let fakeNotAButton = UIView()
+        mapVC.finishButtonTapped(fakeNotAButton)
     }
 }
 extension CLLocationCoordinate2D {

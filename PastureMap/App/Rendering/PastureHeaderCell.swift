@@ -12,10 +12,12 @@ import CoreLocation
 class PastureHeaderCell: UITableViewCell {
 
     @IBOutlet weak var pastureID: UILabel!
+    @IBOutlet weak var pastureName: UILabel!
     @IBOutlet weak var area: UILabel!
     
     func render(_ pasture:PastureDataModel) {
         pastureID.text = "\(pasture.pasture_id ?? -1)"
+        pastureName.text = pasture.name
         area.text = "\(PastureRenderer.formattedAcres(pasture: pasture)) acres."
     }
 }
