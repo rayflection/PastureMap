@@ -18,10 +18,15 @@ class ListVC: UITableViewController {
     @IBOutlet weak var totalLabel: UILabel!
     @IBOutlet weak var sortByAreaButton: UIButton!
     @IBOutlet weak var sortByNameButton: UIButton!
+    let up = " ⬆"
+    let down = " ⬇"
+    
     enum sortMethod {
         case no_sort
-        case sort_by_name
-        case sort_by_area
+        case sort_by_name_asc
+        case sort_by_name_desc
+        case sort_by_area_asc
+        case sort_by_area_desc
     }
     var currentSortMethod = sortMethod.no_sort
     
@@ -89,24 +94,51 @@ class ListVC: UITableViewController {
     // MARK: Button handlers - sort
     func applySort() {
         switch currentSortMethod {
-        case .sort_by_name:
+        case .sort_by_name_asc:
             pastures.sort(by: { (one, two) -> Bool in
-                return one.name < two.name
-            })
-        case .sort_by_area:
+                return one.name < two.name  })
+        case .sort_by_name_desc:
             pastures.sort(by: { (one, two) -> Bool in
-                return AreaCalculator.regionArea(pastureData:one) < AreaCalculator.regionArea(pastureData:two)
-            })
+                return one.name > two.name })
+        case .sort_by_area_asc:
+            pastures.sort(by: { (one, two) -> Bool in
+                return AreaCalculator.regionArea(pastureData:one) < AreaCalculator.regionArea(pastureData:two) })
+        case .sort_by_area_desc:
+            pastures.sort(by: { (one, two) -> Bool in
+                return AreaCalculator.regionArea(pastureData:one) > AreaCalculator.regionArea(pastureData:two) })
         default:
-            break
+            pastures.sort(by: { (one, two) -> Bool  in
+                one.pasture_id! < two.pasture_id! })
         }
     }
     @IBAction func sortByNameTapped(_ sender: Any) {
-        currentSortMethod = .sort_by_name
+        sortByAreaButton.setTitle("Area", for: UIControlState.normal)
+        switch currentSortMethod {
+        case .sort_by_name_asc :
+            currentSortMethod = .sort_by_name_desc
+            sortByNameButton.setTitle("Name \(down)", for:UIControlState.normal)
+        case .sort_by_name_desc :
+            currentSortMethod = .no_sort
+            sortByNameButton.setTitle("Name", for:UIControlState.normal)
+        default:
+            currentSortMethod = .sort_by_name_asc
+            sortByNameButton.setTitle("Name \(up)", for:UIControlState.normal)
+        }
         refreshUI()
     }
     @IBAction func sortByAreaTapped(_ sender: Any) {
-        currentSortMethod = .sort_by_area
+        sortByNameButton.setTitle("Name", for: UIControlState.normal)
+        switch currentSortMethod {
+        case .sort_by_area_asc :
+            currentSortMethod = .sort_by_area_desc
+            sortByAreaButton.setTitle("Area \(down)", for:UIControlState.normal)
+        case .sort_by_area_desc :
+            currentSortMethod = .no_sort
+            sortByAreaButton.setTitle("Area ", for:UIControlState.normal)
+        default:
+            currentSortMethod = .sort_by_area_asc
+            sortByAreaButton.setTitle("Area \(up)", for:UIControlState.normal)
+        }
         refreshUI()
     }
     

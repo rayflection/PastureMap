@@ -167,15 +167,16 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cOW-Ke-K5w">
-                                    <rect key="frame" x="8" y="58" width="94" height="30"/>
-                                    <state key="normal" title="Sort by Name"/>
+                                    <rect key="frame" x="8" y="58" width="45" height="30"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                    <state key="normal" title="Name "/>
                                     <connections>
                                         <action selector="sortByNameTapped:" destination="GHK-H7-ZbJ" eventType="touchUpInside" id="rXU-gc-o9F"/>
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hlR-tA-uWM">
-                                    <rect key="frame" x="281" y="58" width="86" height="30"/>
-                                    <state key="normal" title="Sort by Area"/>
+                                    <rect key="frame" x="335" y="58" width="32" height="30"/>
+                                    <state key="normal" title="Area"/>
                                     <connections>
                                         <action selector="sortByAreaTapped:" destination="GHK-H7-ZbJ" eventType="touchUpInside" id="FT2-UA-b5L"/>
                                     </connections>
