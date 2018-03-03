@@ -10,8 +10,20 @@ import UIKit
 
 class ListVC: UITableViewController {
 
+    //
+    // @TODO - edit name from here
+    // @TODO - each sort button: off, asc, desc
+    //
     var pastures:[PastureDataModel]=[]
     @IBOutlet weak var totalLabel: UILabel!
+    @IBOutlet weak var sortByAreaButton: UIButton!
+    @IBOutlet weak var sortByNameButton: UIButton!
+    enum sortMethod {
+        case no_sort
+        case sort_by_name
+        case sort_by_area
+    }
+    var currentSortMethod = sortMethod.no_sort
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,7 +39,14 @@ class ListVC: UITableViewController {
         refresh()
     }
     @objc func refresh() {
+        refreshData()
+        refreshUI()
+    }
+    func refreshData() {
         pastures = DBManager.shared().getAllPastures()
+    }
+    func refreshUI() {
+        applySort()
         tableView.reloadData()
         self.refreshControl?.endRefreshing()
         updateTotalLabel(pastures.count)
@@ -66,5 +85,30 @@ class ListVC: UITableViewController {
         }
         return UITableViewCell()
     }
+    
+    // MARK: Button handlers - sort
+    func applySort() {
+        switch currentSortMethod {
+        case .sort_by_name:
+            pastures.sort(by: { (one, two) -> Bool in
+                return one.name < two.name
+            })
+        case .sort_by_area:
+            pastures.sort(by: { (one, two) -> Bool in
+                return AreaCalculator.regionArea(pastureData:one) < AreaCalculator.regionArea(pastureData:two)
+            })
+        default:
+            break
+        }
+    }
+    @IBAction func sortByNameTapped(_ sender: Any) {
+        currentSortMethod = .sort_by_name
+        refreshUI()
+    }
+    @IBAction func sortByAreaTapped(_ sender: Any) {
+        currentSortMethod = .sort_by_area
+        refreshUI()
+    }
+    
 }
 

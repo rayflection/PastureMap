@@ -150,34 +150,54 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <view key="tableHeaderView" contentMode="scaleToFill" id="yVw-91-wHh" userLabel="Header">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="88"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lHO-RR-z5a">
-                                    <rect key="frame" x="70.5" y="7" width="47" height="30"/>
+                                    <rect key="frame" x="71" y="14" width="47" height="30"/>
                                     <state key="normal" title="Reload"/>
                                     <connections>
                                         <action selector="loadButtonTapped:" destination="GHK-H7-ZbJ" eventType="touchUpInside" id="lbA-9f-W3c"/>
                                     </connections>
                                 </button>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="66 Pastures" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GHx-RN-7iM">
-                                    <rect key="frame" x="235.5" y="12" width="92" height="21"/>
+                                    <rect key="frame" x="236" y="23" width="92" height="21"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cOW-Ke-K5w">
+                                    <rect key="frame" x="8" y="58" width="94" height="30"/>
+                                    <state key="normal" title="Sort by Name"/>
+                                    <connections>
+                                        <action selector="sortByNameTapped:" destination="GHK-H7-ZbJ" eventType="touchUpInside" id="rXU-gc-o9F"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hlR-tA-uWM">
+                                    <rect key="frame" x="281" y="58" width="86" height="30"/>
+                                    <state key="normal" title="Sort by Area"/>
+                                    <connections>
+                                        <action selector="sortByAreaTapped:" destination="GHK-H7-ZbJ" eventType="touchUpInside" id="FT2-UA-b5L"/>
+                                    </connections>
+                                </button>
                             </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                             <constraints>
                                 <constraint firstItem="lHO-RR-z5a" firstAttribute="centerX" secondItem="yVw-91-wHh" secondAttribute="centerX" multiplier="0.5" id="5y1-iJ-eTS"/>
-                                <constraint firstItem="lHO-RR-z5a" firstAttribute="centerY" secondItem="yVw-91-wHh" secondAttribute="centerY" id="TB1-y8-APA"/>
-                                <constraint firstItem="GHx-RN-7iM" firstAttribute="centerY" secondItem="yVw-91-wHh" secondAttribute="centerY" id="VzA-x0-15e"/>
+                                <constraint firstItem="lHO-RR-z5a" firstAttribute="bottom" secondItem="yVw-91-wHh" secondAttribute="centerY" id="TB1-y8-APA"/>
+                                <constraint firstAttribute="bottom" secondItem="hlR-tA-uWM" secondAttribute="bottom" id="V3s-bJ-5yZ"/>
+                                <constraint firstItem="GHx-RN-7iM" firstAttribute="bottom" secondItem="yVw-91-wHh" secondAttribute="centerY" id="VzA-x0-15e"/>
+                                <constraint firstAttribute="trailing" secondItem="hlR-tA-uWM" secondAttribute="trailing" constant="8" id="bcx-ob-sHC"/>
                                 <constraint firstItem="GHx-RN-7iM" firstAttribute="centerX" secondItem="yVw-91-wHh" secondAttribute="centerX" multiplier="1.5" id="dEc-by-dCm"/>
+                                <constraint firstItem="cOW-Ke-K5w" firstAttribute="leading" secondItem="yVw-91-wHh" secondAttribute="leading" constant="8" id="hya-9v-Scq"/>
+                                <constraint firstAttribute="bottom" secondItem="cOW-Ke-K5w" secondAttribute="bottom" id="iyQ-76-6iU"/>
+                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="cOW-Ke-K5w" secondAttribute="trailing" constant="20" symbolic="YES" id="mCF-gO-ka5"/>
+                                <constraint firstItem="hlR-tA-uWM" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="yVw-91-wHh" secondAttribute="leading" constant="20" symbolic="YES" id="yQq-qh-TNz"/>
                             </constraints>
                         </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="PastureHeaderCell" id="NCp-El-RE2" customClass="PastureHeaderCell" customModule="PastureMap" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="72" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="116" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="NCp-El-RE2" id="Dwb-x1-PxX">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -186,7 +206,7 @@
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PK" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q4B-TJ-dIS">
                                             <rect key="frame" x="16" y="11" width="21.5" height="22"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <nil key="textColor"/>
+                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Ca-YU-fWk">
@@ -222,7 +242,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="PastureCornerCell" id="moS-C4-l2H" customClass="PastureCornerCell" customModule="PastureMap" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="116" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="160" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="moS-C4-l2H" id="fWz-Al-Zvs">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -264,6 +284,8 @@
                     </tableView>
                     <tabBarItem key="tabBarItem" title="List" id="cDw-Yd-Ws0"/>
                     <connections>
+                        <outlet property="sortByAreaButton" destination="hlR-tA-uWM" id="aFJ-RI-SwH"/>
+                        <outlet property="sortByNameButton" destination="cOW-Ke-K5w" id="pDz-KU-jWQ"/>
                         <outlet property="totalLabel" destination="GHx-RN-7iM" id="QVe-9f-cOe"/>
                     </connections>
                 </tableViewController>

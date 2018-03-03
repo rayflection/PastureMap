@@ -51,8 +51,8 @@ class PastureRenderer {
             let size = pasture.sizeLabel
             size.center = centerPoint
             size.textAlignment = .center
-            let corners = pasture.polygonVertices.map { $0.coordinate }
-            let area = AreaCalculator.regionArea(locations: corners)
+            //let corners = pasture.polygonVertices.map { $0.coordinate }
+            let area = AreaCalculator.regionArea(pasture:pasture)
             pasture.area = area
             let number = NSNumber(value:  AreaCalculator.areaInAcres(squareMeters:area)  )
             if let formattedNumber = PastureNumberFormatter.formatter.string(from:number) {

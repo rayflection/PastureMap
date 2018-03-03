@@ -11,9 +11,8 @@ import MapKit
 import CoreLocation
 
 //
-// @TODO - prevent polygon overlap, preferrably in real time
-// @TODO - give pastures real names
-// @TODO - detect if any lines cross / polygons overlap
+// @TODO - prevent polygon overlap, preferrably in real time- detect if any lines cross / polygons overlap
+//       - delete last point while creating polygons.
 //
 class MapVC: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var createPastureButton: UIButton!
@@ -182,7 +181,9 @@ class MapVC: UIViewController, MKMapViewDelegate {
                                     if let textField = ac.textFields?.first {
                                         if textField.text != pasture.pastureName {
                                             if let pid=pasture.id, let newName=textField.text {
+                                                pasture.pastureName = newName
                                                 DBManager.shared().updatePastureName(pid, newName)
+                                                self.renderCompletePolygon(pasture)
                                             }
                                         }
                                     }

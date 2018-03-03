@@ -35,6 +35,13 @@ class AreaCalculator {
         
         return max(area, -area) // In order not to worry about is polygon clockwise or counterclockwise defined.
     }
+    static func regionArea(pastureData:PastureDataModel) -> Double {
+        return AreaCalculator.regionArea(locations:pastureData.vertices)
+    }
+    static func regionArea(pasture:PastureViewModel) -> Double {
+        let corners = pasture.polygonVertices.map { $0.coordinate }
+        return AreaCalculator.regionArea(locations: corners)
+    }
     static func areaInAcres(squareMeters:Double) -> Double {
         return squareMeters / 4046.86
     }
