@@ -13,6 +13,9 @@ import CoreLocation
 //
 // @TODO - prevent polygon overlap, preferrably in real time- detect if any lines cross / polygons overlap
 //       - delete last point while creating polygons.
+// @TODO - save to DB, db broadcasts "DidUpdatePid:52", map listens, then does it's own UI refresh.
+// @TODO - update name on list, then reload here - it's not picking up the new name (probably skipping because it's ID is already in the list.  Catch that case, refresh the local data, then refresh UI.
+// @TODO - factor promptUserForBetterPastureName() into something that can be re-used between MapVC and ListVC.
 //
 class MapVC: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var createPastureButton: UIButton!
@@ -133,8 +136,6 @@ class MapVC: UIViewController, MKMapViewDelegate {
             } else {
                 DBManager.shared().createPasture(currentPasture)
                 if sender is UIButton {
-                    // figure out the case where we create random data programmatically,
-                    // don't prompt for a better name.
                     promptUserForBetterPastureName(currentPasture)
                 }
 
@@ -171,6 +172,11 @@ class MapVC: UIViewController, MKMapViewDelegate {
         bottomLabel.text = ""
         summaryLabel.text = ""
     }
+    //
+    // @TODO - refactor so this just does the DB update,
+    //    THen DB broadcasts pasture:53-did-update,
+    //     This (and others) class listen, and call the correct renderer.
+    //
     func promptUserForBetterPastureName(_ pasture:PastureViewModel) {
         let ac = UIAlertController (title:"Pasture Name", message:"", preferredStyle: .alert)
         ac.addTextField { (textField) in
