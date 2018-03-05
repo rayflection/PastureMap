@@ -11,11 +11,13 @@ import MapKit
 import CoreLocation
 
 //
-// @TODO - prevent polygon overlap, preferrably in real time- detect if any lines cross / polygons overlap
+// TODO: - prevent polygon overlap, preferrably in real time- detect if any lines cross / polygons overlap
 //       - delete last point while creating polygons.
-// @TODO - save to DB, db broadcasts "DidUpdatePid:52", map listens, then does it's own UI refresh.
-// @TODO - update name on list, then reload here - it's not picking up the new name (probably skipping because it's ID is already in the list.  Catch that case, refresh the local data, then refresh UI.
-// @TODO - factor promptUserForBetterPastureName() into something that can be re-used between MapVC and ListVC.
+// TODO: - save to DB, db broadcasts "DidUpdatePid:52", map and list listen, then do their own UI refreshes.
+// TODO: - update name on list, then reload here - it's not picking up the new name (probably skipping because it's ID is already in the list.  Catch that case, refresh the local data, then refresh UI.
+// TODO - factor promptUserForBetterPastureName() into something that can be re-used between MapVC and ListVC.
+// TODO: - by default - use user's location to center map, but don't display user on map.
+//  FIXME: loading data modes are leaving map in Create mode in some cases.
 //
 class MapVC: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var createPastureButton: UIButton!
@@ -55,7 +57,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
     }
     @objc func singleTap(sender:UITapGestureRecognizer) {
         if sender.state == .ended {
-            NSLog("DID TAP")
+            NSLog("DID TAP - polygonMode is \(inPolygonMode)")
             let point = sender.location(in: mapView)
             let touchLatLon = mapView.convert(point, toCoordinateFrom: mapView)
             //bottomLabel.text = "Got a tap at \(point.to_s()),\(touchLatLon.to_s())"
@@ -83,6 +85,10 @@ class MapVC: UIViewController, MKMapViewDelegate {
         for p in pastureList {
             if p.id == data.pasture_id {
                 alreadyInstalled = true
+                //
+                // @TODO: This PDM may be more recent that what we have, i.e. name could have been updated.
+                //       This still doesn't trigger a redraw. have to implement the notif from DBMgr that data changed.
+                p.pastureName = data.name
                 break
             }
         }
@@ -97,6 +103,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
         return alreadyInstalled
     }
     func finishUpCreation() {
+        print ("In finishUpCreation() - setting inPolyMode to true from \(inPolygonMode)")
         inPolygonMode = true
         createPastureButton.isEnabled = false
         finishButton.isHidden = false
@@ -109,7 +116,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
         bottomLabel.text = ""
     }
     @IBAction func cancelButtonTapped(_ sender: UIButton) {
-        clearPolygonGraphics(currentPasture)
+        clearPastureGraphics(currentPasture)
         pastureList.removeLast()
         currentPasture.clear()
         resetButtonsToDefaultState()
@@ -119,7 +126,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
         finishPolygonButtonTapped(sender)
     }
     @objc func finishPolygonButtonTapped(_ sender:Any) {
-        NSLog("Poly Origin Tapped - POLYGON COMPLETE!")
+        NSLog("Poly Origin Tapped - POLYGON COMPLETE! - mode is \(inPolygonMode)")
         if inPolygonMode {
             
             if let firstPost = finishPolygonButton?.superview as? MKAnnotationView {
@@ -129,13 +136,14 @@ class MapVC: UIViewController, MKMapViewDelegate {
                 finish.removeFromSuperview()
             }
             if sender is PastureDataModel {
-                // generated programmatically
+                // generated programmatically by injectPasture
                 if let past = sender as? PastureDataModel {
                     currentPasture.pastureName = past.name
                 }
             } else {
+                // if sender is a UIView - it's from loadTestData
                 DBManager.shared().createPasture(currentPasture)
-                if sender is UIButton {
+                if sender is UIButton {     // real user interaction
                     promptUserForBetterPastureName(currentPasture)
                 }
 
@@ -180,7 +188,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
     func promptUserForBetterPastureName(_ pasture:PastureViewModel) {
         let ac = UIAlertController (title:"Pasture Name", message:"", preferredStyle: .alert)
         ac.addTextField { (textField) in
-            textField.placeholder = pasture.pastureName
+            textField.text = pasture.pastureName
         }
         ac.addAction(UIAlertAction(title:"OK", style: .destructive,
                                    handler: {(action) in
@@ -210,8 +218,11 @@ class MapVC: UIViewController, MKMapViewDelegate {
         self.present(OptionsHandler().getDataMenuActionSheet(dummyiPadAnchor,self), animated:true, completion: nil)
     }
     func loadPastureDataFromDatabase() {
-        let pdl = PastureDataLoader()
-        pdl.loadDataFromDB(self)
+        PastureDataLoader().loadDataFromDB(self)
+    }
+    func refreshAllPastures() {
+        let _ = pastureList.map { erasePasture($0) }
+        loadPastureDataFromDatabase()
     }
     func loadRandomTestData() {
         let pdl = PastureDataLoader()
@@ -227,6 +238,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
     }
     @objc func disableLocationManager() {
         locationManager.stopUpdatingLocation()
+        mapView.showsUserLocation = false
     }
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         for pasture in pastureList {
@@ -339,7 +351,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
         }
     }
     func erasePasture(_ pasture:PastureViewModel) {
-        clearPolygonGraphics(pasture)
+        clearPastureGraphics(pasture)
         if let da = pasture.deleteAnnotation {
             mapView.removeAnnotation(da)
         }
@@ -431,7 +443,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
     func clearFencePosts(_ pasture:PastureViewModel) {
         mapView.removeAnnotations(pasture.polygonVertices)
     }
-    func clearPolygonGraphics(_ pasture:PastureViewModel) {
+    func clearPastureGraphics(_ pasture:PastureViewModel) {
         clearOverlays(pasture)
         clearPolylines(pasture)
         clearFencePosts(pasture)
@@ -445,7 +457,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
             }
         }
     }
-
+    
     func polygonVerticesAreValid(_ vertices:[MKPointAnnotation]) -> Bool {
         if vertices.count < 4 {
             return true

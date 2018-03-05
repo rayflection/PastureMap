@@ -12,7 +12,7 @@ class PopupEditors {    // NOT USED, YET
     func promptUserForBetterPastureName(_ pasture:PastureViewModel, presentingVC:UIViewController) {
         let ac = UIAlertController (title:"Pasture Name", message:"", preferredStyle: .alert)
         ac.addTextField { (textField) in
-            textField.placeholder = pasture.pastureName
+            textField.text = pasture.pastureName
         }
         ac.addAction(UIAlertAction(title:"OK", style: .destructive,
                                    handler: {(action) in

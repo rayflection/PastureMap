@@ -15,7 +15,8 @@ class OptionsHandler {
     func getDataMenuActionSheet(_ source:UIView,_ mapVC:MapVC) -> UIAlertController {
         let ac = UIAlertController(title: "Data Options", message: "", preferredStyle: .actionSheet)
         ac.addAction(UIAlertAction(title: "Display Saved Pastures", style: .default, handler: { (action) in
-            mapVC.loadPastureDataFromDatabase()
+            //mapVC.loadPastureDataFromDatabase()
+            mapVC.refreshAllPastures()
         }))
         ac.addAction(UIAlertAction(title: "Display Random Test Pastures", style: .default, handler: { (action) in
             mapVC.loadRandomTestData()

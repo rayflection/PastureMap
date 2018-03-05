@@ -107,7 +107,7 @@ class ListVC: UITableViewController {
                 // maybe db should notify everyone, so map and list don't have to know about each other.
                 let ac = UIAlertController (title:"Pasture Name", message:"", preferredStyle: .alert)
                 ac.addTextField { (textField:UITextField) in
-                    textField.placeholder = pasture.name
+                    textField.text = pasture.name
                 }
                 ac.addAction(UIAlertAction(title:"OK", style: .destructive,
                                            handler: {(action) in

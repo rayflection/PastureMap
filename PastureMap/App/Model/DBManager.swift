@@ -172,6 +172,7 @@ class DBManager {
     }
     func updatePastureName(_ pastureID:Int64, _ name:String) {
         do {
+            print("Update pasture \(pastureID) name to \(name)")
             try db?.run(pastureTable.filter(pasturePK == pastureID).update(self.name <- name))
         } catch {
             print("Update Name failed: \(error)")
