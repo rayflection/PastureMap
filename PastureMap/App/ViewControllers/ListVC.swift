@@ -32,34 +32,11 @@ class ListVC: UITableViewController {
         super.viewDidLoad()
         self.refreshControl = setUpRefreshControl()
         refresh()
-        setUpListeners()
     }
     func setUpRefreshControl() -> UIRefreshControl{
         let rc = UIRefreshControl()
         rc.addTarget(self, action: #selector(refresh), for: UIControlEvents.allEvents)
         return rc
-    }
-    //
-    // TODO: I could even call these from the TabBarVC to create the listener,
-    //    as well as handle the notification, if needed, call refresh on the
-    //    appropriate vc.
-    //
-    func setUpListeners() {
-        NotificationCenter.default.addObserver(self, selector: #selector(handleDBChangeNotification), name: NSNotification.Name(rawValue: NotificationKey.DatabaseChanged), object: nil)
-    }
-    @objc func handleDBChangeNotification(note:Notification) {
-        print("Got notification: \(note)")
-        
-        if let sender = note.object as? ListVC {
-            if sender == self {
-                // ignore
-            } else {
-                // shouldn't really happen, but...
-                print("Got a DB Change Notification from some other ListVC")
-            }
-        } else {
-            refresh()
-        }
     }
     
     // ------------- button handlers

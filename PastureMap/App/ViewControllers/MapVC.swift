@@ -43,7 +43,6 @@ class MapVC: UIViewController, MKMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         configUI()
-        setUpListeners()
     }
     func configUI() {
         configMap()
@@ -55,23 +54,6 @@ class MapVC: UIViewController, MKMapViewDelegate {
         mapView.showsUserLocation = true
         tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(singleTap))
         fetchCurrentUserLoc()
-    }
-    func setUpListeners() {
-        NotificationCenter.default.addObserver(self, selector: #selector(handleDBChangeNotification), name: NSNotification.Name(rawValue: NotificationKey.DatabaseChanged), object: nil)
-    }
-    @objc func handleDBChangeNotification(note:Notification) {
-        print("Got notification: \(note)")
-        
-        if let sender = note.object as? MapVC {
-            if sender == self {
-                // ignore
-            } else {
-                // shouldn't really happen, but...
-                print("Got a DB Change Notification from some other MapVC")
-            }
-        } else {
-            refreshAllPastures()
-        }
     }
     @objc func singleTap(sender:UITapGestureRecognizer) {
         if sender.state == .ended {
