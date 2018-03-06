@@ -10,11 +10,8 @@ import UIKit
 
 class ListVC: UITableViewController {
 
-    //
-    // @TODO - edit name from here
-    // @TODO - delete pasture by swiping list left
-    // @TODO - broadcast that pasture X has been edited or deleted, so map can refresh.
-    //
+    var dbi:DBI?
+
     var pastures:[PastureDataModel]=[]
     @IBOutlet weak var totalLabel: UILabel!
     @IBOutlet weak var sortByAreaButton: UIButton!
@@ -35,12 +32,37 @@ class ListVC: UITableViewController {
         super.viewDidLoad()
         self.refreshControl = setUpRefreshControl()
         refresh()
+        setUpListeners()
     }
     func setUpRefreshControl() -> UIRefreshControl{
         let rc = UIRefreshControl()
         rc.addTarget(self, action: #selector(refresh), for: UIControlEvents.allEvents)
         return rc
     }
+    //
+    // TODO: I could even call these from the TabBarVC to create the listener,
+    //    as well as handle the notification, if needed, call refresh on the
+    //    appropriate vc.
+    //
+    func setUpListeners() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handleDBChangeNotification), name: NSNotification.Name(rawValue: NotificationKey.DatabaseChanged), object: nil)
+    }
+    @objc func handleDBChangeNotification(note:Notification) {
+        print("Got notification: \(note)")
+        
+        if let sender = note.object as? ListVC {
+            if sender == self {
+                // ignore
+            } else {
+                // shouldn't really happen, but...
+                print("Got a DB Change Notification from some other ListVC")
+            }
+        } else {
+            refresh()
+        }
+    }
+    
+    // ------------- button handlers
     @IBAction func loadButtonTapped(_ sender: Any) {
         refresh()
     }
@@ -49,7 +71,9 @@ class ListVC: UITableViewController {
         refreshUI()
     }
     func refreshData() {
-        pastures = DBManager.shared().getAllPastures()
+        if let dbi = dbi {
+            pastures = dbi.getAll()
+        }
     }
     func refreshUI() {
         applySort()
@@ -113,9 +137,9 @@ class ListVC: UITableViewController {
                                            handler: {(action) in
                                             if let textField = ac.textFields?.first {
                                                 if textField.text != pasture.name {
-                                                    if let pid=pasture.pasture_id, let newName=textField.text {
+                                                    if let pid=pasture.pasture_id, let newName=textField.text, let dbi=self.dbi {
                                                         pasture.name = newName
-                                                        DBManager.shared().updatePastureName(pid, newName)
+                                                        dbi.update(pid, name: newName)
                                                         self.refresh()
                                                     }
                                                 }
@@ -133,8 +157,8 @@ class ListVC: UITableViewController {
                 let ac = UIAlertController(title:"Delete pasture \(pasture.name)?", message:"Are you sure you want to delete this pasture?", preferredStyle: .alert)
                 ac.addAction(UIAlertAction(title:"Delete it!", style: .destructive,
                                            handler: {(action) in
-                                            if let pid = pasture.pasture_id {
-                                                DBManager.shared().deletePasture(pid)
+                                            if let pid = pasture.pasture_id, let dbi=self.dbi {
+                                                dbi.delete(pid)
                                                 self.refresh()
                                                 // as a courtesy, broadcast a notification to the map to refresh itself.
                                             }

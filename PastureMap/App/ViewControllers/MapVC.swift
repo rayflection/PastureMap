@@ -13,13 +13,14 @@ import CoreLocation
 //
 // TODO: - prevent polygon overlap, preferrably in real time- detect if any lines cross / polygons overlap
 //       - delete last point while creating polygons.
-// TODO: - save to DB, db broadcasts "DidUpdatePid:52", map and list listen, then do their own UI refreshes.
-// TODO: - update name on list, then reload here - it's not picking up the new name (probably skipping because it's ID is already in the list.  Catch that case, refresh the local data, then refresh UI.
-// TODO - factor promptUserForBetterPastureName() into something that can be re-used between MapVC and ListVC.
-// TODO: - by default - use user's location to center map, but don't display user on map.
-//  FIXME: loading data modes are leaving map in Create mode in some cases.
+//
+// TODO: - factor promptUserForBetterPastureName() into something that can be re-used between MapVC and ListVC.
+// TODO: - cleaner separation, use, purpose for dataModel vs ViewModel, and how they inter-change.
 //
 class MapVC: UIViewController, MKMapViewDelegate {
+    
+    var dbi:DBI?
+    
     @IBOutlet weak var createPastureButton: UIButton!
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var finishButton: UIButton!  // button above map, user taps to complete poly.
@@ -42,6 +43,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         configUI()
+        setUpListeners()
     }
     func configUI() {
         configMap()
@@ -49,11 +51,27 @@ class MapVC: UIViewController, MKMapViewDelegate {
         clearLabels()
         resetButtonsToDefaultState()
     }
-
     func configMap() {
         mapView.showsUserLocation = true
         tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(singleTap))
         fetchCurrentUserLoc()
+    }
+    func setUpListeners() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handleDBChangeNotification), name: NSNotification.Name(rawValue: NotificationKey.DatabaseChanged), object: nil)
+    }
+    @objc func handleDBChangeNotification(note:Notification) {
+        print("Got notification: \(note)")
+        
+        if let sender = note.object as? MapVC {
+            if sender == self {
+                // ignore
+            } else {
+                // shouldn't really happen, but...
+                print("Got a DB Change Notification from some other MapVC")
+            }
+        } else {
+            refreshAllPastures()
+        }
     }
     @objc func singleTap(sender:UITapGestureRecognizer) {
         if sender.state == .ended {
@@ -85,9 +103,6 @@ class MapVC: UIViewController, MKMapViewDelegate {
         for p in pastureList {
             if p.id == data.pasture_id {
                 alreadyInstalled = true
-                //
-                // @TODO: This PDM may be more recent that what we have, i.e. name could have been updated.
-                //       This still doesn't trigger a redraw. have to implement the notif from DBMgr that data changed.
                 p.pastureName = data.name
                 break
             }
@@ -142,7 +157,9 @@ class MapVC: UIViewController, MKMapViewDelegate {
                 }
             } else {
                 // if sender is a UIView - it's from loadTestData
-                DBManager.shared().createPasture(currentPasture)
+                if let dbi=dbi {
+                    dbi.create(currentPasture)
+                }
                 if sender is UIButton {     // real user interaction
                     promptUserForBetterPastureName(currentPasture)
                 }
@@ -181,10 +198,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
         summaryLabel.text = ""
     }
     //
-    // @TODO - refactor so this just does the DB update,
-    //    THen DB broadcasts pasture:53-did-update,
-    //     This (and others) class listen, and call the correct renderer.
-    //
+
     func promptUserForBetterPastureName(_ pasture:PastureViewModel) {
         let ac = UIAlertController (title:"Pasture Name", message:"", preferredStyle: .alert)
         ac.addTextField { (textField) in
@@ -194,10 +208,10 @@ class MapVC: UIViewController, MKMapViewDelegate {
                                    handler: {(action) in
                                     if let textField = ac.textFields?.first {
                                         if textField.text != pasture.pastureName {
-                                            if let pid=pasture.id, let newName=textField.text {
+                                            if let pid=pasture.id, let newName=textField.text, let dbi=self.dbi {
                                                 pasture.pastureName = newName
-                                                DBManager.shared().updatePastureName(pid, newName)
-                                                self.renderCompletePolygon(pasture)
+                                                dbi.update(pid, name:newName)
+                                                self.renderCompletePolygon(pasture)  // REMOVE??
                                             }
                                         }
                                     }
@@ -257,8 +271,8 @@ class MapVC: UIViewController, MKMapViewDelegate {
                         if let past = whatPastureIsThisPostIn(post:fencepost) {
                             currentPasture = past
                             redrawPasture(pasture: past)
-                            if let rank = rankOfAnnotation(post: fencepost, inPasture: past), let pastID = past.id {
-                                DBManager.shared().updatePastureCoordinate(pastID, rank, coo)
+                            if let rank = rankOfAnnotation(post: fencepost, inPasture: past), let pastID = past.id, let dbi=dbi {
+                                dbi.update(pastID, rank: rank, coordinate: coo)
                             }
                         }
                     }
@@ -345,8 +359,8 @@ class MapVC: UIViewController, MKMapViewDelegate {
         }
     }
     func deletePasture(_ pasture: PastureViewModel) {
-        if let pk = pasture.id {
-            DBManager.shared().deletePasture(pk)
+        if let pk = pasture.id, let dbi=dbi {
+            dbi.delete(pk)
             erasePasture(pasture)
         }
     }

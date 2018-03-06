@@ -132,12 +132,6 @@ class DBManager {
         return pastureDBModels
     }
     
-    // ------------------------------------------
-    // Who would call this? What's the Use case?
-    func getPasture(_ pastureID:Int) -> PastureDataModel {
-        //     let joinTable = pastureTable.join(cornerTable, on: pastureFK == pastureTable[id])
-        return PastureDataModel()           // just to compile
-    }
     // -------------------------------------------
     // This would get called when I let the user delete a pasture, NIY.
     func deletePasture(_ pastureID:Int64 ) {

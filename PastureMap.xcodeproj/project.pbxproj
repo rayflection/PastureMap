@@ -37,6 +37,13 @@
 		0FBAAED72043732700765555 /* PastureCornerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FBAAED52043732700765555 /* PastureCornerCell.swift */; };
 		0FBAAED9204CE2B100765555 /* PopupEditors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FBAAED8204CE2B100765555 /* PopupEditors.swift */; };
 		0FBAAEDA204CE2B200765555 /* PopupEditors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FBAAED8204CE2B100765555 /* PopupEditors.swift */; };
+		0FBAAEDF204E00F200765555 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FBAAEDE204E00F200765555 /* Constants.swift */; };
+		0FBAAEE0204E00F200765555 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FBAAEDE204E00F200765555 /* Constants.swift */; };
+		0FBAAEE2204E435000765555 /* TabBarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FBAAEE1204E435000765555 /* TabBarVC.swift */; };
+		0FBAAEE3204E435000765555 /* TabBarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FBAAEE1204E435000765555 /* TabBarVC.swift */; };
+		0FBAAEE4204E4CBD00765555 /* ListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB1D552203B5F4400373B7B /* ListVC.swift */; };
+		0FBAAEE6204E520300765555 /* DBFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FBAAEE5204E520300765555 /* DBFacade.swift */; };
+		0FBAAEE7204E520300765555 /* DBFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FBAAEE5204E520300765555 /* DBFacade.swift */; };
 		1EC8774A172FB89B63356861 /* Pods_PastureMap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4695FACF31B1A580676864C9 /* Pods_PastureMap.framework */; };
 /* End PBXBuildFile section */
 
@@ -83,6 +90,9 @@
 		0FBAAED220436D7700765555 /* PastureHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastureHeaderCell.swift; sourceTree = "<group>"; };
 		0FBAAED52043732700765555 /* PastureCornerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastureCornerCell.swift; sourceTree = "<group>"; };
 		0FBAAED8204CE2B100765555 /* PopupEditors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupEditors.swift; sourceTree = "<group>"; };
+		0FBAAEDE204E00F200765555 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		0FBAAEE1204E435000765555 /* TabBarVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarVC.swift; sourceTree = "<group>"; };
+		0FBAAEE5204E520300765555 /* DBFacade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBFacade.swift; sourceTree = "<group>"; };
 		4695FACF31B1A580676864C9 /* Pods_PastureMap.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PastureMap.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		89795E3E95A8E92BF3FEF77A /* Pods-PastureMap.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PastureMap.release.xcconfig"; path = "Pods/Target Support Files/Pods-PastureMap/Pods-PastureMap.release.xcconfig"; sourceTree = "<group>"; };
 		A6D02BD4FC0AB0EEBFFF3664 /* Pods-PastureMap.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PastureMap.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PastureMap/Pods-PastureMap.debug.xcconfig"; sourceTree = "<group>"; };
@@ -174,6 +184,7 @@
 				0FB1D591203D0A9C00373B7B /* Model */,
 				0FB1D590203D0A6D00373B7B /* Utils */,
 				0FB1D58F203D0A0F00373B7B /* Assetts */,
+				0FBAAEDE204E00F200765555 /* Constants.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -183,6 +194,7 @@
 			children = (
 				0FB1D550203B5F4400373B7B /* MapVC.swift */,
 				0FB1D552203B5F4400373B7B /* ListVC.swift */,
+				0FBAAEE1204E435000765555 /* TabBarVC.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -231,6 +243,7 @@
 				0FB1D592203D10AE00373B7B /* PastureDataLoader.swift */,
 				0FBAAEC920425C2100765555 /* DBManager.swift */,
 				0FBAAECF20426BDB00765555 /* PastureDataModel.swift */,
+				0FBAAEE5204E520300765555 /* DBFacade.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -441,14 +454,17 @@
 				0FB1D553203B5F4400373B7B /* ListVC.swift in Sources */,
 				0FBAAED320436D7700765555 /* PastureHeaderCell.swift in Sources */,
 				0FB1D587203CA75000373B7B /* OptionsHandler.swift in Sources */,
+				0FBAAEE6204E520300765555 /* DBFacade.swift in Sources */,
 				0FBAAED020426BDB00765555 /* PastureDataModel.swift in Sources */,
 				0FB1D585203C84CB00373B7B /* PastureRenderer.swift in Sources */,
 				0FB1D54F203B5F4400373B7B /* AppDelegate.swift in Sources */,
 				0FBAAECA20425C2100765555 /* DBManager.swift in Sources */,
+				0FBAAEE2204E435000765555 /* TabBarVC.swift in Sources */,
 				0FB1D583203B6CE900373B7B /* PastureViewModel.swift in Sources */,
 				0FB1D589203D070300373B7B /* AreaCalculator.swift in Sources */,
 				0FB1D551203B5F4400373B7B /* MapVC.swift in Sources */,
 				0FB1D593203D10AE00373B7B /* PastureDataLoader.swift in Sources */,
+				0FBAAEDF204E00F200765555 /* Constants.swift in Sources */,
 				0FBAAED9204CE2B100765555 /* PopupEditors.swift in Sources */,
 				0FBAAED62043732700765555 /* PastureCornerCell.swift in Sources */,
 			);
@@ -458,13 +474,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0FBAAEE3204E435000765555 /* TabBarVC.swift in Sources */,
 				0FBAAED120426BDB00765555 /* PastureDataModel.swift in Sources */,
 				0FBAAED420436D7700765555 /* PastureHeaderCell.swift in Sources */,
+				0FBAAEE7204E520300765555 /* DBFacade.swift in Sources */,
 				0FBAAECB2042638A00765555 /* DBManager.swift in Sources */,
 				0FB1D58A203D073800373B7B /* AreaCalculator.swift in Sources */,
 				0FB1D595203D173100373B7B /* MapVC.swift in Sources */,
+				0FBAAEE4204E4CBD00765555 /* ListVC.swift in Sources */,
 				0FBAAECE204266B200765555 /* PastureRenderer.swift in Sources */,
 				0FBAAECD2042669800765555 /* OptionsHandler.swift in Sources */,
+				0FBAAEE0204E00F200765555 /* Constants.swift in Sources */,
 				0FBAAEDA204CE2B200765555 /* PopupEditors.swift in Sources */,
 				0FB1D566203B5F4400373B7B /* PastureMapTests.swift in Sources */,
 				0FBAAED72043732700765555 /* PastureCornerCell.swift in Sources */,
