@@ -1,5 +1,5 @@
 //
-//  DBManager.swift
+//  DBManagerSQLite.swift
 //  PastureMap
 //
 //  Created by Mike Yost on 2/24/18.
@@ -11,20 +11,20 @@ import SQLite
 import CoreLocation
 
 
-class DBManager {
+class DBManager_SQLite:DataBaseManagerInterface {
     private var db:Connection?
-    private static var mgr = DBManager()
-    static func shared() -> DBManager {
+    private static var mgr = DBManager_SQLite()
+    static func shared() -> DBManager_SQLite {
         return mgr
     }
     private let pastureTable = Table("pasture")
     private let cornerTable  = Table("corner")
-    let pastureFK  = Expression<Int64>("pasture_id")
-    let rank       = Expression<Int64>("rank")
-    let latitude   = Expression<Double>("latitude")
-    let longitude  = Expression<Double>("longitude")
-    let pasturePK  = Expression<Int64>("pasturePK")
-    let name       = Expression<String>("name")
+    private let pastureFK  = Expression<Int64>("pasture_id")
+    private let rank       = Expression<Int64>("rank")
+    private let latitude   = Expression<Double>("latitude")
+    private let longitude  = Expression<Double>("longitude")
+    private let pasturePK  = Expression<Int64>("pasturePK")
+    private let name       = Expression<String>("name")
     
     init() {
         let path = NSSearchPathForDirectoriesInDomains(
@@ -39,7 +39,7 @@ class DBManager {
 
         createDBTables()
     }
-    func createDBTables() {
+    private func createDBTables() {
         // create a pasture table
         do {
             try db!.run(pastureTable.create(ifNotExists: true) { t in
@@ -75,7 +75,7 @@ class DBManager {
             pdm.pasture_id = row
             pdm.name = "pasture_\(row)"
             updatePastureName(row, pdm.name)
-            print("inserted id: \(row)")
+            print("inserted id: \(row) with name \(pdm.name)")
         } catch {                                 // @TODO - better catch, more specific
             print("insertion pasture failed: \(error)") //Just show error, don't return anything.
         }
@@ -166,7 +166,7 @@ class DBManager {
     }
     func updatePastureName(_ pastureID:Int64, _ name:String) {
         do {
-            print("Update pasture \(pastureID) name to \(name)")
+            print("DB Update pasture \(pastureID) name to \(name)")
             try db?.run(pastureTable.filter(pasturePK == pastureID).update(self.name <- name))
         } catch {
             print("Update Name failed: \(error)")

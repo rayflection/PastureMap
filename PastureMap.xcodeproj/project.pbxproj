@@ -24,8 +24,8 @@
 		0FB1D593203D10AE00373B7B /* PastureDataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB1D592203D10AE00373B7B /* PastureDataLoader.swift */; };
 		0FB1D594203D10AE00373B7B /* PastureDataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB1D592203D10AE00373B7B /* PastureDataLoader.swift */; };
 		0FB1D595203D173100373B7B /* MapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB1D550203B5F4400373B7B /* MapVC.swift */; };
-		0FBAAECA20425C2100765555 /* DBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FBAAEC920425C2100765555 /* DBManager.swift */; };
-		0FBAAECB2042638A00765555 /* DBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FBAAEC920425C2100765555 /* DBManager.swift */; };
+		0FBAAECA20425C2100765555 /* DBManager_SQLite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FBAAEC920425C2100765555 /* DBManager_SQLite.swift */; };
+		0FBAAECB2042638A00765555 /* DBManager_SQLite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FBAAEC920425C2100765555 /* DBManager_SQLite.swift */; };
 		0FBAAECC2042667600765555 /* PastureViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB1D582203B6CE900373B7B /* PastureViewModel.swift */; };
 		0FBAAECD2042669800765555 /* OptionsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB1D586203CA75000373B7B /* OptionsHandler.swift */; };
 		0FBAAECE204266B200765555 /* PastureRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB1D584203C84CA00373B7B /* PastureRenderer.swift */; };
@@ -83,7 +83,7 @@
 		0FB1D586203CA75000373B7B /* OptionsHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsHandler.swift; sourceTree = "<group>"; };
 		0FB1D588203D070300373B7B /* AreaCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AreaCalculator.swift; sourceTree = "<group>"; };
 		0FB1D592203D10AE00373B7B /* PastureDataLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastureDataLoader.swift; sourceTree = "<group>"; };
-		0FBAAEC920425C2100765555 /* DBManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBManager.swift; sourceTree = "<group>"; };
+		0FBAAEC920425C2100765555 /* DBManager_SQLite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBManager_SQLite.swift; sourceTree = "<group>"; };
 		0FBAAECF20426BDB00765555 /* PastureDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastureDataModel.swift; sourceTree = "<group>"; };
 		0FBAAED220436D7700765555 /* PastureHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastureHeaderCell.swift; sourceTree = "<group>"; };
 		0FBAAED52043732700765555 /* PastureCornerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastureCornerCell.swift; sourceTree = "<group>"; };
@@ -237,7 +237,7 @@
 			isa = PBXGroup;
 			children = (
 				0FB1D592203D10AE00373B7B /* PastureDataLoader.swift */,
-				0FBAAEC920425C2100765555 /* DBManager.swift */,
+				0FBAAEC920425C2100765555 /* DBManager_SQLite.swift */,
 				0FBAAECF20426BDB00765555 /* PastureDataModel.swift */,
 				0FBAAEE5204E520300765555 /* DBFacade.swift */,
 			);
@@ -454,7 +454,7 @@
 				0FBAAED020426BDB00765555 /* PastureDataModel.swift in Sources */,
 				0FB1D585203C84CB00373B7B /* PastureRenderer.swift in Sources */,
 				0FB1D54F203B5F4400373B7B /* AppDelegate.swift in Sources */,
-				0FBAAECA20425C2100765555 /* DBManager.swift in Sources */,
+				0FBAAECA20425C2100765555 /* DBManager_SQLite.swift in Sources */,
 				0FBAAEE2204E435000765555 /* TabBarVC.swift in Sources */,
 				0FB1D583203B6CE900373B7B /* PastureViewModel.swift in Sources */,
 				0FB1D589203D070300373B7B /* AreaCalculator.swift in Sources */,
@@ -473,7 +473,7 @@
 				0FBAAED120426BDB00765555 /* PastureDataModel.swift in Sources */,
 				0FBAAED420436D7700765555 /* PastureHeaderCell.swift in Sources */,
 				0FBAAEE7204E520300765555 /* DBFacade.swift in Sources */,
-				0FBAAECB2042638A00765555 /* DBManager.swift in Sources */,
+				0FBAAECB2042638A00765555 /* DBManager_SQLite.swift in Sources */,
 				0FB1D58A203D073800373B7B /* AreaCalculator.swift in Sources */,
 				0FB1D595203D173100373B7B /* MapVC.swift in Sources */,
 				0FBAAEE4204E4CBD00765555 /* ListVC.swift in Sources */,

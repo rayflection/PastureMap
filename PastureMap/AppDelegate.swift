@@ -8,8 +8,6 @@
 
 import UIKit
 
-var DBMan:DBManager?
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 

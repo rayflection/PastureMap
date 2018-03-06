@@ -10,19 +10,20 @@ import Foundation
 import MapKit
 
 class PastureDataLoader {
-
-    func loadDataFromDB(_ mapVC: MapVC ) {
-        let pastures = DBManager.shared().getAllPastures()
+    
+    func loadDataFromDB(_ mapVC: MapVC, db:DataBaseInterface ) {
+        let pastures = db.getAll()
         for pastureDM in pastures {
             injectPasture(pastureDM, mapVC)
         }
     }
     func injectPasture(_ data:PastureDataModel, _ mapVC:MapVC) {
-        if !mapVC.installExistingPastureIfNotAlreadyThere(data) {
+        let viewModel = PastureViewModel(dataModel:data)
+        if !mapVC.installExistingPastureIfNotAlreadyThere(viewModel) {
             for point in data.vertices {
                 mapVC.addToPolygon(pasture: mapVC.currentPasture, coord:point, isComplete:false)
             }
-            mapVC.finishButtonTapped(data)
+            mapVC.finishButtonTapped(viewModel)
         }
     }
     // ----------------------------

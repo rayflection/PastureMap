@@ -11,10 +11,10 @@ import MapKit
 import CoreLocation
 
 //
-// TODO: - prevent polygon overlap, preferrably in real time- detect if any lines cross / polygons overlap
-//       - delete last point while creating polygons.
-// TODO: Realm db.
-// TODO: - cleaner separation, use, purpose for dataModel vs ViewModel, and how they inter-change.
+// TODO: - prevent polygon overlap, preferrably in real time- detect if any lines cross w/in a poly
+// TODO: - delete last point while creating polygons.
+// TODO: - Realm db.
+// TODO: - bug find race condition that puts us randomly into create mode when loading data.
 //
 class MapVC: UIViewController, MKMapViewDelegate {
     
@@ -33,7 +33,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
 
     var tapRecognizer:UITapGestureRecognizer?
     var inPolygonMode=false
-    var currentPasture = PastureViewModel()
+    var currentPasture = PastureViewModel()  // dummy, cuz optionals are annoying.
     var finishPolygonButton:UIButton?  // button inside original fence post, user taps to complete poly.
     var pastureList:[PastureViewModel]=[]
     let locationManager = CLLocationManager()
@@ -79,19 +79,18 @@ class MapVC: UIViewController, MKMapViewDelegate {
         pastureList.append(currentPasture)
         finishUpCreation()
     }
-    func installExistingPastureIfNotAlreadyThere(_ data:PastureDataModel) -> Bool {
+    func installExistingPastureIfNotAlreadyThere(_ data:PastureViewModel) -> Bool {
         var alreadyInstalled = false
         for p in pastureList {
-            if p.id == data.pasture_id {
+            if p.id == data.id {
                 alreadyInstalled = true
-                p.pastureName = data.name
+                p.pastureName = data.pastureName
                 break
             }
         }
         if !alreadyInstalled {
-            currentPasture = PastureViewModel()
-            currentPasture.id = data.pasture_id
-            pastureList.append(currentPasture)
+            currentPasture = data
+            pastureList.append(data)
         }
         
         finishUpCreation()
@@ -131,10 +130,13 @@ class MapVC: UIViewController, MKMapViewDelegate {
             if let finish = finishPolygonButton {
                 finish.removeFromSuperview()
             }
-            if sender is PastureDataModel {
+            //
+            // @Kludge alert - need cleaner way to determine who's calling, button, loader or testLoader
+            //
+            if sender is PastureViewModel {
                 // generated programmatically by injectPasture
-                if let past = sender as? PastureDataModel {
-                    currentPasture.pastureName = past.name
+                if let past = sender as? PastureViewModel {
+                    currentPasture.pastureName = past.pastureName
                 }
             } else {
                 // if sender is a UIView - it's from loadTestData
@@ -144,8 +146,9 @@ class MapVC: UIViewController, MKMapViewDelegate {
                 if sender is UIButton {     // real user interaction
                     promptUserForBetterPastureName(currentPasture)
                 }
-
             }
+            // End Kludge-alert
+            
             
             renderCompletePolygon(currentPasture)
             resetButtonsToDefaultState()
@@ -213,7 +216,9 @@ class MapVC: UIViewController, MKMapViewDelegate {
         self.present(OptionsHandler().getDataMenuActionSheet(dummyiPadAnchor,self), animated:true, completion: nil)
     }
     func loadPastureDataFromDatabase() {
-        PastureDataLoader().loadDataFromDB(self)
+        if let dbi=dbi {
+            PastureDataLoader().loadDataFromDB(self, db:dbi)
+        }
     }
     func refreshAllPastures() {
         let _ = pastureList.map { erasePasture($0) }

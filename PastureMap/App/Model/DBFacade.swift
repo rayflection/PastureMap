@@ -19,29 +19,44 @@ protocol DataBaseInterface {
     func update(_ pastureID:Int64, name:String)
     func update(_ pastureID:Int64, rank:Int64, coordinate:CLLocationCoordinate2D)
 }
-
+protocol DataBaseManagerInterface {
+    func createPasture(_ viewModel: PastureViewModel)
+    func getAllPastures() -> [PastureDataModel]
+    func deletePasture(_ pastureID:Int64 )
+    func updatePastureCoordinate(_ pasture_id:Int64,_ theRank:Int64,_ coord:CLLocationCoordinate2D)
+    func updatePastureName(_ pastureID:Int64, _ name:String)
+}
 class DBFacade:DataBaseInterface {
     private var caller:UIViewController?
     init(_ callingVC:UIViewController) {
         caller = callingVC
     }
-    func create(_ pasture:PastureViewModel) {       // should this return a pastureDataModel?
-        DBManager.shared().createPasture(pasture)
+    private func activeDB() -> DataBaseManagerInterface {
+        //
+        // This is a great spot to choose what database implementation to use
+        //
+        return DBManager_SQLite.shared()
+        // return DBManager_RealmIO.shared()
+    }
+    // ---------------------------------------
+    // MARK: CRUD
+    func create(_ pasture:PastureViewModel) {       // this populates/updates the viewModel with id,name
+        activeDB().createPasture(pasture)
         post()
     }
     func getAll() -> [PastureDataModel] {
-        return DBManager.shared().getAllPastures()
+        return activeDB().getAllPastures()
     }
     func delete(_ pastureID:Int64) {
-        DBManager.shared().deletePasture(pastureID)
+        activeDB().deletePasture(pastureID)
         post()
     }
     func update(_ pastureID:Int64, name:String) {
-        DBManager.shared().updatePastureName(pastureID,name)
+        activeDB().updatePastureName(pastureID,name)
         post()
     }
     func update(_ pastureID:Int64, rank:Int64, coordinate:CLLocationCoordinate2D) {
-        DBManager.shared().updatePastureCoordinate(pastureID,rank,coordinate)
+        activeDB().updatePastureCoordinate(pastureID,rank,coordinate)
         post()
     }
     private func post() {

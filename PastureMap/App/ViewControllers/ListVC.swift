@@ -136,7 +136,6 @@ class ListVC: UITableViewController {
                                             if let pid = pasture.pasture_id, let dbi=self.dbi {
                                                 dbi.delete(pid)
                                                 self.refresh()
-                                                // as a courtesy, broadcast a notification to the map to refresh itself.
                                             }
                 }))
                 ac.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) in }))

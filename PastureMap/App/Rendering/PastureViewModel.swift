@@ -20,6 +20,12 @@ class PastureViewModel {
     var area=0.0
     var deleteAnnotation:MKPointAnnotation?
     
+    init() {}
+    
+    init(dataModel:PastureDataModel) {
+        id = dataModel.pasture_id
+        pastureName = dataModel.name
+    }
     func setIsComplete(pastureID:Int64) {
         id = pastureID
         pastureIsComplete = true
