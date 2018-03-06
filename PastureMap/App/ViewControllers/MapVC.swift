@@ -13,13 +13,12 @@ import CoreLocation
 //
 // TODO: - prevent polygon overlap, preferrably in real time- detect if any lines cross / polygons overlap
 //       - delete last point while creating polygons.
-//
-// TODO: - factor promptUserForBetterPastureName() into something that can be re-used between MapVC and ListVC.
+// TODO: Realm db.
 // TODO: - cleaner separation, use, purpose for dataModel vs ViewModel, and how they inter-change.
 //
 class MapVC: UIViewController, MKMapViewDelegate {
     
-    var dbi:DBI?
+    var dbi:DataBaseInterface?
     
     @IBOutlet weak var createPastureButton: UIButton!
     @IBOutlet weak var cancelButton: UIButton!
@@ -193,7 +192,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
                                             if let pid=pasture.id, let newName=textField.text, let dbi=self.dbi {
                                                 pasture.pastureName = newName
                                                 dbi.update(pid, name:newName)
-                                                self.renderCompletePolygon(pasture)  // REMOVE??
+                                                self.renderCompletePolygon(pasture)
                                             }
                                         }
                                     }
@@ -486,8 +485,4 @@ class MapVC: UIViewController, MKMapViewDelegate {
         }
         return nil
     }
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
 }
-

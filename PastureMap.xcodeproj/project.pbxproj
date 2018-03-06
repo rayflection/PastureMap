@@ -35,8 +35,6 @@
 		0FBAAED420436D7700765555 /* PastureHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FBAAED220436D7700765555 /* PastureHeaderCell.swift */; };
 		0FBAAED62043732700765555 /* PastureCornerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FBAAED52043732700765555 /* PastureCornerCell.swift */; };
 		0FBAAED72043732700765555 /* PastureCornerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FBAAED52043732700765555 /* PastureCornerCell.swift */; };
-		0FBAAED9204CE2B100765555 /* PopupEditors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FBAAED8204CE2B100765555 /* PopupEditors.swift */; };
-		0FBAAEDA204CE2B200765555 /* PopupEditors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FBAAED8204CE2B100765555 /* PopupEditors.swift */; };
 		0FBAAEDF204E00F200765555 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FBAAEDE204E00F200765555 /* Constants.swift */; };
 		0FBAAEE0204E00F200765555 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FBAAEDE204E00F200765555 /* Constants.swift */; };
 		0FBAAEE2204E435000765555 /* TabBarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FBAAEE1204E435000765555 /* TabBarVC.swift */; };
@@ -89,7 +87,6 @@
 		0FBAAECF20426BDB00765555 /* PastureDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastureDataModel.swift; sourceTree = "<group>"; };
 		0FBAAED220436D7700765555 /* PastureHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastureHeaderCell.swift; sourceTree = "<group>"; };
 		0FBAAED52043732700765555 /* PastureCornerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastureCornerCell.swift; sourceTree = "<group>"; };
-		0FBAAED8204CE2B100765555 /* PopupEditors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupEditors.swift; sourceTree = "<group>"; };
 		0FBAAEDE204E00F200765555 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		0FBAAEE1204E435000765555 /* TabBarVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarVC.swift; sourceTree = "<group>"; };
 		0FBAAEE5204E520300765555 /* DBFacade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBFacade.swift; sourceTree = "<group>"; };
@@ -216,7 +213,6 @@
 				0FB1D586203CA75000373B7B /* OptionsHandler.swift */,
 				0FBAAED220436D7700765555 /* PastureHeaderCell.swift */,
 				0FBAAED52043732700765555 /* PastureCornerCell.swift */,
-				0FBAAED8204CE2B100765555 /* PopupEditors.swift */,
 			);
 			path = Rendering;
 			sourceTree = "<group>";
@@ -465,7 +461,6 @@
 				0FB1D551203B5F4400373B7B /* MapVC.swift in Sources */,
 				0FB1D593203D10AE00373B7B /* PastureDataLoader.swift in Sources */,
 				0FBAAEDF204E00F200765555 /* Constants.swift in Sources */,
-				0FBAAED9204CE2B100765555 /* PopupEditors.swift in Sources */,
 				0FBAAED62043732700765555 /* PastureCornerCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -485,7 +480,6 @@
 				0FBAAECE204266B200765555 /* PastureRenderer.swift in Sources */,
 				0FBAAECD2042669800765555 /* OptionsHandler.swift in Sources */,
 				0FBAAEE0204E00F200765555 /* Constants.swift in Sources */,
-				0FBAAEDA204CE2B200765555 /* PopupEditors.swift in Sources */,
 				0FB1D566203B5F4400373B7B /* PastureMapTests.swift in Sources */,
 				0FBAAED72043732700765555 /* PastureCornerCell.swift in Sources */,
 				0FB1D594203D10AE00373B7B /* PastureDataLoader.swift in Sources */,

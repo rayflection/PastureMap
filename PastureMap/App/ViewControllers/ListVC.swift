@@ -1,5 +1,5 @@
 //
-//  SecondViewController.swift
+//  ListVC.swift
 //  PastureMap
 //
 //  Created by Mike Yost on 2/19/18.
@@ -10,7 +10,7 @@ import UIKit
 
 class ListVC: UITableViewController {
 
-    var dbi:DBI?
+    var dbi:DataBaseInterface?
 
     var pastures:[PastureDataModel]=[]
     @IBOutlet weak var totalLabel: UILabel!
@@ -104,8 +104,7 @@ class ListVC: UITableViewController {
             let edit = UITableViewRowAction(style:.default, title:"Edit") { (UITableViewRowActionStyle,IndexPath) in
                 print("Edit pasture #: \(indexPath.section)")
                 //
-                // show a popup with a name editing field, persist change, notify map.
-                // maybe db should notify everyone, so map and list don't have to know about each other.
+                // show a popup with a name editing field, persist change.
                 let ac = UIAlertController (title:"Pasture Name", message:"", preferredStyle: .alert)
                 ac.addTextField { (textField:UITextField) in
                     textField.text = pasture.name

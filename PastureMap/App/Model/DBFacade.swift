@@ -12,7 +12,7 @@ import CoreLocation
 //
 // protocol for db functions, inject an object that follows the protocol to main VC's
 //
-protocol DBI {
+protocol DataBaseInterface {
     func create(_ pasture:PastureViewModel)
     func getAll() -> [PastureDataModel]
     func delete(_ pastureID:Int64)
@@ -20,7 +20,7 @@ protocol DBI {
     func update(_ pastureID:Int64, rank:Int64, coordinate:CLLocationCoordinate2D)
 }
 
-class DBFacade:DBI {
+class DBFacade:DataBaseInterface {
     private var caller:UIViewController?
     init(_ callingVC:UIViewController) {
         caller = callingVC
